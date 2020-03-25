@@ -1,4 +1,5 @@
 #!/bin/bash
 
-# Install dependencies.
+# Re-install dependencies.
+rm -rf node_modules
 yarn
