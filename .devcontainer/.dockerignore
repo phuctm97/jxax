@@ -1,0 +1,7 @@
+### Docker template.
+.dockerignore
+Dockerfile
+
+### VisualStudioCode Remote-Containers template.
+/devcontainer.json
+/post-create.sh

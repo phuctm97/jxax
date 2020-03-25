@@ -1,0 +1,10 @@
+{
+    "dockerFile": "Dockerfile",
+    "containerUser": "devcontainer-user",
+    "workspaceMount": "src=${localWorkspaceFolder},dst=/home/devcontainer-user/project,type=bind,consistency=delegated",
+    "workspaceFolder": "/home/devcontainer-user/project",
+    "postCreateCommand": ".devcontainer/post-create.sh",
+    "extensions": [
+        "gruntfuggly.todo-tree"
+    ]
+}
