@@ -1,0 +1,39 @@
+name: CI
+
+on: push
+
+jobs:
+  lint-build:
+    name: lint,build
+    runs-on: ubuntu-18.04
+    env:
+      node-version: 12.x
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node.js ${{ env.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.node-version }}
+      - id: find-yarn-cache-dir
+        name: Find Yarn cache directory
+        run: echo "::set-output name=path::$(yarn cache dir)"
+      - name: Cache Node.js modules
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.find-yarn-cache-dir.outputs.path }}
+          key: yarn-cache-dir-${{ runner.os }}-node-${{ env.node-version }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            yarn-cache-dir-${{ runner.os }}-node-${{ env.node-version }}-
+            yarn-cache-dir-${{ runner.os }}-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Lint
+        run: yarn lint
+      - name: Build
+        run: yarn build
+      - name: Upload distribution bundle
+        uses: actions/upload-artifact@v1
+        with:
+          name: jxax-0.git${{ github.sha }}
+          path: dist/jxax.js

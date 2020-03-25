@@ -1,0 +1,24 @@
+{
+  "env": {
+    "es2020": true,
+    "applescript": true
+  },
+  "globals": {
+    "scpt": "readonly"
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "impliedStrict": true
+    }
+  },
+  "extends": ["airbnb-base"],
+  "rules": {
+    "no-console": "off"
+  },
+  "noInlineConfig": true,
+  "settings": {
+    "import/resolver": ["node", "webpack"]
+  }
+}

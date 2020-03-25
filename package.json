@@ -1,0 +1,37 @@
+{
+  "name": "jxax",
+  "version": "1.0.0-rc.1",
+  "private": false,
+  "description": "JavaScript for Automation (JXA) Extensions Kit & CLI automate macOS setup, configuring preferences, personalization, etc.",
+  "repository": "github:deskp/jxax",
+  "license": "MIT",
+  "author": "Phuc (Minh) Tran",
+  "main": "dist/jxax.js",
+  "scripts": {
+    "start": "yarn build:dev --watch",
+    "build": "yarn build:prod",
+    "build:prod": "webpack",
+    "build:dev": "webpack --env.dev",
+    "lint": "eslint --ext .js . && prettier --check ."
+  },
+  "dependencies": {
+    "ansi-escape-sequences": "^5.1.2",
+    "js-yaml": "^3.13.1",
+    "lodash": "^4.17.15",
+    "validate.js": "^0.13.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-import-resolver-node": "^0.3.3",
+    "eslint-import-resolver-webpack": "^0.12.1",
+    "eslint-plugin-import": "^2.20.1",
+    "prettier": "^2.0.4",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  }
+}
