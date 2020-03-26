@@ -16,8 +16,7 @@ export default {
         $.quit();
     },
     get appearance() {
-        return w.uiElements.whose({
-            role: 'AXCheckBox',
+        return w.checkboxes.whose({
             subrole: 'AXToggle',
             value: 1,
             _or: [
@@ -28,12 +27,11 @@ export default {
         })[0].name();
     },
     set appearance(value) {
-        w.uiElements.whose({ role: 'AXCheckBox', subrole: 'AXToggle', name: value })[0]
+        w.checkboxes.whose({ subrole: 'AXToggle', name: value })[0]
             .actions['AXPress'].perform();
     },
     get accentColor() {
-        return w.uiElements.whose({
-            role: 'AXCheckBox',
+        return w.checkboxes.whose({
             subrole: 'AXToggle',
             value: 1,
             _or: [
@@ -50,7 +48,10 @@ export default {
         })[0].name();
     },
     set accentColor(value) {
-        w.uiElements.whose({ role: 'AXCheckBox', subrole: 'AXToggle', name: value })[0]
+        w.checkboxes.whose({ subrole: 'AXToggle', name: value })[0]
             .actions['AXPress'].perform();
+    },
+    get highlightColor() {
+        return w.popUpButtons['Highlight color:'].value();
     }
 }

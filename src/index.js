@@ -7,6 +7,7 @@ systemPreferences.accentColor = 'Blue';
 
 console.log(JSON.stringify({
     appearance: systemPreferences.appearance,
-    accentColor: systemPreferences.accentColor
+    accentColor: systemPreferences.accentColor,
+    highlightColor: systemPreferences.highlightColor
 }, null, 2));
 systemPreferences.quit();
