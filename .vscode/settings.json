@@ -1,0 +1,9 @@
+{
+    "files.trimTrailingWhitespace": true,
+    "files.trimFinalNewlines": true,
+    "files.insertFinalNewline": true,
+    "files.exclude": {
+        "node_modules": true,
+        "yarn.lock": true
+    }
+}
