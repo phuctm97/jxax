@@ -66,5 +66,12 @@ export default {
         const popUpButton = w.popUpButtons['Sidebar icon size:'];
         popUpButton.actions['AXShowMenu'].perform();
         popUpButton.menus[0].menuItems[value].actions['AXPress'].perform();
+    },
+    get autoHideMenuBar() {
+        return w.checkboxes['Automatically hide and show the menu bar'].value() !== 0;
+    },
+    set autoHideMenuBar(value) {
+        if (this.autoHideMenuBar === value) return;
+        w.checkboxes['Automatically hide and show the menu bar'].actions['AXPress'].perform();
     }
 }
