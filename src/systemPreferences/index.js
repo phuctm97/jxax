@@ -10,6 +10,6 @@ export default {
         $.activate();
     },
     showPane: function (name) {
-        $.currentPane = $.panes.whose({ name })[0];
+        $.currentPane = $.panes.byName(name);
     }
 }
