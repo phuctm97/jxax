@@ -9,6 +9,7 @@ systemPreferences.sidebarIconSize = 'Small';
 systemPreferences.autoHideMenuBar = false;
 systemPreferences.showScrollBars = 'Automatically based on mouse or trackpad';
 systemPreferences.clickScrollBar = 'Jump to the next page';
+systemPreferences.askWhenClosingDocuments = false;
 
 console.log(JSON.stringify({
     appearance: systemPreferences.appearance,
@@ -17,5 +18,6 @@ console.log(JSON.stringify({
     sidebarIconSize: systemPreferences.sidebarIconSize,
     autoHideMenuBar: systemPreferences.autoHideMenuBar,
     showScrollBars: systemPreferences.showScrollBars,
-    clickScrollBar: systemPreferences.clickScrollBar
+    clickScrollBar: systemPreferences.clickScrollBar,
+    askWhenClosingDocuments: systemPreferences.askWhenClosingDocuments
 }, null, 2));

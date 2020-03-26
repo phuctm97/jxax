@@ -85,5 +85,12 @@ export default {
     },
     set clickScrollBar(value) {
         w.radioGroups[0].radioButtons[value].actions['AXPress'].perform();
+    },
+    get askWhenClosingDocuments() {
+        return w.checkboxes['Ask to keep changes when closing documents'].value() !== 0;
+    },
+    set askWhenClosingDocuments(value) {
+        if (this.askWhenClosingDocuments === value) return;
+        w.checkboxes['Ask to keep changes when closing documents'].actions['AXPress'].perform();
     }
 }
