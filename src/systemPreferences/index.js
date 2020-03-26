@@ -1,6 +1,7 @@
-const systemEvents = Application('System Events');
+import { applicationProcesses } from 'jxax/core/processes';
+
 const $ = Application('System Preferences');
-const p = systemEvents.applicationProcesses[$.name()];
+const p = applicationProcesses[$.name()];
 const w = p.windows[0];
 
 export default {
