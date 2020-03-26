@@ -11,5 +11,8 @@ export default {
     },
     showPane: function (name) {
         $.currentPane = $.panes.byName(name);
+    },
+    setAppearance: function (value) {
+        w.uiElements.whose({ role: 'AXCheckBox', subrole: 'AXToggle', name: value })[0].click();
     }
 }
