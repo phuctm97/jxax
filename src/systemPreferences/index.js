@@ -58,5 +58,13 @@ export default {
         const popUpButton = w.popUpButtons['Highlight color:'];
         popUpButton.actions['AXShowMenu'].perform();
         popUpButton.menus[0].menuItems[value].actions['AXPress'].perform();
+    },
+    get sidebarIconSize() {
+        return w.popUpButtons['Sidebar icon size:'].value();
+    },
+    set sidebarIconSize(value) {
+        const popUpButton = w.popUpButtons['Sidebar icon size:'];
+        popUpButton.actions['AXShowMenu'].perform();
+        popUpButton.menus[0].menuItems[value].actions['AXPress'].perform();
     }
 }
