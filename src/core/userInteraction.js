@@ -1,6 +1,4 @@
-import { app } from 'jxax/core';
-
-app.includeStandardAdditions = true;
+import { app } from 'jxax/standardAdditions';
 
 export function delay(...args) {
     app.delay(...args);
