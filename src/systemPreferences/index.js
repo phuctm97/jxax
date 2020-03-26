@@ -79,5 +79,11 @@ export default {
     },
     set showScrollBars(value) {
         w.radioGroups[1].radioButtons[value].actions['AXPress'].perform();
+    },
+    get clickScrollBar() {
+        return w.radioGroups[0].radioButtons.whose({ value: 1 })[0].name();
+    },
+    set clickScrollBar(value) {
+        w.radioGroups[0].radioButtons[value].actions['AXPress'].perform();
     }
 }
