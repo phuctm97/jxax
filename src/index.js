@@ -1,6 +1,4 @@
-import { displayDialog } from 'jxax/core/standardAddtions';
+import * as systemPreferences from 'jxax/systemPreferences';
 
-displayDialog(`Running in environment: ${process.env.NODE_ENV}`, {
-    withTitle: 'DeskP',
-    buttons: ['OK']
-});
+systemPreferences.activate();
+systemPreferences.showPane("General");
