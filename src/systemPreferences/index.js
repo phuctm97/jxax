@@ -53,5 +53,10 @@ export default {
     },
     get highlightColor() {
         return w.popUpButtons['Highlight color:'].value();
+    },
+    set highlightColor(value) {
+        const popUpButton = w.popUpButtons['Highlight color:'];
+        popUpButton.actions['AXShowMenu'].perform();
+        popUpButton.menus[0].menuItems[value].actions['AXPress'].perform();
     }
 }
