@@ -73,5 +73,11 @@ export default {
     set autoHideMenuBar(value) {
         if (this.autoHideMenuBar === value) return;
         w.checkboxes['Automatically hide and show the menu bar'].actions['AXPress'].perform();
+    },
+    get showScrollBars() {
+        return w.radioGroups[1].radioButtons.whose({ value: 1 })[0].name();
+    },
+    set showScrollBars(value) {
+        w.radioGroups[1].radioButtons[value].actions['AXPress'].perform();
     }
 }

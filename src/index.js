@@ -7,11 +7,13 @@ systemPreferences.accentColor = 'Blue';
 systemPreferences.highlightColor = 'Blue';
 systemPreferences.sidebarIconSize = 'Small';
 systemPreferences.autoHideMenuBar = false;
+systemPreferences.showScrollBars = 'Automatically based on mouse or trackpad';
 
 console.log(JSON.stringify({
     appearance: systemPreferences.appearance,
     accentColor: systemPreferences.accentColor,
     highlightColor: systemPreferences.highlightColor,
     sidebarIconSize: systemPreferences.sidebarIconSize,
-    autoHideMenuBar: systemPreferences.autoHideMenuBar
+    autoHideMenuBar: systemPreferences.autoHideMenuBar,
+    showScrollBars: systemPreferences.showScrollBars
 }, null, 2));
