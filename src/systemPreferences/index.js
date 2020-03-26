@@ -14,5 +14,8 @@ export default {
     },
     setAppearance: function (value) {
         w.uiElements.whose({ role: 'AXCheckBox', subrole: 'AXToggle', name: value })[0].click();
+    },
+    setAccentColor: function (value) {
+        w.uiElements.whose({ role: 'AXCheckBox', subrole: 'AXToggle', name: value })[0].click();
     }
 }
