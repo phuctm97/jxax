@@ -9,8 +9,11 @@ export default {
     activate: function () {
         $.activate();
     },
-    showPane: function (name) {
-        $.currentPane = $.panes.byName(name);
+    navigate: function (pane) {
+        $.currentPane = $.panes.byName(pane);
+    },
+    quit: function () {
+        $.quit();
     },
     get appearance() {
         return w.uiElements.whose({
