@@ -1,4 +1,4 @@
-import { app } from './core';
+import { app } from 'jxax/core';
 
 app.includeStandardAdditions = true;
 
