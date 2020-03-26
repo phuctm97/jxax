@@ -10,6 +10,7 @@ systemPreferences.autoHideMenuBar = false;
 systemPreferences.showScrollBars = 'Automatically based on mouse or trackpad';
 systemPreferences.clickScrollBar = 'Jump to the next page';
 systemPreferences.askWhenClosingDocuments = false;
+systemPreferences.closeWindowsWhenQuttingApp = true;
 
 console.log(JSON.stringify({
     appearance: systemPreferences.appearance,
@@ -19,5 +20,6 @@ console.log(JSON.stringify({
     autoHideMenuBar: systemPreferences.autoHideMenuBar,
     showScrollBars: systemPreferences.showScrollBars,
     clickScrollBar: systemPreferences.clickScrollBar,
-    askWhenClosingDocuments: systemPreferences.askWhenClosingDocuments
+    askWhenClosingDocuments: systemPreferences.askWhenClosingDocuments,
+    closeWindowsWhenQuttingApp: systemPreferences.closeWindowsWhenQuttingApp
 }, null, 2));

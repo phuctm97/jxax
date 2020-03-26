@@ -92,5 +92,12 @@ export default {
     set askWhenClosingDocuments(value) {
         if (this.askWhenClosingDocuments === value) return;
         w.checkboxes['Ask to keep changes when closing documents'].actions['AXPress'].perform();
+    },
+    get closeWindowsWhenQuttingApp() {
+        return w.checkboxes['Close windows when quitting an app'].value() !== 0;
+    },
+    set closeWindowsWhenQuttingApp(value) {
+        if (this.closeWindowsWhenQuttingApp === value) return;
+        w.checkboxes['Close windows when quitting an app'].actions['AXPress'].perform();
     }
 }
