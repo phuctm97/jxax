@@ -1,4 +1,5 @@
-import * as systemPreferences from 'jxax/systemPreferences';
+import systemPreferences from 'jxax/systemPreferences';
 
 systemPreferences.activate();
 systemPreferences.showPane("General");
+console.log(systemPreferences.window.name());
