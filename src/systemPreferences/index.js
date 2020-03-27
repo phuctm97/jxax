@@ -117,5 +117,12 @@ export default {
     set allowHandoff(value) {
         if (this.allowHandoff === value) return;
         w.checkboxes['Allow Handoff between this Mac and your iCloud devices'].actions['AXPress'].perform();
+    },
+    get useFontSmoothing() {
+        return w.checkboxes['Use font smoothing when available'].value() !== 0;
+    },
+    set useFontSmoothing(value) {
+        if (this.useFontSmoothing === value) return;
+        w.checkboxes['Use font smoothing when available'].actions['AXPress'].perform();
     }
 }
