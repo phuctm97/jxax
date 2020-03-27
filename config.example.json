@@ -4,6 +4,7 @@
     "general.highlightColor": "blue",
     "general.sidebarIconSize": "small",
     "general.autoHideMenuBar": false,
+    "general.showScrollBars": "onMouseOrTrackpad",
     "general.defaultWebBrowser": "Safari",
     "general.askWhenClosingDocuments": true,
     "general.closeWindowsWhenQuittingApp": true,
