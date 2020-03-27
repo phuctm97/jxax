@@ -24,10 +24,11 @@ export default {
                 { name: 'Dark' },
                 { name: 'Auto' }
             ]
-        })[0].name();
+        })[0].name().toLowerCase();
     },
     set appearance(value) {
-        w.checkboxes.whose({ subrole: 'AXToggle', name: value })[0]
+        const v = value.charAt(0).toUpperCase() + value.slice(1);
+        w.checkboxes.whose({ subrole: 'AXToggle', name: v })[0]
             .actions['AXPress'].perform();
     },
     get accentColor() {
@@ -45,27 +46,30 @@ export default {
                 { name: 'Graphite' },
                 { name: 'Other' }
             ]
-        })[0].name();
+        })[0].name().toLowerCase();
     },
     set accentColor(value) {
-        w.checkboxes.whose({ subrole: 'AXToggle', name: value })[0]
+        const v = value.charAt(0).toUpperCase() + value.slice(1);
+        w.checkboxes.whose({ subrole: 'AXToggle', name: v })[0]
             .actions['AXPress'].perform();
     },
     get highlightColor() {
-        return w.popUpButtons['Highlight color:'].value();
+        return w.popUpButtons['Highlight color:'].value().toLowerCase();
     },
     set highlightColor(value) {
+        const v = value.charAt(0).toUpperCase() + value.slice(1);
         const popUpButton = w.popUpButtons['Highlight color:'];
         popUpButton.actions['AXShowMenu'].perform();
-        popUpButton.menus[0].menuItems[value].actions['AXPress'].perform();
+        popUpButton.menus[0].menuItems[v].actions['AXPress'].perform();
     },
     get sidebarIconSize() {
-        return w.popUpButtons['Sidebar icon size:'].value();
+        return w.popUpButtons['Sidebar icon size:'].value().toLowerCase();
     },
     set sidebarIconSize(value) {
+        const v = value.charAt(0).toUpperCase() + value.slice(1);
         const popUpButton = w.popUpButtons['Sidebar icon size:'];
         popUpButton.actions['AXShowMenu'].perform();
-        popUpButton.menus[0].menuItems[value].actions['AXPress'].perform();
+        popUpButton.menus[0].menuItems[v].actions['AXPress'].perform();
     },
     get autoHideMenuBar() {
         return w.checkboxes['Automatically hide and show the menu bar'].value() !== 0;

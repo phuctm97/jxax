@@ -1,8 +1,8 @@
 {
-    "general.appearance": "Dark",
-    "general.accentColor": "Blue",
-    "general.highlightColor": "Blue",
-    "general.sidebarIconSize": "Small",
+    "general.appearance": "dark",
+    "general.accentColor": "blue",
+    "general.highlightColor": "blue",
+    "general.sidebarIconSize": "small",
     "general.autoHideMenuBar": false,
     "general.defaultWebBrowser": "Safari",
     "general.askWhenClosingDocuments": true,
