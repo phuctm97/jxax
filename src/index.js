@@ -1,13 +1,14 @@
+import colors from 'ansi-colors';
 import systemPreferences from 'jxax/systemPreferences';
-import { chooseFile } from 'jxax/core/userInteraction';
-import { read } from 'jxax/core/files';
+// import { chooseFile } from 'jxax/core/userInteraction';
+// import { read } from 'jxax/core/files';
 
-const jsonFile = chooseFile({
-    withPrompt: 'Choose your JSON configuration file',
-    ofType: ['public.json']
-});
-const json = read(jsonFile);
-console.log(json);
+// const jsonFile = chooseFile({
+//     withPrompt: 'Choose your JSON configuration file',
+//     ofType: ['public.json']
+// });
+// const json = read(jsonFile);
+// console.log(json);
 
 systemPreferences.activate();
 systemPreferences.navigate('General');
@@ -25,7 +26,8 @@ systemPreferences.navigate('General');
 // systemPreferences.allowHandoff = true;
 // systemPreferences.useFontSmoothing = true;
 
-console.log(JSON.stringify({
+console.log(colors.bold.whiteBright(`${colors.greenBright('✔')} Applied settings:`));
+console.log(colors.dim(JSON.stringify({
     appearance: systemPreferences.appearance,
     accentColor: systemPreferences.accentColor,
     highlightColor: systemPreferences.highlightColor,
@@ -39,5 +41,5 @@ console.log(JSON.stringify({
     recentItems: systemPreferences.recentItems,
     allowHandoff: systemPreferences.allowHandoff,
     useFontSmoothing: systemPreferences.useFontSmoothing
-}, null, 2));
+}, null, 2)));
 systemPreferences.quit();

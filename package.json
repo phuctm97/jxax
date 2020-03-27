@@ -13,5 +13,8 @@
   "devDependencies": {
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
+  },
+  "dependencies": {
+    "ansi-colors": "^4.1.1"
   }
 }
