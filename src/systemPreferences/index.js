@@ -12,11 +12,20 @@ const showScrollBarsValueMap = {
     'always': 'Always'
 }
 const invertedShowScrollBarsValueMap = invert(showScrollBarsValueMap);
+const clickScrollBarValueMap = {
+    'jumpToNextPage': 'Jump to the next page',
+    'jumpToSpotClicked': 'Jump to the spot that’s clicked'
+}
+const invertedClickScrollBarValueMap = invert(clickScrollBarValueMap);
 
 export default {
     window: w,
     activate: function () {
         $.activate();
+    },
+    reopen: function() {
+        this.quit();
+        this.activate();
     },
     navigate: function (pane) {
         $.currentPane = $.panes.byName(pane);
@@ -90,10 +99,10 @@ export default {
         w.radioGroups[1].radioButtons[showScrollBarsValueMap[value]].actions['AXPress'].perform();
     },
     get clickScrollBar() {
-        return w.radioGroups[0].radioButtons.whose({ value: 1 })[0].name();
+        return invertedClickScrollBarValueMap[w.radioGroups[0].radioButtons.whose({ value: 1 })[0].name()];
     },
     set clickScrollBar(value) {
-        w.radioGroups[0].radioButtons[value].actions['AXPress'].perform();
+        w.radioGroups[0].radioButtons[clickScrollBarValueMap[value]].actions['AXPress'].perform();
     },
     get defaultWebBrowser() {
         return w.popUpButtons.whose({ description: 'Default Web Browser popup' })[0].value();

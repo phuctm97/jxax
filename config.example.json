@@ -5,6 +5,7 @@
     "general.sidebarIconSize": "small",
     "general.autoHideMenuBar": false,
     "general.showScrollBars": "onMouseOrTrackpad",
+    "general.clickScrollBar": "jumpToNextPage",
     "general.defaultWebBrowser": "Safari",
     "general.askWhenClosingDocuments": true,
     "general.closeWindowsWhenQuittingApp": true,

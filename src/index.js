@@ -22,7 +22,7 @@ const configKeymap = {
 };
 
 // Apply config.
-systemPreferences.activate();
+systemPreferences.reopen();
 systemPreferences.navigate('General');
 for (const k in config) {
     const p = configKeymap[k];
