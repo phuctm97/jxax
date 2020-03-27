@@ -110,5 +110,12 @@ export default {
         const popUpButton = w.popUpButtons.whose({ description: 'Recent Items' })[0];
         popUpButton.actions['AXShowMenu'].perform();
         popUpButton.menus[0].menuItems.byName(v).actions['AXPress'].perform();
+    },
+    get allowHandoff() {
+        return w.checkboxes['Allow Handoff between this Mac and your iCloud devices'].value() !== 0;
+    },
+    set allowHandoff(value) {
+        if (this.allowHandoff === value) return;
+        w.checkboxes['Allow Handoff between this Mac and your iCloud devices'].actions['AXPress'].perform();
     }
 }
