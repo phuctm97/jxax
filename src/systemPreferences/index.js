@@ -86,6 +86,14 @@ export default {
     set clickScrollBar(value) {
         w.radioGroups[0].radioButtons[value].actions['AXPress'].perform();
     },
+    get defaultWebBrowser() {
+        return w.popUpButtons.whose({ description: 'Default Web Browser popup' })[0].value();
+    },
+    set defaultWebBrowser(value) {
+        const popUpButton = w.popUpButtons.whose({ description: 'Default Web Browser popup' })[0];
+        popUpButton.actions['AXShowMenu'].perform();
+        popUpButton.menus[0].menuItems[value].actions['AXPress'].perform();
+    },
     get askWhenClosingDocuments() {
         return w.checkboxes['Ask to keep changes when closing documents'].value() !== 0;
     },

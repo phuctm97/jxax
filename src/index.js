@@ -9,6 +9,7 @@ systemPreferences.sidebarIconSize = 'Small';
 systemPreferences.autoHideMenuBar = false;
 systemPreferences.showScrollBars = 'Automatically based on mouse or trackpad';
 systemPreferences.clickScrollBar = 'Jump to the next page';
+systemPreferences.defaultWebBrowser = 'Safari';
 systemPreferences.askWhenClosingDocuments = false;
 systemPreferences.closeWindowsWhenQuttingApp = true;
 systemPreferences.recentItems = 0;
@@ -23,9 +24,11 @@ console.log(JSON.stringify({
     autoHideMenuBar: systemPreferences.autoHideMenuBar,
     showScrollBars: systemPreferences.showScrollBars,
     clickScrollBar: systemPreferences.clickScrollBar,
+    defaultWebBrowser: systemPreferences.defaultWebBrowser,
     askWhenClosingDocuments: systemPreferences.askWhenClosingDocuments,
     closeWindowsWhenQuttingApp: systemPreferences.closeWindowsWhenQuttingApp,
     recentItems: systemPreferences.recentItems,
     allowHandoff: systemPreferences.allowHandoff,
     useFontSmoothing: systemPreferences.useFontSmoothing
 }, null, 2));
+systemPreferences.quit();
