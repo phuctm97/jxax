@@ -99,5 +99,16 @@ export default {
     set closeWindowsWhenQuttingApp(value) {
         if (this.closeWindowsWhenQuttingApp === value) return;
         w.checkboxes['Close windows when quitting an app'].actions['AXPress'].perform();
+    },
+    get recentItems() {
+        const v = w.popUpButtons.whose({ description: 'Recent Items' })[0].value();
+        if (v === 'None') return 0;
+        return parseInt(v);
+    },
+    set recentItems(value) {
+        const v = value === 0 ? 'None' : value.toString();
+        const popUpButton = w.popUpButtons.whose({ description: 'Recent Items' })[0];
+        popUpButton.actions['AXShowMenu'].perform();
+        popUpButton.menus[0].menuItems.byName(v).actions['AXPress'].perform();
     }
 }
