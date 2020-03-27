@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "jxax/*": [ "src/*" ]
+        },
+        "moduleResolution": "node",
+        "sourceMap": false
+    },
+    "include": [
+        "src/**/*"
+    ]
+}
