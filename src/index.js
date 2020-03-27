@@ -1,20 +1,29 @@
 import systemPreferences from 'jxax/systemPreferences';
+import { chooseFile } from 'jxax/core/userInteraction';
+import { read } from 'jxax/core/files';
+
+const jsonFile = chooseFile({
+    withPrompt: 'Choose your JSON configuration file',
+    ofType: ['public.json']
+});
+const json = read(jsonFile);
+console.log(json);
 
 systemPreferences.activate();
 systemPreferences.navigate('General');
-systemPreferences.appearance = 'Dark';
-systemPreferences.accentColor = 'Blue';
-systemPreferences.highlightColor = 'Blue';
-systemPreferences.sidebarIconSize = 'Small';
-systemPreferences.autoHideMenuBar = false;
-systemPreferences.showScrollBars = 'Automatically based on mouse or trackpad';
-systemPreferences.clickScrollBar = 'Jump to the next page';
-systemPreferences.defaultWebBrowser = 'Safari';
-systemPreferences.askWhenClosingDocuments = false;
-systemPreferences.closeWindowsWhenQuttingApp = true;
-systemPreferences.recentItems = 0;
-systemPreferences.allowHandoff = true;
-systemPreferences.useFontSmoothing = true;
+// systemPreferences.appearance = 'Dark';
+// systemPreferences.accentColor = 'Blue';
+// systemPreferences.highlightColor = 'Blue';
+// systemPreferences.sidebarIconSize = 'Small';
+// systemPreferences.autoHideMenuBar = false;
+// systemPreferences.showScrollBars = 'Automatically based on mouse or trackpad';
+// systemPreferences.clickScrollBar = 'Jump to the next page';
+// systemPreferences.defaultWebBrowser = 'Safari';
+// systemPreferences.askWhenClosingDocuments = false;
+// systemPreferences.closeWindowsWhenQuttingApp = true;
+// systemPreferences.recentItems = 0;
+// systemPreferences.allowHandoff = true;
+// systemPreferences.useFontSmoothing = true;
 
 console.log(JSON.stringify({
     appearance: systemPreferences.appearance,

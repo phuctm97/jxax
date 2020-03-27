@@ -1,0 +1,13 @@
+{
+    "general.appearance": "Light",
+    "general.accentColor": "Blue",
+    "general.highlightColor": "Blue",
+    "general.sidebarIconSize": "Medium",
+    "general.autoHideMenuBar": false,
+    "general.defaultWebBrowser": "Safari",
+    "general.askWhenClosingDocuments": true,
+    "general.closeWindowsWhenQuittingApp": true,
+    "general.recentItems": 0,
+    "general.allowHandoff": true,
+    "general.useFontSmoothing": true
+}
