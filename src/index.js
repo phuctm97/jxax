@@ -1,32 +1,38 @@
 import colors from 'ansi-colors';
+import { get as getConfig } from 'jxax/config';
 import systemPreferences from 'jxax/systemPreferences';
-// import { chooseFile } from 'jxax/core/userInteraction';
-// import { read } from 'jxax/core/files';
 
-// const jsonFile = chooseFile({
-//     withPrompt: 'Choose your JSON configuration file',
-//     ofType: ['public.json']
-// });
-// const json = read(jsonFile);
-// console.log(json);
+// Read config.
+const config = getConfig();
+const configKeymap = {
+    'general.appearance': 'appearance',
+    'general.accentColor': 'accentColor',
+    'general.highlightColor': 'highlightColor',
+    'general.sidebarIconSize': 'sidebarIconSize',
+    'general.autoHideMenuBar': 'autoHideMenuBar',
+    'general.showScrollBars': 'showScrollBars',
+    'general.clickScrollBar': 'clickScrollBar',
+    'general.defaultWebBrowser': 'defaultWebBrowser',
+    'general.askWhenClosingDocuments': 'askWhenClosingDocuments',
+    'general.closeWindowsWhenQuttingApp': 'closeWindowsWhenQuttingApp',
+    'general.recentItems': 'recentItems',
+    'general.closeWindowsWhenQuttingApp': 'closeWindowsWhenQuttingApp',
+    'general.allowHandoff': 'allowHandoff',
+    'general.useFontSmoothing': 'useFontSmoothing'
+};
 
+// Apply config.
 systemPreferences.activate();
 systemPreferences.navigate('General');
-// systemPreferences.appearance = 'Dark';
-// systemPreferences.accentColor = 'Blue';
-// systemPreferences.highlightColor = 'Blue';
-// systemPreferences.sidebarIconSize = 'Small';
-// systemPreferences.autoHideMenuBar = false;
-// systemPreferences.showScrollBars = 'Automatically based on mouse or trackpad';
-// systemPreferences.clickScrollBar = 'Jump to the next page';
-// systemPreferences.defaultWebBrowser = 'Safari';
-// systemPreferences.askWhenClosingDocuments = false;
-// systemPreferences.closeWindowsWhenQuttingApp = true;
-// systemPreferences.recentItems = 0;
-// systemPreferences.allowHandoff = true;
-// systemPreferences.useFontSmoothing = true;
+for (const k in config) {
+    const p = configKeymap[k];
+    if (p) systemPreferences[p] = config[k];
+}
 
-console.log(colors.bold.whiteBright(`${colors.greenBright('✔')} Applied settings:`));
+// Print results.
+console.log(colors.bold.whiteBright(`${colors.greenBright('✔')} Applied`),
+    colors.italic.whiteBright('System Preferences/General'),
+    colors.bold.whiteBright('settings:'));
 console.log(colors.dim(JSON.stringify({
     appearance: systemPreferences.appearance,
     accentColor: systemPreferences.accentColor,
@@ -42,4 +48,6 @@ console.log(colors.dim(JSON.stringify({
     allowHandoff: systemPreferences.allowHandoff,
     useFontSmoothing: systemPreferences.useFontSmoothing
 }, null, 2)));
+
+// Close application.
 systemPreferences.quit();
