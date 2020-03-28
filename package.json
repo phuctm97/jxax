@@ -9,7 +9,7 @@
   "private": false,
   "scripts": {
     "build": "webpack --mode production",
-    "lint": "eslint --ignore-path .gitignore ."
+    "lint": "eslint ."
   },
   "dependencies": {
     "ansi-colors": "^4.1.1"
