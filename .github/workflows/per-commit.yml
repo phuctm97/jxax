@@ -6,15 +6,15 @@ jobs:
   build:
     strategy:
       matrix:
-        node-version: [10.x, 12.x]
-    runs-on: ubuntu-latest
+        os: [ubuntu-18.04, macos-10.15]
+    runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Setup Node.js ${{ matrix.node-version }}
+    - name: Setup Node.js 12 (LTS)
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 12.x
     - name: Install dependencies
       run: yarn install --frozen-lockfile
     - name: Build
