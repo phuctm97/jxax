@@ -1,7 +1,7 @@
 export function invert(json) {
-    var ret = {};
-    for (var key in json) {
-        ret[json[key]] = key;
-    }
-    return ret;
+  const ret = {};
+  Object.entries(json).forEach((k, v) => {
+    ret[v] = k;
+  });
+  return ret;
 }
