@@ -1,4 +1,4 @@
-name: Per-commit
+name: build
 
 on: [push]
 
