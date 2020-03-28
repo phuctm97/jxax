@@ -1,4 +1,4 @@
-name: Pull Request's CI
+name: Per-commit
 
 on: [push]
 
