@@ -7,14 +7,18 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-18.04, macos-10.15]
+    env:
+      node-version: 12.x
     runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Setup Node.js 12 (LTS)
+    - name: Setup Node.js ${{ env.node-version }}
       uses: actions/setup-node@v1
       with:
-        node-version: 12.x
+        node-version: ${{ env.node-version }}
+    - name: Get Yarn cache directory
+      run: echo "::set-output name=yarn-cache-dir::$(yarn cache dir)"
     - name: Install dependencies
       run: yarn install --frozen-lockfile
     - name: Build
