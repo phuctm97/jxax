@@ -9,6 +9,9 @@ on:
 jobs:
   lint:
     name: lint
+    env:
+      var-os: ubuntu-18.04
+      var-node: 12.x
     runs-on: ubuntu-18.04
     steps:
     - name: Checkout
