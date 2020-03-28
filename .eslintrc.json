@@ -7,8 +7,7 @@
     "extends": [
         "airbnb-base"
     ],
-    "globals": {
-    },
+    "globals": {},
     "parserOptions": {
         "ecmaVersion": 6,
         "sourceType": "module",
@@ -16,6 +15,10 @@
             "impliedStrict": true
         }
     },
+    "settings": {
+        "import/resolver": "webpack"
+    },
     "rules": {
+        "no-console": "off"
     }
 }
