@@ -7,7 +7,33 @@ on:
     branches: [master]
 
 jobs:
-  build-and-lint:
+  lint:
+    name: lint
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - id: find-yarn-cache-dir
+      name: Find Yarn cache directory
+      run: echo "::set-output name=result::$(yarn cache dir)"
+    - name: Cache Node.js modules
+      uses: actions/cache@v1
+      with:
+        path: ${{ steps.find-yarn-cache-dir.outputs.result }}
+        key: yarn-cache-dir-${{ runner.os }}-ubuntu-18.04-node-12.x-${{ hashFiles('yarn.lock') }}
+        restore-keys: |
+          yarn-cache-dir-${{ runner.os }}-ubuntu-18.04-node-12.x-
+          yarn-cache-dir-${{ runner.os }}-ubuntu-18.04-
+          yarn-cache-dir-${{ runner.os }}-
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+    - name: Lint
+      run: yarn lint
+  build:
     strategy:
       matrix:
         os: [ubuntu-18.04, macos-10.15]
