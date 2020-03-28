@@ -1,18 +1,20 @@
 {
     "env": {
-        "browser": true,
-        "es6": true
+        "es6": true,
+        "commonjs": true,
+        "applescript": true
     },
     "extends": [
         "airbnb-base"
     ],
     "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
     },
     "parserOptions": {
         "ecmaVersion": 6,
-        "sourceType": "module"
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "impliedStrict": true
+        }
     },
     "rules": {
     }

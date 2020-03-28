@@ -8,16 +8,18 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "lint": "eslint --ignore-path .gitignore ."
+  },
+  "dependencies": {
+    "ansi-colors": "^4.1.1"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-import-resolver-webpack": "^0.12.1",
     "eslint-plugin-import": "^2.20.1",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
-  },
-  "dependencies": {
-    "ansi-colors": "^4.1.1"
   }
 }
