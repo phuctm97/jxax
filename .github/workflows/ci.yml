@@ -8,18 +8,19 @@ on:
 
 jobs:
   lint:
+    strategy:
+      matrix:
+        os: ubuntu-18.04
+        node: 12.x
     name: lint
-    env:
-      var-os: ubuntu-18.04
-      var-node: 12.x
-    runs-on: ${{ env.var-os }}
+    runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Setup Node.js ${{ env.var-node }}
+    - name: Setup Node.js ${{ matrix.node }}
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ env.var-node }}
+        node-version: ${{ matrix.node }}
     - id: find-yarn-cache-dir
       name: Find Yarn cache directory
       run: echo "::set-output name=result::$(yarn cache dir)"
@@ -27,10 +28,10 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ${{ steps.find-yarn-cache-dir.outputs.result }}
-        key: yarn-cache-dir-${{ runner.os }}-${{ env.var-os }}-${{ env.var-node }}-${{ hashFiles('yarn.lock') }}
+        key: yarn-cache-dir-${{ runner.os }}-${{ matrix.os }}-node-${{ matrix.node }}-${{ hashFiles('yarn.lock') }}
         restore-keys: |
-          yarn-cache-dir-${{ runner.os }}-${{ env.var-os }}-${{ env.var-node }}-
-          yarn-cache-dir-${{ runner.os }}-${{ env.var-os }}-
+          yarn-cache-dir-${{ runner.os }}-${{ matrix.os }}-node-${{ matrix.node }}-
+          yarn-cache-dir-${{ runner.os }}-${{ matrix.os }}-
           yarn-cache-dir-${{ runner.os }}-
     - name: Install dependencies
       run: yarn install --frozen-lockfile
@@ -66,5 +67,3 @@ jobs:
       run: yarn install --frozen-lockfile
     - name: Build
       run: yarn build
-    - name: Lint
-      run: yarn lint
