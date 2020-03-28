@@ -1,7 +1,6 @@
 {
     "env": {
         "es6": true,
-        "commonjs": true,
         "applescript": true
     },
     "extends": [
@@ -22,5 +21,18 @@
         "no-console": "off",
         "import/prefer-default-export": "warn"
     },
-    "noInlineConfig": true
+    "noInlineConfig": true,
+    "overrides": [
+        {
+            "files": [ "webpack.config.js" ],
+            "env": {
+                "es6": false,
+                "applescript": false,
+                "commonjs": true
+            },
+            "rules": {
+                "import/no-extraneous-dependencies": "off"
+            }
+        }
+    ]
 }
