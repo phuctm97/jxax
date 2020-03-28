@@ -6,5 +6,7 @@
         "node_modules": true,
         "yarn.lock": true
     },
-    "javascript.validate.enable": false
+    "javascript.validate.enable": false,
+    "javascript.format.enable": false,
+    "eslint.format.enable": true
 }
