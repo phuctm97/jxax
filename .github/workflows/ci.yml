@@ -12,14 +12,14 @@ jobs:
     env:
       var-os: ubuntu-18.04
       var-node: 12.x
-    runs-on: ubuntu-18.04
+    runs-on: ${{ env.var-os }}
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Setup Node.js 12.x
+    - name: Setup Node.js ${{ env.var-node }}
       uses: actions/setup-node@v1
       with:
-        node-version: 12.x
+        node-version: ${{ env.var-node }}
     - id: find-yarn-cache-dir
       name: Find Yarn cache directory
       run: echo "::set-output name=result::$(yarn cache dir)"
@@ -27,10 +27,10 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ${{ steps.find-yarn-cache-dir.outputs.result }}
-        key: yarn-cache-dir-${{ runner.os }}-ubuntu-18.04-node-12.x-${{ hashFiles('yarn.lock') }}
+        key: yarn-cache-dir-${{ runner.os }}-${{ env.var-os }}-${{ env.var-node }}-${{ hashFiles('yarn.lock') }}
         restore-keys: |
-          yarn-cache-dir-${{ runner.os }}-ubuntu-18.04-node-12.x-
-          yarn-cache-dir-${{ runner.os }}-ubuntu-18.04-
+          yarn-cache-dir-${{ runner.os }}-${{ env.var-os }}-${{ env.var-node }}-
+          yarn-cache-dir-${{ runner.os }}-${{ env.var-os }}-
           yarn-cache-dir-${{ runner.os }}-
     - name: Install dependencies
       run: yarn install --frozen-lockfile
