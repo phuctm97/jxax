@@ -10,8 +10,8 @@ jobs:
   lint:
     strategy:
       matrix:
-        os: ubuntu-18.04
-        node: 12.x
+        os: [ubuntu-18.04]
+        node: [12.x]
     name: lint
     runs-on: ${{ matrix.os }}
     steps:
