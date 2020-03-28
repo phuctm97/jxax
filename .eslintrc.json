@@ -19,6 +19,8 @@
         "import/resolver": "webpack"
     },
     "rules": {
-        "no-console": "off"
-    }
+        "no-console": "off",
+        "import/prefer-default-export": "warn"
+    },
+    "noInlineConfig": true
 }

@@ -1,9 +1,9 @@
 const $ = Application('System Events');
 
-const applicationProcesses = $.applicationProcesses;
-const processes = $.processes;
+const { applicationProcesses } = $;
+const { processes } = $;
 
 export {
-    applicationProcesses,
-    processes
-}
+  applicationProcesses,
+  processes,
+};

@@ -4,5 +4,5 @@ app.strictCommandScope = true;
 app.strictParameterType = true;
 
 export {
-    app
-}
+  app,
+};
