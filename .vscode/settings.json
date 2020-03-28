@@ -5,5 +5,6 @@
     "files.exclude": {
         "node_modules": true,
         "yarn.lock": true
-    }
+    },
+    "javascript.validate.enable": false
 }
