@@ -17,8 +17,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ env.node-version }}
-    - name: Get Yarn cache directory
-      run: echo "::set-output name=yarn-cache-dir::$(yarn cache dir)"
+    - id: find-yarn-cache-dir
+      name: Find Yarn cache directory
+      run: echo "::set-output name=result::$(yarn cache dir)"
+    - name: Cache Node.js modules
+      run: echo "${{ steps.find-yarn-cache-dir.outputs.result }}"
     - name: Install dependencies
       run: yarn install --frozen-lockfile
     - name: Build
