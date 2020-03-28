@@ -1,3 +1,15 @@
+### .eslintignore.
+
+## Re-include all hidden files.
+!.*
+
+## General template.
+LICENSE
+
+## Node template.
+package-lock.json
+yarn.lock
+
 ### .gitignore.
 
 ## Node template.
@@ -124,15 +136,3 @@ dist
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
-
-### .eslintignore.
-
-## Re-include all hidden files.
-!.*
-
-## General template.
-LICENSE
-
-## Node template.
-package-lock.json
-yarn.lock

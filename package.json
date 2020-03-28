@@ -1,15 +1,15 @@
 {
   "name": "jxax",
   "version": "0.0.0",
-  "description": "JavaScript for Automation (JXA) extensions kit provide tools for automating macOS Desktop setup, configuring preferences, personalization, etc, over command-line interface (CLI).",
-  "main": "dist/index.js",
-  "repository": "https://github.com/deskp/jxax",
-  "author": "DeskP Authors",
-  "license": "MIT",
   "private": false,
+  "description": "JavaScript for Automation (JXA) extensions kit provide tools for automating macOS Desktop setup, configuring preferences, personalization, etc, over command-line interface (CLI).",
+  "repository": "https://github.com/deskp/jxax",
+  "license": "MIT",
+  "author": "DeskP Authors",
+  "main": "dist/index.js",
   "scripts": {
     "build": "webpack --mode production",
-    "lint": "eslint ."
+    "lint": "eslint --ext .js,.json ."
   },
   "dependencies": {
     "ansi-colors": "^4.1.1"
@@ -19,6 +19,7 @@
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-import-resolver-webpack": "^0.12.1",
     "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-json-format": "^2.0.1",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
   }

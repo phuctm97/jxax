@@ -1,12 +1,35 @@
 {
-    "files.trimTrailingWhitespace": true,
-    "files.trimFinalNewlines": true,
-    "files.insertFinalNewline": true,
-    "files.exclude": {
-        "node_modules": true,
-        "yarn.lock": true
-    },
-    "javascript.validate.enable": false,
-    "javascript.format.enable": false,
-    "eslint.format.enable": true
+  "files.trimTrailingWhitespace": true,
+  "files.trimFinalNewlines": true,
+  "files.insertFinalNewline": true,
+  "files.exclude": {
+    "node_modules": true,
+    "yarn.lock": true
+  },
+  "javascript.validate.enable": false,
+  "javascript.format.enable": false,
+  "typescript.validate.enable": false,
+  "typescript.format.enable": false,
+  "json.format.enable": false,
+  "eslint.format.enable": true,
+  "eslint.validate": [
+    "javascript",
+    "json",
+    "jsonc"
+  ],
+  "eslint.options": {
+    "extensions": [
+      ".js",
+      ".json"
+    ]
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  }
 }
