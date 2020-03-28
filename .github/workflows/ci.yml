@@ -12,7 +12,7 @@ jobs:
       matrix:
         os: [ubuntu-18.04]
         node: [12.x]
-    name: lint
+    name: lint (${{ matrix.os }}, node-${{ matrix.node }})
     runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout
