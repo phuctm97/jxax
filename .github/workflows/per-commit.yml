@@ -7,21 +7,27 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-18.04, macos-10.15]
-    env:
-      node-version: 12.x
+        node: [10.x, 12.x]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Setup Node.js ${{ env.node-version }}
+    - name: Setup Node.js ${{ matrix.node }}
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ env.node-version }}
+        node-version: ${{ matrix.node }}
     - id: find-yarn-cache-dir
       name: Find Yarn cache directory
       run: echo "::set-output name=result::$(yarn cache dir)"
     - name: Cache Node.js modules
-      run: echo "${{ steps.find-yarn-cache-dir.outputs.result }}"
+      uses: actions/cache@v1
+      with:
+        path: ${{ steps.find-yarn-cache-dir.outputs.result }}
+        key: yarn-cache-dir-${{ runner.os }}-${{ matrix.os }}-node-${{ matrix.node }}-${{ hashFiles('yarn.lock') }}
+        restore-keys: |
+          yarn-cache-dir-${{ runner.os }}-${{ matrix.os }}-node-${{ matrix.node }}-
+          yarn-cache-dir-${{ runner.os }}-${{ matrix.os }}-
+          yarn-cache-dir-${{ runner.os }}-
     - name: Install dependencies
       run: yarn install --frozen-lockfile
     - name: Build
