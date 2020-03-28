@@ -67,7 +67,8 @@ jobs:
       run: yarn install --frozen-lockfile
     - name: Build
       run: yarn build
-    - name: Upload distribution bundle
+    - if: matrix.os == 'macos-10.15' && matrix.node == '10.x'
+      name: Upload distribution bundle
       uses: actions/upload-artifact@v1
       with:
         name: dist
