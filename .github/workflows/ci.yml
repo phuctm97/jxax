@@ -1,71 +1,38 @@
 name: ci
 
-on:
-  push:
-    branches: [master]
-  pull_request:
-    branches: [master]
+on: [push, pull_request]
 
 jobs:
-  lint:
-    name: lint
+  lint-build:
+    name: lint,build
     runs-on: ubuntu-18.04
     env:
-      node: 12.x
+      node-version: 12.x
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup Node.js ${{ env.node }}
+      - name: Setup Node.js ${{ env.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ env.node }}
+          node-version: ${{ env.node-version }}
       - id: find-yarn-cache-dir
         name: Find Yarn cache directory
-        run: echo "::set-output name=result::$(yarn cache dir)"
+        run: echo "::set-output name=path::$(yarn cache dir)"
       - name: Cache Node.js modules
         uses: actions/cache@v1
         with:
-          path: ${{ steps.find-yarn-cache-dir.outputs.result }}
-          key: yarn-cache-dir-${{ runner.os }}-node-${{ env.node }}-${{ hashFiles('yarn.lock') }}
+          path: ${{ steps.find-yarn-cache-dir.outputs.path }}
+          key: yarn-cache-dir-${{ runner.os }}-node-${{ env.node-version }}-${{ hashFiles('yarn.lock') }}
           restore-keys: |
-            yarn-cache-dir-${{ runner.os }}-node-${{ env.node }}-
+            yarn-cache-dir-${{ runner.os }}-node-${{ env.node-version }}-
             yarn-cache-dir-${{ runner.os }}-
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Lint
         run: yarn lint
-
-  build:
-    strategy:
-      matrix:
-        os: [ubuntu-18.04, macos-10.15]
-        node: [10.x, 12.x]
-    name: build (${{ matrix.os }}, node-${{ matrix.node }})
-    runs-on: ${{ matrix.os }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node }}
-      - id: find-yarn-cache-dir
-        name: Find Yarn cache directory
-        run: echo "::set-output name=result::$(yarn cache dir)"
-      - name: Cache Node.js modules
-        uses: actions/cache@v1
-        with:
-          path: ${{ steps.find-yarn-cache-dir.outputs.result }}
-          key: yarn-cache-dir-${{ runner.os }}-node-${{ matrix.node }}-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            yarn-cache-dir-${{ runner.os }}-node-${{ matrix.node }}-
-            yarn-cache-dir-${{ runner.os }}-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
       - name: Build
         run: yarn build
-      - if: matrix.os == 'macos-10.15' && matrix.node == '12.x'
-        name: Upload distribution bundle
+      - name: Upload distribution bundle
         uses: actions/upload-artifact@v1
         with:
           name: dist-0.git${{ github.sha }}
