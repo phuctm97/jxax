@@ -1,11 +1,8 @@
-import { app } from 'jxax/core/standardAdditions';
+import 'jxax/core/addtions/include';
+import app from 'jxax/core';
 
 export function chooseFile(...args) {
   return app.chooseFile(...args);
-}
-
-export function delay(...args) {
-  app.delay(...args);
 }
 
 export function displayAlert(...args) {
