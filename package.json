@@ -6,7 +6,7 @@
   "repository": "github:deskp/jxax",
   "license": "MIT",
   "author": "DeskP Authors",
-  "main": "dist/index.js",
+  "main": "dist/main.js",
   "scripts": {
     "build": "yarn build:prod",
     "build:prod": "webpack",
@@ -18,6 +18,10 @@
     "lodash": "^4.17.15"
   },
   "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-import-resolver-node": "^0.3.3",
