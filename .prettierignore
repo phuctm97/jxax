@@ -1,7 +1,7 @@
-### .eslintignore.
+### .prettierignore.
 
-## Re-include all hidden files.
-!.*
+## All .js files.
+**/*.js
 
 ## General template.
 LICENSE

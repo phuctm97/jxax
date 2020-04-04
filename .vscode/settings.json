@@ -4,7 +4,8 @@
   "files.insertFinalNewline": true,
   "files.exclude": {
     "node_modules": true,
-    "yarn.lock": true
+    "yarn.lock": true,
+    "dist": true
   },
   "javascript.validate.enable": false,
   "javascript.format.enable": false,
@@ -12,27 +13,11 @@
   "typescript.format.enable": false,
   "json.format.enable": false,
   "eslint.format.enable": true,
-  "eslint.validate": [
-    "javascript",
-    "json",
-    "jsonc"
-  ],
-  "eslint.options": {
-    "extensions": [
-      ".js",
-      ".json"
-    ]
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  },
-  "[json]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  },
-  "[jsonc]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  },
-  "[yaml]": {
-    "editor.tabSize": 2
-  }
+  "eslint.validate": ["javascript"],
+  "eslint.options": { "extensions": [".js"] },
+  "[javascript]": { "editor.defaultFormatter": "dbaeumer.vscode-eslint" },
+  "[json]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[jsonc]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[yaml]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[markdown]": { "editor.defaultFormatter": "esbenp.prettier-vscode" }
 }

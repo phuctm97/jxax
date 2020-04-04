@@ -10,4 +10,5 @@ module.exports = {
       jxax: path.resolve(__dirname, 'src'),
     },
   },
+  devtool: 'source-map',
 };

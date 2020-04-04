@@ -5,14 +5,7 @@
       "label": "yarn: build --watch",
       "type": "shell",
       "command": "yarn build --watch",
-      "args": [],
       "problemMatcher": [],
-      "presentation": {
-        "reveal": "silent",
-        "panel": "dedicated",
-        "clear": true,
-        "showReuseMessage": false
-      },
       "group": "build",
       "isBackground": true
     }

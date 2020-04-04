@@ -1,45 +1,19 @@
 {
-  "plugins": [
-    "import",
-    "json-format"
-  ],
   "env": {
-    "es6": true,
-    "applescript": true
+    "es2020": true
   },
-  "globals": {},
   "parserOptions": {
-    "ecmaVersion": 6,
     "sourceType": "module",
     "ecmaFeatures": {
       "impliedStrict": true
     }
   },
-  "extends": [
-    "airbnb-base"
-  ],
+  "extends": ["airbnb-base"],
   "rules": {
-    "no-console": "off",
-    "import/prefer-default-export": "warn"
+    "no-console": "off"
   },
   "noInlineConfig": true,
   "settings": {
-    "import/resolver": "webpack",
-    "json/json-with-comments-files": []
-  },
-  "overrides": [
-    {
-      "files": [
-        "webpack.config.js"
-      ],
-      "env": {
-        "es6": false,
-        "applescript": false,
-        "commonjs": true
-      },
-      "rules": {
-        "import/no-extraneous-dependencies": "off"
-      }
-    }
-  ]
+    "import/resolver": ["node", "webpack"]
+  }
 }

@@ -13,27 +13,27 @@ jobs:
     env:
       node: 12.x
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Setup Node.js ${{ env.node }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ env.node }}
-    - id: find-yarn-cache-dir
-      name: Find Yarn cache directory
-      run: echo "::set-output name=result::$(yarn cache dir)"
-    - name: Cache Node.js modules
-      uses: actions/cache@v1
-      with:
-        path: ${{ steps.find-yarn-cache-dir.outputs.result }}
-        key: yarn-cache-dir-${{ runner.os }}-node-${{ env.node }}-${{ hashFiles('yarn.lock') }}
-        restore-keys: |
-          yarn-cache-dir-${{ runner.os }}-node-${{ env.node }}-
-          yarn-cache-dir-${{ runner.os }}-
-    - name: Install dependencies
-      run: yarn install --frozen-lockfile
-    - name: Lint
-      run: yarn lint
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node.js ${{ env.node }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.node }}
+      - id: find-yarn-cache-dir
+        name: Find Yarn cache directory
+        run: echo "::set-output name=result::$(yarn cache dir)"
+      - name: Cache Node.js modules
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.find-yarn-cache-dir.outputs.result }}
+          key: yarn-cache-dir-${{ runner.os }}-node-${{ env.node }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            yarn-cache-dir-${{ runner.os }}-node-${{ env.node }}-
+            yarn-cache-dir-${{ runner.os }}-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Lint
+        run: yarn lint
 
   build:
     strategy:
@@ -43,30 +43,30 @@ jobs:
     name: build (${{ matrix.os }}, node-${{ matrix.node }})
     runs-on: ${{ matrix.os }}
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Setup Node.js ${{ matrix.node }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node }}
-    - id: find-yarn-cache-dir
-      name: Find Yarn cache directory
-      run: echo "::set-output name=result::$(yarn cache dir)"
-    - name: Cache Node.js modules
-      uses: actions/cache@v1
-      with:
-        path: ${{ steps.find-yarn-cache-dir.outputs.result }}
-        key: yarn-cache-dir-${{ runner.os }}-node-${{ matrix.node }}-${{ hashFiles('yarn.lock') }}
-        restore-keys: |
-          yarn-cache-dir-${{ runner.os }}-node-${{ matrix.node }}-
-          yarn-cache-dir-${{ runner.os }}-
-    - name: Install dependencies
-      run: yarn install --frozen-lockfile
-    - name: Build
-      run: yarn build
-    - if: matrix.os == 'macos-10.15' && matrix.node == '12.x'
-      name: Upload distribution bundle
-      uses: actions/upload-artifact@v1
-      with:
-        name: dist-0.git${{ github.sha }}
-        path: dist
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - id: find-yarn-cache-dir
+        name: Find Yarn cache directory
+        run: echo "::set-output name=result::$(yarn cache dir)"
+      - name: Cache Node.js modules
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.find-yarn-cache-dir.outputs.result }}
+          key: yarn-cache-dir-${{ runner.os }}-node-${{ matrix.node }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            yarn-cache-dir-${{ runner.os }}-node-${{ matrix.node }}-
+            yarn-cache-dir-${{ runner.os }}-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build
+        run: yarn build
+      - if: matrix.os == 'macos-10.15' && matrix.node == '12.x'
+        name: Upload distribution bundle
+        uses: actions/upload-artifact@v1
+        with:
+          name: dist-0.git${{ github.sha }}
+          path: dist
