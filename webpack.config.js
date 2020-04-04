@@ -5,15 +5,16 @@ function isDev(env) {
 }
 
 module.exports = (env) => ({
-  mode: 'production',
-  output: {
-    filename: 'index.js',
-    path: path.resolve(__dirname, 'dist'),
-  },
+  mode: isDev(env) ? 'development' : 'production',
   resolve: {
     alias: {
       jxax: path.resolve(__dirname, 'src'),
     },
+  },
+  module: {
+    rules: [
+      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
+    ],
   },
   devtool: isDev(env) ? 'source-map' : false,
 });
