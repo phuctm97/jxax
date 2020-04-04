@@ -1,7 +1,6 @@
-const $ = Application('System Events');
+import { useApp } from 'jxax/core';
 
-const { applicationProcesses } = $;
-const { processes } = $;
+const { applicationProcesses, processes } = useApp('System Events');
 
 export {
   applicationProcesses,
