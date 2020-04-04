@@ -3,10 +3,8 @@ app.strictPropertyScope = true;
 app.strictCommandScope = true;
 app.strictParameterType = true;
 
-export {
-  app,
-};
+export default app;
 
-export function another() {
-  throw new Error('Not implemented');
+export function useApp(appName) {
+  return Application(appName);
 }

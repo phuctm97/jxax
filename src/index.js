@@ -1,6 +1,6 @@
-import colors from 'ansi-colors';
-import getConfig from 'jxax/config';
+import getConfig from 'jxax/getConfig';
 import systemPreferences from 'jxax/systemPreferences';
+import colors from 'ansi-colors';
 
 function run() {
 // Read config.
