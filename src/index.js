@@ -1,5 +1,5 @@
 import getConfig from 'jxax/getConfig';
-import systemPreferences from 'jxax/systemPreferences';
+import systemPreferences from 'jxax/apps/systemPreferences';
 import colors from 'ansi-colors';
 
 function run() {
