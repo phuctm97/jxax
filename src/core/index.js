@@ -6,3 +6,7 @@ app.strictParameterType = true;
 export {
   app,
 };
+
+export function another() {
+  throw new Error('Not implemented');
+}

@@ -5,3 +5,7 @@ export function invert(json) {
   });
   return ret;
 }
+
+export function another() {
+  throw new Error('Not implemented');
+}
