@@ -8,7 +8,9 @@
   "author": "DeskP Authors",
   "main": "dist/index.js",
   "scripts": {
-    "build": "webpack --env dev",
+    "build": "yarn build:prod",
+    "build:prod": "webpack",
+    "build:dev": "webpack --env dev",
     "lint": "eslint --ext .js . && prettier --check ."
   },
   "dependencies": {
