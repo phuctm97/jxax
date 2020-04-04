@@ -1,6 +1,11 @@
 const path = require('path');
 
-module.exports = {
+function isDev(env) {
+  return env && (env === 'dev' || env.dev);
+}
+
+module.exports = (env) => ({
+  mode: 'production',
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, 'dist'),
@@ -10,5 +15,5 @@ module.exports = {
       jxax: path.resolve(__dirname, 'src'),
     },
   },
-  devtool: 'source-map',
-};
+  devtool: isDev(env) ? 'source-map' : false,
+});

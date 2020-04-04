@@ -8,8 +8,8 @@
   "author": "DeskP Authors",
   "main": "dist/index.js",
   "scripts": {
-    "build": "webpack --mode production",
-    "lint": "eslint --ext .js,.json ."
+    "build": "webpack --env dev",
+    "lint": "eslint --ext .js . && prettier --check ."
   },
   "dependencies": {
     "ansi-colors": "^4.1.1"
