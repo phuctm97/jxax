@@ -1,5 +1,5 @@
-import { invert } from 'jxax/utils/obj';
-import { capitalize } from 'jxax/utils/string';
+import { invert } from 'lodash/fp/object';
+import { capitalize } from 'lodash/fp/string';
 import { applicationProcesses } from 'jxax/core/processes';
 
 const $ = Application('System Preferences');
