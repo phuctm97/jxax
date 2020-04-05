@@ -1,9 +1,8 @@
-import { useApp } from 'jxax/core';
+import { accessApp } from 'jxax/core';
 import { applicationProcesses } from 'jxax/core/processes';
-import { invert } from 'lodash/fp/object';
-import { capitalize } from 'lodash/fp/string';
+import { invert, capitalize } from 'lodash';
 
-const $ = useApp('System Preferences');
+const $ = accessApp('System Preferences');
 const p = applicationProcesses[$.name()];
 const w = p.windows[0];
 

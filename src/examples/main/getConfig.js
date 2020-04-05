@@ -1,5 +1,4 @@
-import { chooseFile } from 'jxax/core/addtions/userInterations';
-import readFile from 'jxax/core/addtions/readFile';
+import { readFile, chooseFile } from 'jxax/core/addtions';
 
 export default function getConfig() {
   const jsonFile = chooseFile({
