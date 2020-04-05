@@ -90,6 +90,15 @@ export default class MockedScriptingModel {
   }
 
   /**
+   * Return a comment describing full-qualified version of provided statement.
+   * @param {String} stmt Original statement
+   */
+  getStatementComment(stmt) {
+    const fullStmt = this.getFullExpr(stmt);
+    return fullStmt !== stmt ? `// ${fullStmt}\n` : '';
+  }
+
+  /**
    * Create a dynamic object whose properties are dynamic objects (callable).
    * If opts.callable is true, created dynamic object is callable and returns a dynamic object.
    * opts.symbol is used as internal reference identifer.
@@ -108,8 +117,6 @@ export default class MockedScriptingModel {
             switch (hint) {
               case 'number':
                 return 0;
-              case 'string':
-                return '';
               default:
                 return symbol;
             }
@@ -166,7 +173,7 @@ export default class MockedScriptingModel {
 
     // Put ref and track statement.
     this.addRef(resSym, resExpr, res, applyStmt);
-    this.stmts.push(`var ${resExpr} = ${applyStmt};`);
+    this.stmts.push(`var ${resExpr} = ${applyStmt}; ${this.getStatementComment(applyStmt)}`);
 
     return res;
   }
@@ -180,7 +187,9 @@ export default class MockedScriptingModel {
   trapSet(objExpr, prop, val) {
     const propExpr = this.getPropExpr(prop);
     const valExpr = this.getValueExpr(val);
-    this.stmts.push(`${objExpr}${propExpr} = ${valExpr};`);
+
+    const stmt = `${objExpr}${propExpr} = ${valExpr};`;
+    this.stmts.push(`${stmt} ${this.getStatementComment(stmt)}`);
     return true;
   }
 
@@ -188,6 +197,6 @@ export default class MockedScriptingModel {
    * Export execution statements.
    */
   toString() {
-    return this.stmts.join('\n');
+    return this.stmts.join('\n\n');
   }
 }
