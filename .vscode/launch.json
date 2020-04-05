@@ -5,7 +5,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch",
-      "program": "${workspaceFolder}/dist/main.js"
+      "program": "${workspaceFolder}/dist/main.node.js"
     }
   ]
 }

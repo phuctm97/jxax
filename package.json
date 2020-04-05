@@ -1,16 +1,16 @@
 {
   "name": "jxax",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": false,
   "description": "JavaScript for Automation (JXA) extensions kit provide tools for automating macOS Desktop setup, configuring preferences, personalization, etc, over command-line interface (CLI).",
   "repository": "github:deskp/jxax",
   "license": "MIT",
   "author": "DeskP Authors",
-  "main": "dist/main.js",
+  "main": "dist/main.osa.js",
   "scripts": {
     "build": "yarn build:prod",
     "build:prod": "webpack",
-    "build:dev": "webpack --env dev",
+    "build:dev": "webpack --env.dev --env.osa --env.node",
     "lint": "eslint --ext .js . && prettier --check ."
   },
   "dependencies": {
