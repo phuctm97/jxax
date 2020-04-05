@@ -1,6 +1,6 @@
-import { useApp } from 'jxax/core';
+import { accessApp } from 'jxax/core';
 
-const { applicationProcesses, processes } = useApp('System Events');
+const { applicationProcesses, processes } = accessApp('System Events');
 
 export {
   applicationProcesses,
