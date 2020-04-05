@@ -69,8 +69,16 @@ export default class MockedScriptingModel {
    * @param {any} val Value
    */
   getValueExpr(val) {
-    const ref = this.ref(val);
-    return ref ? ref.name : JSON.stringify(val);
+    const toPrimitive = val[Symbol.toPrimitive];
+    if (typeof toPrimitive === 'function') {
+      const prim = toPrimitive();
+      if (typeof prim === 'symbol') {
+        const ref = this.ref(prim);
+        if (ref) return ref.name;
+      }
+    }
+    // TODO: replace with get object expression, to replace obj referencing to value.
+    return JSON.stringify(val);
   }
 
   /**
@@ -121,6 +129,10 @@ export default class MockedScriptingModel {
                 return symbol;
             }
           };
+        }
+        if (prop === 'toJSON') {
+          // Trap JSON.stringify().
+          return undefined;
         }
 
         // All props are callable by default.
