@@ -11,9 +11,7 @@ if (process.env.TARGET_ENV === 'node') {
   });
 }
 
-const fn = require('jxax/examples/main').default;
-
-fn();
+require('jxax/examples/uiAutomation');
 
 if (devtool) {
   console.log(colors.bold.whiteBright('⛓Scripting model execution:'));
