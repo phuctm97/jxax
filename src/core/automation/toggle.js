@@ -1,3 +1,11 @@
+/**
+ * Select a toggle element for getting and setting its value.
+ *
+ * @param {object} parent The toggle's parent object specifier.
+ * @param {string[]} choices The toggle's choices.
+ * @returns {{get: () => string; set: (val: string) => void}} A getter and a setter for the
+ * toggle's value.
+ */
 export default function toggle(parent, choices) {
   const q = (opts) => parent.checkboxes.whose({
     subrole: 'AXToggle',
