@@ -1,7 +1,7 @@
 /**
- * Enable OSA standard scripting additions.
+ * Include the module to enable standard scripting additions.
  */
 
-import app from 'jxax/core';
+import app from 'jxax/core/app';
 
 app.includeStandardAdditions = true;

@@ -1,9 +1,9 @@
-import { accessApp } from 'jxax/core';
-import { applicationProcesses } from 'jxax/core/processes';
+import { access } from 'jxax/core/app';
+import { accessApplicationProcess } from 'jxax/core/processes';
 import { invert, capitalize } from 'lodash';
 
-const $ = accessApp('System Preferences');
-const p = applicationProcesses[$.name()];
+const $ = access('System Preferences');
+const p = accessApplicationProcess($.name());
 const w = p.windows[0];
 
 const showScrollBarsValueMap = {

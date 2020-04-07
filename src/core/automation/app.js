@@ -1,16 +1,23 @@
 import { isString, isObject } from 'lodash';
 import { nameOf } from 'jxax/util';
-import { accessApp } from 'jxax/core';
+import { access } from 'jxax/core/app';
 import { accessApplicationProcess } from 'jxax/core/processes';
 
+/**
+ * Create an application workflow builder.
+ *
+ * @param {string} app The application's name.
+ * @returns {() => () => any} A workflow builder for building workflow within the
+ * scope of the application.
+ */
 export default function createAppWorkflowBuilder(app) {
   let accessibleApp;
-  if (isString(app)) accessibleApp = accessApp(app);
+  if (isString(app)) accessibleApp = access(app);
   else if (isObject(app)) accessibleApp = app;
   else throw new Error(`${nameOf({ app })} must be a string or an object.`);
 
   return (workflow) => (...args) => {
-    // activation.
+    // Activation.
     const name = accessibleApp.name();
     accessibleApp.activate();
 
@@ -20,10 +27,10 @@ export default function createAppWorkflowBuilder(app) {
       process: accessApplicationProcess(name),
     };
 
-    // run.
+    // Run.
     const result = workflow(context, ...args);
 
-    // deactivation.
+    // Deactivation.
     accessibleApp.quit();
 
     return result;
