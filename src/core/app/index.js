@@ -24,5 +24,5 @@ export function access(url) {
  * @param {number} secs The number of seconds to delay.
  */
 export function delay(secs) {
-  app.delay(secs);
+  global.delay(secs);
 }
