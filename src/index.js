@@ -1,1 +1,1 @@
-import 'jxax/examples/uiAutomation';
+console.log('Hello World');

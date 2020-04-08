@@ -5,7 +5,7 @@ import { nameOf } from 'jxax/util';
 import { delay } from 'jxax/core/app';
 import {
   MIN_ATTEMPTS, MAX_ATTEMPTS, MIN_DELAY, MAX_DELAY,
-} from 'jxax/core/workflow/options';
+} from 'jxax/archived/workflow/options';
 
 export default class WorkflowBuilder {
   constructor() {
