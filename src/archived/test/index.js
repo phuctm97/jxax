@@ -1,5 +1,5 @@
-import getConfig from 'jxax/examples/main/getConfig';
-import systemPreferences from 'jxax/apps/systemPreferences';
+import getConfig from 'jxax/archived/test/getConfig';
+import systemPreferences from 'jxax/archived/systemPreferences';
 import colors from 'ansi-colors';
 
 export default function run() {
