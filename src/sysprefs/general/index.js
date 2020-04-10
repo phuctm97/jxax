@@ -9,7 +9,7 @@ import {
 } from '@core/uiAutomation';
 import runInSystemPrefs from '@sysprefs/app';
 import {
-  validateOpts, Appearances, AccentColors, ClickScrollBarActions, ShowScrollBarsTriggers,
+  validateSettings, Appearances, AccentColors, ClickScrollBarActions, ShowScrollBarsTriggers,
 } from '@sysprefs/general/options';
 
 export * from '@sysprefs/general/options';
@@ -42,12 +42,35 @@ const clickScrollBarActionsMap = {
   [ClickScrollBarActions.JUMP_TO_NEXT_PAGE]: ScrollBarActions.JUMP_TO_NEXT_PAGE,
 };
 
-export function applySysPrefsGeneral(settings) {
+/**
+ * @type {import('@sysprefs/options').HighlightColors}
+ * @type {import('@sysprefs/options').SidebarIconSizes}
+ */
+
+/**
+ * Apply System Preferences/General settings.
+ *
+ * @param {object} settings The settings object to apply.
+ * @param {Appearances} settings.appearance
+ * @param {AccentColors} settings.accentColor
+ * @param {HighlightColors} settings.highlightColor
+ * @param {SidebarIconSizes} settings.sidebarIconSize
+ * @param {boolean} settings.autoHideMenuBar
+ * @param {ShowScrollBarsTriggers} settings.showScrollBars
+ * @param {ClickScrollBarActions} settings.clickScrollBar
+ * @param {string} settings.defaultWebBrowser
+ * @param {boolean} settings.askWhenClosingDocuments
+ * @param {boolean} settings.closeWindowsWhenQuittingApp
+ * @param {number} settings.recentItems
+ * @param {boolean} settings.allowHandoff
+ * @param {boolean} settings.useFontSmoothing
+ */
+export function applySysPrefsGeneralSettings(settings) {
   if (isDevelopment()) {
     if (!isObject(settings)) throw new Error(`${nameOf({ settings })} must be an object.`);
   }
 
-  const errs = validateOpts(settings);
+  const errs = validateSettings(settings);
   if (!isNil(errs)) {
     throw new Error(JSON.stringify(errs, null, 2));
   }

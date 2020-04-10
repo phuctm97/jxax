@@ -1,5 +1,5 @@
 import {
-  applySysPrefsGeneral,
+  applySysPrefsGeneralSettings,
   Appearances, AccentColors, ClickScrollBarActions,
   HighlightColors, SidebarIconSizes, ShowScrollBarsTriggers,
 } from '@sysprefs/general';
@@ -21,5 +21,5 @@ scpt.run = () => {
     useFontSmoothing: true,
   };
 
-  applySysPrefsGeneral(settings);
+  applySysPrefsGeneralSettings(settings);
 };
