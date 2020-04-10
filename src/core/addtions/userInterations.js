@@ -2,8 +2,8 @@
  * User Interaction suite provides basic commands for interacting with the user.
  */
 
-import 'jxax/core/addtions/include';
-import app from 'jxax/core/app';
+import app from '@core/app';
+import '@core/addtions/include';
 
 /**
  * @type {import('jxax/core/app/types').path}

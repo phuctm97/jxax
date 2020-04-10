@@ -2,8 +2,8 @@
  * File Read/Write suite provides commands for reading and writing information in a file.
  */
 
-import 'jxax/core/addtions/include';
-import app from 'jxax/core/app';
+import app from '@core/app';
+import '@core/addtions/include';
 
 /**
  * @type {import('jxax/core/app/types').path}

@@ -2,7 +2,7 @@ import {
   applySysPrefsGeneral,
   Appearances, AccentColors, ClickScrollBarActions,
   HighlightColors, SidebarIconSizes, ShowScrollBarsTriggers,
-} from 'jxax/sysprefs/general';
+} from '@sysprefs/general';
 
 function run() {
   const settings = {
