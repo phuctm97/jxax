@@ -2,12 +2,12 @@ import {
   isObject, isUndefined, isNil, capitalize,
 } from 'lodash';
 import { isDevelopment, nameOf } from 'jxax/util';
-import retry from 'jxax/core/util/retry';
+import { retry } from 'jxax/core/app';
+import appearancePreferencesObject, { ScrollBarActions } from 'jxax/core/appearance';
 import selectToggle from 'jxax/core/uiAutomation/toggle';
 import selectPopUpButton from 'jxax/core/uiAutomation/popUpButton';
 import selectRadio from 'jxax/core/uiAutomation/radio';
 import selectCheckbox from 'jxax/core/uiAutomation/checkbox';
-import appearancePreferencesObject, { ScrollBarActions } from 'jxax/core/appearance';
 import runInSystemPrefs from 'jxax/sysprefs/app';
 import {
   validateOpts, Appearances, AccentColors, ClickScrollBarActions, ShowScrollBarsTriggers,

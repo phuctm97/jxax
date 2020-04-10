@@ -1,8 +1,8 @@
 import {
   isBoolean, isString, isArray, isSafeInteger, includes, every,
 } from 'lodash';
-import { access } from 'jxax/core/app';
 import { nameOf } from 'jxax/util';
+import { access } from 'jxax/core/app';
 import {
   Appearances, FontSmoothingStyles, HighlightColors, ScrollBarActions,
 } from 'jxax/core/appearance/options';
@@ -13,7 +13,7 @@ export * from 'jxax/core/appearance/options';
 const { appearancePreferences } = access('System Events');
 
 /**
- * @typedef {import('jxax/core/appearance/types').Color}
+ * @type {import('jxax/core/app/types').Color}
  */
 
 /**
@@ -33,6 +33,7 @@ const appearancePreferencesObject = {
     }
     appearancePreferences.appearance = val;
   },
+
   /**
    * Is font smoothing on?
    * @type {boolean}
@@ -44,6 +45,7 @@ const appearancePreferencesObject = {
     if (!isBoolean(val)) throw new Error(`${nameOf({ val })} must be a boolean.`);
     appearancePreferences.fontSmoothing = val;
   },
+
   /**
    * The method used for smoothing fonts.
    * @type {FontSmoothingStyles}
@@ -57,6 +59,7 @@ const appearancePreferencesObject = {
     }
     appearancePreferences.fontSmoothingStyle = val;
   },
+
   /**
    * Color used for hightlighting selected text and lists.
    * @type {(HighlightColors|Color)}
@@ -71,13 +74,14 @@ const appearancePreferencesObject = {
       }
     } else if (isArray(val)) {
       if (val.length !== 3 || !every(val, isSafeInteger)) {
-        throw new Error(`${nameOf({ val })} must be an array of three integer.`);
+        throw new Error(`${nameOf({ val })} must be an array of three integers.`);
       }
     } else {
-      throw new Error(`${nameOf({ val })} must be either a string or an array of three integer.`);
+      throw new Error(`${nameOf({ val })} must be either a string or an array of three integers.`);
     }
     appearancePreferences.highlightColor = val;
   },
+
   /**
    * The number of recent applications to track.
    * @type {number}
@@ -89,6 +93,7 @@ const appearancePreferencesObject = {
     if (!isSafeInteger(val)) throw new Error(`${nameOf({ val })} must be an integer.`);
     appearancePreferences.recentApplicationsLimit = val;
   },
+
   /**
    * The number of recent documents to track.
    * @type {number}
@@ -100,6 +105,7 @@ const appearancePreferencesObject = {
     if (!isSafeInteger(val)) throw new Error(`${nameOf({ val })} must be an integer.`);
     appearancePreferences.recentDocumentsLimit = val;
   },
+
   /**
    * The number of recent servers to track.
    * @type {number}
@@ -111,6 +117,7 @@ const appearancePreferencesObject = {
     if (!isSafeInteger(val)) throw new Error(`${nameOf({ val })} must be an integer.`);
     appearancePreferences.recentServersLimit = val;
   },
+
   /**
    * The action performed by clicking the scroll bar.
    * @type {ScrollBarActions}
@@ -124,6 +131,7 @@ const appearancePreferencesObject = {
     }
     appearancePreferences.scrollBarAction = val;
   },
+
   /**
    * Is smooth scrolling used?
    * @type {boolean}
@@ -135,6 +143,7 @@ const appearancePreferencesObject = {
     if (!isBoolean(val)) throw new Error(`${nameOf({ val })} must be a boolean.`);
     appearancePreferences.smoothScrolling = val;
   },
+
   /**
    * Use dark menu bar and dock.
    * @type {boolean}

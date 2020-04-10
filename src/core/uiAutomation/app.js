@@ -1,14 +1,15 @@
 import {
-  isFunction, isString, isSafeInteger, isUndefined, isNil,
+  isFunction, isString, isSafeInteger, isNil, isUndefined,
 } from 'lodash';
 import { isDevelopment, nameOf } from 'jxax/util';
-import retry from 'jxax/core/util/retry';
-import { access } from 'jxax/core/app';
+import { access, retry } from 'jxax/core/app';
 import { accessApplicationProcess } from 'jxax/core/processes';
 
-export default function runInApp(appId, fn) {
+export default function runInApp(url, fn) {
   if (isDevelopment()) {
-    if (!isString(appId) && !isSafeInteger(appId)) throw new Error(`${nameOf({ appId })} must be either a string or an integer.`);
+    if (!isString(url) && !isSafeInteger(url)) {
+      throw new Error(`${nameOf({ url })} must be either a string or an integer.`);
+    }
     if (!isFunction(fn)) throw new Error(`${nameOf({ fn })} must be a function.`);
   }
 
@@ -17,12 +18,12 @@ export default function runInApp(appId, fn) {
   let window;
 
   retry(() => {
-    app = access(appId);
+    app = access(url);
     app.activate();
   });
 
   retry(() => {
-    process = accessApplicationProcess(appId);
+    process = accessApplicationProcess(url);
     window = process.windows.at(0);
   });
 

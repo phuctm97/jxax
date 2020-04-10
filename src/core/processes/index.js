@@ -1,6 +1,6 @@
 import { access } from 'jxax/core/app';
 
-// Get access to `processes` from `System Events` application.
+// Get access to `processes` and `applicationProcesses` from `System Events` application.
 const { processes, applicationProcesses } = access('System Events');
 
 /**
