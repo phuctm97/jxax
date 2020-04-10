@@ -7,6 +7,8 @@ import {
   Appearances, FontSmoothingStyles, HighlightColors, ScrollBarActions,
 } from 'jxax/core/appearance/options';
 
+export * from 'jxax/core/appearance/options';
+
 // Get access to `appearancePreferences` from `System Events` application.
 const { appearancePreferences } = access('System Events');
 
