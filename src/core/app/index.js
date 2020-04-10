@@ -1,7 +1,7 @@
 /**
  * The OSA application that is running the script (OSAScript).
  */
-const app = Application.currentApplication();
+const app = global.Application.currentApplication();
 app.strictPropertyScope = true;
 app.strictCommandScope = true;
 app.strictParameterType = true;
@@ -15,7 +15,7 @@ export default app;
  * @returns {object} The scriptable application's object specifier.
  */
 export function access(url) {
-  return Application(url);
+  return global.Application(url);
 }
 
 /**

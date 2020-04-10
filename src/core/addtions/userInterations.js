@@ -56,7 +56,7 @@ export const AlertTypes = {
  * @returns {AlertReply} A record containing the button clicked.
  */
 export function displayAlert(text, opts) {
-  app.displayAlert(text, opts);
+  return app.displayAlert(text, opts);
 }
 
 /**
@@ -98,7 +98,7 @@ export const SystemIcons = {
  * @returns {DialogReply} A record containing the button clicked and text entered (if any).
  */
 export function displayDialog(text, opts) {
-  app.displayDialog(text, opts);
+  return app.displayDialog(text, opts);
 }
 
 /**
