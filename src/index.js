@@ -4,7 +4,7 @@ import {
   HighlightColors, SidebarIconSizes, ShowScrollBarsTriggers,
 } from '@sysprefs/general';
 
-function run() {
+scpt.run = () => {
   const settings = {
     appearance: Appearances.DARK,
     accentColor: AccentColors.BLUE,
@@ -22,6 +22,4 @@ function run() {
   };
 
   applySysPrefsGeneral(settings);
-}
-
-run();
+};
