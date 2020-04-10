@@ -1,10 +1,19 @@
 import {
   isFunction, isString, isSafeInteger, isNil, isUndefined,
 } from 'lodash';
-import { isDevelopment, nameOf } from 'jxax/util';
-import { access, retry } from 'jxax/core/app';
-import { accessApplicationProcess } from 'jxax/core/processes';
+import { isDevelopment, nameOf } from '@util';
+import { access, retry } from '@core/app';
+import { accessApplicationProcess } from '@core/processes';
 
+/**
+ * Invoke a function within an application by activating the application beforing invoking the
+ * function and quitting the application after the function's invocation is finished. The function
+ * receives the application, the application's process and first window as its first argument.
+ *
+ * @param {(string|number)} url The application's name, bundle ID, path or process ID.
+ * @param {({app: object, process: object, window: object}) => any} fn The function to invoke.
+ * @returns {any} Returns of fn.
+ */
 export default function runInApp(url, fn) {
   if (isDevelopment()) {
     if (!isString(url) && !isSafeInteger(url)) {

@@ -3,5 +3,5 @@
  * scripting addtions features, see Script Editor/Library/StandardAddtions.
  */
 
-export * from 'jxax/core/addtions/file';
-export * from 'jxax/core/addtions/userInterations';
+export * from '@core/addtions/file';
+export * from '@core/addtions/userInterations';

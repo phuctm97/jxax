@@ -1,6 +1,6 @@
-import { isDevelopment } from 'jxax/util';
-import { retry } from 'jxax/core/app';
-import query, { isValidQuery, invalidQuery } from 'jxax/core/uiAutomation/query';
+import { isDevelopment } from '@util';
+import { retry } from '@core/app';
+import query, { isValidQuery, invalidQuery } from '@core/uiAutomation/query';
 
 export default function selectToggle(parent, q) {
   if (isDevelopment()) {

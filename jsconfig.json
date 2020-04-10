@@ -2,7 +2,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "jxax/*": ["src/*"]
+      "@core/*": ["src/core/*"],
+      "@sysprefs/*": ["src/sysprefs/*"],
+      "@util/*": ["src/util/*"]
     }
   }
 }

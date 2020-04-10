@@ -1,4 +1,4 @@
-import { nameOf } from 'jxax/util';
+import { nameOf } from '@util';
 
 export function invalidQuery(q) {
   return `${nameOf(q)} must be either an integer or a string or an object.`;

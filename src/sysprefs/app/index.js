@@ -1,7 +1,7 @@
 import { isFunction, isString, isEmpty } from 'lodash';
-import { isDevelopment, nameOf } from 'jxax/util';
-import { retry } from 'jxax/core/app';
-import runInApp from 'jxax/core/uiAutomation/app';
+import { isDevelopment, nameOf } from '@util';
+import { retry } from '@core/app';
+import runInApp from '@core/uiAutomation';
 
 export default function runInSystemPrefs(pane, fn) {
   if (isDevelopment()) {

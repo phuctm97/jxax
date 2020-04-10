@@ -1,19 +1,18 @@
 import {
   isObject, isUndefined, isNil, capitalize,
 } from 'lodash';
-import { isDevelopment, nameOf } from 'jxax/util';
-import { retry } from 'jxax/core/app';
-import appearancePreferencesObject, { ScrollBarActions } from 'jxax/core/appearance';
-import selectToggle from 'jxax/core/uiAutomation/toggle';
-import selectPopUpButton from 'jxax/core/uiAutomation/popUpButton';
-import selectRadio from 'jxax/core/uiAutomation/radio';
-import selectCheckbox from 'jxax/core/uiAutomation/checkbox';
-import runInSystemPrefs from 'jxax/sysprefs/app';
+import { isDevelopment, nameOf } from '@util';
+import { retry } from '@core/app';
+import appearancePreferencesObject, { ScrollBarActions } from '@core/appearance';
+import {
+  selectCheckbox, selectPopUpButton, selectRadio, selectToggle,
+} from '@core/uiAutomation';
+import runInSystemPrefs from '@sysprefs/app';
 import {
   validateOpts, Appearances, AccentColors, ClickScrollBarActions, ShowScrollBarsTriggers,
-} from 'jxax/sysprefs/general/options';
+} from '@sysprefs/general/options';
 
-export * from 'jxax/sysprefs/general/options';
+export * from '@sysprefs/general/options';
 
 const appearancesMap = {
   [Appearances.LIGHT]: { help: 'Use a light appearance for buttons,\nmenus, and windows.' },

@@ -4,7 +4,7 @@
  */
 
 import { isObject, isFunction } from 'lodash';
-import { isDevelopment, nameOf } from 'jxax/util';
+import { isDevelopment, nameOf } from '@util';
 
 /**
  * The OSA application that is running the script (OSAScript).
@@ -19,7 +19,7 @@ export default app;
 /**
  * Get access to a scriptable application.
  *
- * @param {string} url The application's name, bundle ID, path or process ID.
+ * @param {(string|number)} url The application's name, bundle ID, path or process ID.
  * @returns {object} The scriptable application's object specifier.
  */
 export function access(url) {

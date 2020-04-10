@@ -1,13 +1,13 @@
 import {
   isBoolean, isString, isArray, isSafeInteger, includes, every,
 } from 'lodash';
-import { nameOf } from 'jxax/util';
-import { access } from 'jxax/core/app';
+import { nameOf } from '@util';
+import { access } from '@core/app';
 import {
   Appearances, FontSmoothingStyles, HighlightColors, ScrollBarActions,
-} from 'jxax/core/appearance/options';
+} from '@core/appearance/options';
 
-export * from 'jxax/core/appearance/options';
+export * from '@core/appearance/options';
 
 // Get access to `appearancePreferences` from `System Events` application.
 const { appearancePreferences } = access('System Events');

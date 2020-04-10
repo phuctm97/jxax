@@ -1,7 +1,7 @@
 import { isString } from 'lodash';
-import { isDevelopment, nameOf } from 'jxax/util';
-import { retry } from 'jxax/core/app';
-import query, { isValidQuery, invalidQuery } from 'jxax/core/uiAutomation/query';
+import { isDevelopment, nameOf } from '@util';
+import { retry } from '@core/app';
+import query, { isValidQuery, invalidQuery } from '@core/uiAutomation/query';
 
 export default function selectPopUpButton(parent, q, val) {
   if (isDevelopment()) {
