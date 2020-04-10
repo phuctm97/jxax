@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 function isDev(env) {
   return env && env.dev;
@@ -18,5 +19,15 @@ module.exports = (env) => ({
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
     ],
   },
+  plugins: [
+    new webpack.BannerPlugin({
+      banner: [
+        'const scpt=this;',
+        'this.run=function(args){};',
+        'function run(args){return this.run(args);}',
+      ].join(''),
+      raw: true,
+    }),
+  ],
   devtool: isDev(env) ? 'source-map' : false,
 });
