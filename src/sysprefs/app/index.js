@@ -1,6 +1,6 @@
 import { isFunction, isString, isEmpty } from 'lodash';
 import { isDevelopment, nameOf } from 'jxax/util';
-import retry from 'jxax/core/util/retry';
+import { retry } from 'jxax/core/app';
 import runInApp from 'jxax/core/uiAutomation/app';
 
 export default function runInSystemPrefs(pane, fn) {

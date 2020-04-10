@@ -1,20 +1,14 @@
-import { isObject, isSafeInteger } from 'lodash';
-import { isDevelopment, nameOf } from 'jxax/util';
-import retry from 'jxax/core/util/retry';
+import { isDevelopment } from 'jxax/util';
+import { retry } from 'jxax/core/app';
+import query, { isValidQuery, invalidQuery } from 'jxax/core/uiAutomation/query';
 
-export default function selectToggle(parent, query) {
+export default function selectToggle(parent, q) {
   if (isDevelopment()) {
-    if (!isObject(query) && !isSafeInteger(query)) {
-      throw new Error(`${nameOf({ query })} must be either an object or an integer.`);
-    }
+    if (!isValidQuery(q)) throw new Error(invalidQuery({ q }));
   }
 
   return retry(() => {
-    const toggle = parent.checkboxes.whose({
-      subrole: 'AXToggle',
-      ...query,
-    })[0];
-
+    const toggle = query(parent.checkboxes, q, { preQ: { subrole: 'AXToggle' } });
     if (toggle.value() === 1) return;
 
     toggle.actions.byName('AXPress').perform();
