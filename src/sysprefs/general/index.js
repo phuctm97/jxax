@@ -13,6 +13,7 @@ import validateSettings, {
 } from '@sysprefs/general/options';
 
 export * from '@sysprefs/general/options';
+export { validateSettings as validateSysPrefsGeneralSettings };
 
 const appearancesMap = {
   [Appearances.LIGHT]: { help: 'Use a light appearance for buttons,\nmenus, and windows.' },
@@ -65,7 +66,9 @@ const clickScrollBarActionsMap = {
  * @param {boolean} settings.allowHandoff
  * @param {boolean} settings.useFontSmoothing
  */
-export default function applySysPrefsGeneralSettings(settings) {
+export default function applySysPrefsGeneralSettings(settings, opts) {
+  const { progress } = opts;
+
   if (isDevelopment()) {
     if (!isObject(settings)) throw new Error(`${nameOf({ settings })} must be an object.`);
   }
@@ -93,38 +96,49 @@ export default function applySysPrefsGeneralSettings(settings) {
 
   return runInSystemPrefs('General', ({ window }) => {
     if (!isUndefined(appearance)) {
+      progress.description = 'setting appearance';
       selectToggle(window, appearancesMap[appearance]);
     }
     if (!isUndefined(accentColor)) {
+      progress.description = 'setting accent color';
       selectToggle(window, accentColorsMap[accentColor]);
     }
     if (!isUndefined(highlightColor)) {
+      progress.description = 'setting highlight color';
       selectPopUpButton(window, { name: 'Highlight color:' }, capitalize(highlightColor));
     }
     if (!isUndefined(sidebarIconSize)) {
+      progress.description = 'setting sidebar icon size';
       selectPopUpButton(window, { name: 'Sidebar icon size:' }, capitalize(sidebarIconSize));
     }
     if (!isUndefined(autoHideMenuBar)) {
+      progress.description = 'setting autohide menu bar';
       selectCheckbox(window, { name: 'Automatically hide and show the menu bar' }, autoHideMenuBar);
     }
     if (!isUndefined(showScrollBars)) {
+      progress.description = 'setting show scroll bars';
       selectRadio(window, 1, showScrollBarTriggersMap[showScrollBars]);
     }
     if (!isUndefined(clickScrollBar)) {
+      progress.description = 'setting click scroll bar action';
       retry(() => {
         appearancePreferencesObject.scrollBarAction = clickScrollBarActionsMap[clickScrollBar];
       });
     }
     if (!isUndefined(defaultWebBrowser)) {
+      progress.description = 'setting default web browser';
       selectPopUpButton(window, { description: 'Default Web Browser popup' }, defaultWebBrowser);
     }
     if (!isUndefined(askWhenClosingDocuments)) {
+      progress.description = 'setting ask when closing documents';
       selectCheckbox(window, { name: 'Ask to keep changes when closing documents' }, askWhenClosingDocuments);
     }
     if (!isUndefined(closeWindowsWhenQuittingApp)) {
+      progress.description = 'setting close windows when quitting app';
       selectCheckbox(window, { name: 'Close windows when quitting an app' }, closeWindowsWhenQuittingApp);
     }
     if (!isUndefined(recentItems)) {
+      progress.description = 'setting recent items';
       retry(() => {
         appearancePreferencesObject.recentApplicationsLimit = recentItems;
         appearancePreferencesObject.recentDocumentsLimit = recentItems;
@@ -132,9 +146,11 @@ export default function applySysPrefsGeneralSettings(settings) {
       });
     }
     if (!isUndefined(allowHandoff)) {
+      progress.description = 'setting allow handoff';
       selectCheckbox(window, { name: 'Allow Handoff between this Mac and your iCloud devices' }, allowHandoff);
     }
     if (!isUndefined(useFontSmoothing)) {
+      progress.description = 'setting font smoothing';
       retry(() => {
         appearancePreferencesObject.fontSmoothing = useFontSmoothing;
       });
