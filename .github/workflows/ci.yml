@@ -32,6 +32,8 @@ jobs:
         run: yarn lint
       - name: Build
         run: yarn build
+      - name: Chmod +x
+        run: chmod +x dist/main.js
       - name: Upload distribution bundle
         uses: actions/upload-artifact@v1
         with:
