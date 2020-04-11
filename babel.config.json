@@ -1,12 +1,7 @@
 {
-  "presets": [
-    [
-      "@babel/env",
-      {
-        "targets": {
-          "safari": "11"
-        }
-      }
-    ]
+  "presets": [["@babel/env", { "targets": { "safari": "11" } }]],
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-private-methods"
   ]
 }
