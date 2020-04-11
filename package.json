@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "ansi-colors": "^4.1.1",
+    "ansi-escape-sequences": "^5.1.2",
     "lodash": "^4.17.15",
     "validate.js": "^0.13.1"
   },
