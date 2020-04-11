@@ -8,8 +8,8 @@ import {
   selectCheckbox, selectPopUpButton, selectRadio, selectToggle,
 } from '@core/uiAutomation';
 import runInSystemPrefs from '@sysprefs/app';
-import {
-  validateSettings, Appearances, AccentColors, ClickScrollBarActions, ShowScrollBarsTriggers,
+import validateSettings, {
+  Appearances, AccentColors, ClickScrollBarActions, ShowScrollBarsTriggers,
 } from '@sysprefs/general/options';
 
 export * from '@sysprefs/general/options';
@@ -65,7 +65,7 @@ const clickScrollBarActionsMap = {
  * @param {boolean} settings.allowHandoff
  * @param {boolean} settings.useFontSmoothing
  */
-export function applySysPrefsGeneralSettings(settings) {
+export default function applySysPrefsGeneralSettings(settings) {
   if (isDevelopment()) {
     if (!isObject(settings)) throw new Error(`${nameOf({ settings })} must be an object.`);
   }

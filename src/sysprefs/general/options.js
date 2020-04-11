@@ -110,6 +110,6 @@ const constraints = {
  * @param {object} settings The settings object to be validated.
  * @returns {any} The errors object or undefined if no error found.
  */
-export function validateSettings(settings) {
+export default function validateSettings(settings) {
   return validate(settings, constraints, { fullMessages: false });
 }
