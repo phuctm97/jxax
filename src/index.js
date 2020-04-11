@@ -1,5 +1,4 @@
-import {
-  applySysPrefsGeneralSettings,
+import applySysPrefsGeneralSettings, {
   Appearances, AccentColors, ClickScrollBarActions,
   HighlightColors, SidebarIconSizes, ShowScrollBarsTriggers,
 } from '@sysprefs/general';
