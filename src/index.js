@@ -1,9 +1,11 @@
+import runWorkflow, { createJob } from '@core/workflow';
 import applySysPrefsGeneralSettings, {
-  Appearances, AccentColors, ClickScrollBarActions,
+  validateSysPrefsGeneralSettings, Appearances, AccentColors, ClickScrollBarActions,
   HighlightColors, SidebarIconSizes, ShowScrollBarsTriggers,
 } from '@sysprefs/general';
 import applySysPrefsDockSettings, {
-  ScreenEdges, MinimizeEffects, TabsWhenOpeningDocumentsPreferences, DoubleClickTitleBarActions,
+  validateSysPrefsDockSettings, ScreenEdges, MinimizeEffects, TabsWhenOpeningDocumentsPreferences,
+  DoubleClickTitleBarActions,
 } from '@sysprefs/dock';
 
 scpt.run = () => {
@@ -38,6 +40,10 @@ scpt.run = () => {
     showRecentApps: false,
   };
 
-  applySysPrefsGeneralSettings(generalSettings);
-  applySysPrefsDockSettings(dockSettings);
+  runWorkflow([
+    createJob('sysprefs.general.applySettings',
+      validateSysPrefsGeneralSettings, applySysPrefsGeneralSettings, generalSettings),
+    createJob('sysprefs.dock.applySettings',
+      validateSysPrefsDockSettings, applySysPrefsDockSettings, dockSettings),
+  ]);
 };

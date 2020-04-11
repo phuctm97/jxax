@@ -2,8 +2,11 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@core": ["src/core"],
       "@core/*": ["src/core/*"],
+      "@sysprefs": ["src/sysprefs"],
       "@sysprefs/*": ["src/sysprefs/*"],
+      "@util": ["src/util"],
       "@util/*": ["src/util/*"]
     }
   }
