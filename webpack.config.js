@@ -20,6 +20,7 @@ module.exports = (env) => ({
     ],
   },
   plugins: [
+    // Register OSA run handler.
     new webpack.BannerPlugin({
       banner: [
         'const scpt=this;',
@@ -28,6 +29,8 @@ module.exports = (env) => ({
       ].join(''),
       raw: true,
     }),
+    // Add shebang.
+    new webpack.BannerPlugin({ banner: '#!/usr/bin/env osascript -l JavaScript', raw: true }),
   ],
   devtool: isDev(env) ? 'source-map' : false,
 });
