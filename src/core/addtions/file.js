@@ -6,14 +6,14 @@ import app from '@core/app';
 import '@core/addtions/include';
 
 /**
- * @type {import('jxax/core/app/types').path}
+ * @typedef {import('@core/app').FilePath} FilePath
  */
 
 /**
  * Open a disk file for the read and write commands.
  *
- * @param {path} file The file or alias to open for access. If the file does not exist, a new file
- * is created.
+ * @param {FilePath} file The file or alias to open for access. If the file does not exist, a new
+ * file is created.
  * @param {object} opts Options.
  * @param {boolean} opts.writePermission Whether to allow writing to the file.
  * @returns {number} A file reference number; use for ‘read’, ‘write’, and ‘close access’.

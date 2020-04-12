@@ -18,7 +18,7 @@ export * from '@core/appearance/options';
 const { appearancePreferences } = access('System Events');
 
 /**
- * @type {import('jxax/core/app/types').Color}
+ * @typedef {import('@core/app').Color} Color
  */
 
 /**
