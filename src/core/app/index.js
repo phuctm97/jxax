@@ -7,6 +7,21 @@ import { isObject, isFunction } from 'lodash';
 import { isDevelopment } from '@utils';
 
 /**
+ * @typedef {object} FilePath The OSA file path object.
+ *
+ * When you need to interact with files, such as a document in TextEdit, you will need a file path
+ * object, not just a string with a path in it. You can use the Path constructor to instantiate
+ * file paths.
+ *
+ * @property {() => string} toString Get the string value of the file path.
+ */
+
+/**
+ * @typedef {[number, number, number]} Color A list of three integers, each from 0 to 65535,
+ * representing red, green, and blue color components.
+ */
+
+/**
  * The OSA application that is running the script (OSAScript).
  */
 const app = global.Application.currentApplication();

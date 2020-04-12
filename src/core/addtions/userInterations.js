@@ -6,8 +6,8 @@ import app from '@core/app';
 import '@core/addtions/include';
 
 /**
- * @type {import('jxax/core/app/types').path}
- * @type {import('jxax/core/app/types').Color}
+ * @typedef {import('@core/app').FilePath} FilePath
+ * @typedef {import('@core/app').Color} Color
  */
 
 /**
@@ -52,13 +52,13 @@ export function chooseColor(opts = {}) {
  * @param {string} opts.withPrompt The prompt to be displayed in the dialog box.
  * @param {string[]} opts.ofType A list of file types or type identifiers, only files of the
  * specified types will be selectable.
- * @param {path} opts.defaultLocation The default file location.
+ * @param {FilePath} opts.defaultLocation The default file location.
  * @param {boolean} opts.invisibles Show invisible files and folders? (default is false).
  * @param {boolean} opts.multipleSelectionsAllowed Show the contents of packages? (Packages will be
  * treated as folders, default is false).
  * @param {boolean} opts.showingPackageContents Show the contents of packages? (Packages will be
  * treated as folders. Default is false.).
- * @returns {path} The chosen file.
+ * @returns {FilePath} The chosen file.
  */
 export function chooseFile(opts = {}) {
   return app.chooseFile(opts);
@@ -70,8 +70,8 @@ export function chooseFile(opts = {}) {
  * @param {object} opts Options.
  * @param {string} opts.withPrompt The prompt to be displayed in the dialog box.
  * @param {string} opts.defaultName The default name for the new file.
- * @param {path} opts.defaultLocation The default file location.
- * @returns {path} The file the user specified.
+ * @param {FilePath} opts.defaultLocation The default file location.
+ * @returns {FilePath} The file the user specified.
  */
 export function chooseFileName(opts = {}) {
   return app.chooseFileName(opts);
@@ -82,13 +82,13 @@ export function chooseFileName(opts = {}) {
  *
  * @param {object} opts Options.
  * @param {string} opts.withPrompt The prompt to be displayed in the dialog box.
- * @param {path} opts.defaultLocation The default folder location.
+ * @param {FilePath} opts.defaultLocation The default folder location.
  * @param {boolean} opts.invisibles Show invisible files and folders? (default is false).
  * @param {boolean} opts.multipleSelectionsAllowed Allow multiple items to be selected? (default is
  * false).
  * @param {boolean} opts.showingPackageContents Show the contents of packages? (Packages will be
  * treated as folders. Default is false.).
- * @returns {path} The chosen folder.
+ * @returns {FilePath} The chosen folder.
  */
 export function chooseFolder(opts = {}) {
   return app.chooseFolder(opts);

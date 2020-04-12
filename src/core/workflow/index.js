@@ -22,7 +22,7 @@ const Strings = {
  */
 
 /**
- * @typedef {import('./reporter').Reporter} Reporter
+ * @typedef {import('@core/workflow/reporter').Reporter} Reporter
  */
 
 /**
