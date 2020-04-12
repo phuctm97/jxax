@@ -4,7 +4,7 @@
  */
 
 import { isObject, isFunction } from 'lodash';
-import { isDevelopment } from '@util';
+import { isDevelopment } from '@utils';
 
 /**
  * The OSA application that is running the script (OSAScript).

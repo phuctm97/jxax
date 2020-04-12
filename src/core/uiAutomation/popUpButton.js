@@ -1,5 +1,5 @@
 import { isString } from 'lodash';
-import { isDevelopment } from '@util';
+import { isDevelopment } from '@utils';
 import { retry } from '@core/app';
 import query, { isValidQuery, invalidQuery } from '@core/uiAutomation/query';
 

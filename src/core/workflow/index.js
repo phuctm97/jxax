@@ -1,7 +1,7 @@
 import {
   isObject, isFunction, isString, isArray, isNil, isEmpty, every,
 } from 'lodash';
-import { isDevelopment } from '@util';
+import { isDevelopment } from '@utils';
 import defaultReporter, { isReporter, JobStatuses, ResultDetailMessageTypes } from '@core/workflow/reporter';
 
 export * from '@core/workflow/reporter';

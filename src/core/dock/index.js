@@ -6,7 +6,7 @@
 import {
   isBoolean, isNumber, includes, round,
 } from 'lodash';
-import { join } from '@util';
+import { join } from '@utils';
 import { access } from '@core/app';
 import { MinimizeEffects, ScreenEdges } from '@core/dock/options';
 

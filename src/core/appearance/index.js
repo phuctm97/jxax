@@ -6,7 +6,7 @@
 import {
   isBoolean, isString, isArray, isSafeInteger, includes, every,
 } from 'lodash';
-import { join } from '@util';
+import { join } from '@utils';
 import { access } from '@core/app';
 import {
   Appearances, FontSmoothingStyles, HighlightColors, ScrollBarActions,

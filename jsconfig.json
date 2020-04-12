@@ -4,8 +4,7 @@
     "paths": {
       "@core/*": ["src/core/*"],
       "@sysprefs/*": ["src/sysprefs/*"],
-      "@util/*": ["src/util/*"],
-      "@util": ["src/util"]
+      "@utils": ["src/utils"]
     }
   }
 }
