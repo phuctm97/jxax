@@ -1,7 +1,7 @@
 import {
   isFunction, isString, isSafeInteger, isNil, isUndefined,
 } from 'lodash';
-import { isDevelopment, nameOf } from '@util';
+import { isDevelopment } from '@util';
 import { access, retry } from '@core/app';
 import { accessApplicationProcess } from '@core/processes';
 
@@ -17,20 +17,22 @@ import { accessApplicationProcess } from '@core/processes';
 export default function runInApp(url, fn) {
   if (isDevelopment()) {
     if (!isString(url) && !isSafeInteger(url)) {
-      throw new Error(`${nameOf({ url })} must be either a string or an integer.`);
+      throw new Error('runInApp.url must be either a string or an integer.');
     }
-    if (!isFunction(fn)) throw new Error(`${nameOf({ fn })} must be a function.`);
+    if (!isFunction(fn)) throw new Error('runInApp.fn must be a function.');
   }
 
   let app;
   let process;
   let window;
 
+  // Try activate the application.
   retry(() => {
     app = access(url);
     app.activate();
   });
 
+  // Try access the application's process and first window (0th).
   retry(() => {
     process = accessApplicationProcess(url);
     window = process.windows.at(0);
@@ -45,6 +47,8 @@ export default function runInApp(url, fn) {
   }
 
   if (!isNil(app)) {
+    // If the application is activated, try quit the application before returning or throwing the
+    // function's invocation error.
     try {
       app.quit();
     } catch (e) {

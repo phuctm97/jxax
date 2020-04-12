@@ -1,7 +1,12 @@
+/**
+ * Appearance Suite: Terms for controlling Appearance preferences.
+ * See Script Editor/Library/System Events/Appearance Suite.
+ */
+
 import {
   isBoolean, isString, isArray, isSafeInteger, includes, every,
 } from 'lodash';
-import { nameOf } from '@util';
+import { join } from '@util';
 import { access } from '@core/app';
 import {
   Appearances, FontSmoothingStyles, HighlightColors, ScrollBarActions,
@@ -28,8 +33,8 @@ const appearancePreferencesObject = {
     return appearancePreferences.appearance();
   },
   set appearance(val) {
-    if (!includes(Object.values(Appearances), val)) {
-      throw new Error(`${nameOf({ val })} must be within [${Object.values(Appearances).join(', ')}].`);
+    if (!includes(Appearances, val)) {
+      throw new Error(`appearance must be within [${join(Appearances)}].`);
     }
     appearancePreferences.appearance = val;
   },
@@ -42,7 +47,7 @@ const appearancePreferencesObject = {
     return appearancePreferences.fontSmoothing();
   },
   set fontSmoothing(val) {
-    if (!isBoolean(val)) throw new Error(`${nameOf({ val })} must be a boolean.`);
+    if (!isBoolean(val)) throw new Error('fontSmoothing must be a boolean.');
     appearancePreferences.fontSmoothing = val;
   },
 
@@ -54,8 +59,8 @@ const appearancePreferencesObject = {
     return appearancePreferences.fontSmoothingStyle();
   },
   set fontSmoothingStyle(val) {
-    if (!includes(Object.values(FontSmoothingStyles), val)) {
-      throw new Error(`${nameOf({ val })} must be within [${Object.values(FontSmoothingStyles).join(', ')}].`);
+    if (!includes(FontSmoothingStyles, val)) {
+      throw new Error(`fontSmoothingStyle must be within [${join(FontSmoothingStyles)}].`);
     }
     appearancePreferences.fontSmoothingStyle = val;
   },
@@ -69,15 +74,15 @@ const appearancePreferencesObject = {
   },
   set highlightColor(val) {
     if (isString(val)) {
-      if (!includes(Object.values(HighlightColors), val)) {
-        throw new Error(`${nameOf({ val })} must be within [${Object.values(HighlightColors).join(', ')}].`);
+      if (!includes(HighlightColors, val)) {
+        throw new Error(`highlightColor must be within [${join(HighlightColors)}].`);
       }
     } else if (isArray(val)) {
       if (val.length !== 3 || !every(val, isSafeInteger)) {
-        throw new Error(`${nameOf({ val })} must be an array of three integers.`);
+        throw new Error('highlightColor must be an array of three integers.');
       }
     } else {
-      throw new Error(`${nameOf({ val })} must be either a string or an array of three integers.`);
+      throw new Error('highlightColor must be either a string or an array of three integers.');
     }
     appearancePreferences.highlightColor = val;
   },
@@ -90,7 +95,7 @@ const appearancePreferencesObject = {
     return appearancePreferences.recentApplicationsLimit();
   },
   set recentApplicationsLimit(val) {
-    if (!isSafeInteger(val)) throw new Error(`${nameOf({ val })} must be an integer.`);
+    if (!isSafeInteger(val)) throw new Error('recentApplicationsLimit must be an integer.');
     appearancePreferences.recentApplicationsLimit = val;
   },
 
@@ -102,7 +107,7 @@ const appearancePreferencesObject = {
     return appearancePreferences.recentDocumentsLimit();
   },
   set recentDocumentsLimit(val) {
-    if (!isSafeInteger(val)) throw new Error(`${nameOf({ val })} must be an integer.`);
+    if (!isSafeInteger(val)) throw new Error('recentDocumentsLimit must be an integer.');
     appearancePreferences.recentDocumentsLimit = val;
   },
 
@@ -114,7 +119,7 @@ const appearancePreferencesObject = {
     return appearancePreferences.recentServersLimit();
   },
   set recentServersLimit(val) {
-    if (!isSafeInteger(val)) throw new Error(`${nameOf({ val })} must be an integer.`);
+    if (!isSafeInteger(val)) throw new Error('recentServersLimit must be an integer.');
     appearancePreferences.recentServersLimit = val;
   },
 
@@ -126,8 +131,8 @@ const appearancePreferencesObject = {
     return appearancePreferences.scrollBarAction();
   },
   set scrollBarAction(val) {
-    if (!includes(Object.values(ScrollBarActions), val)) {
-      throw new Error(`${nameOf({ val })} must be within [${Object.values(ScrollBarActions).join(', ')}].`);
+    if (!includes(ScrollBarActions, val)) {
+      throw new Error(`scrollBarAction must be within [${join(ScrollBarActions)}].`);
     }
     appearancePreferences.scrollBarAction = val;
   },
@@ -140,7 +145,7 @@ const appearancePreferencesObject = {
     return appearancePreferences.smoothScrolling();
   },
   set smoothScrolling(val) {
-    if (!isBoolean(val)) throw new Error(`${nameOf({ val })} must be a boolean.`);
+    if (!isBoolean(val)) throw new Error('smoothScrolling must be a boolean.');
     appearancePreferences.smoothScrolling = val;
   },
 
@@ -152,7 +157,7 @@ const appearancePreferencesObject = {
     return appearancePreferences.darkMode();
   },
   set darkMode(val) {
-    if (!isBoolean(val)) throw new Error(`${nameOf({ val })} must be a boolean.`);
+    if (!isBoolean(val)) throw new Error('darkMode must be a boolean.');
     appearancePreferences.darkMode = val;
   },
 };

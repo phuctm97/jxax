@@ -1,3 +1,8 @@
+/**
+ * Processes Suite: Terms and Events for controlling Processes.
+ * See Script Editor/Library/System Events/Processes Suite.
+ */
+
 import { access } from '@core/app';
 
 // Get access to `processes` and `applicationProcesses` from `System Events` application.
