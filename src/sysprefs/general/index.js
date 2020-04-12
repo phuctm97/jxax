@@ -1,26 +1,26 @@
-import {
-  isObject, isUndefined, isNil, capitalize,
-} from 'lodash';
-import { isDevelopment, nameOf } from '@utils';
+import { isObject, isUndefined, capitalize } from 'lodash';
+import { isDevelopment } from '@utils';
 import { retry } from '@core/app';
 import appearancePreferencesObject, { ScrollBarActions } from '@core/appearance';
 import {
   selectCheckbox, selectPopUpButton, selectRadio, selectToggle,
 } from '@core/uiAutomation';
 import runInSystemPrefs from '@sysprefs/app';
-import validateSettings, {
+import {
   Appearances, AccentColors, ClickScrollBarActions, ShowScrollBarsTriggers,
 } from '@sysprefs/general/options';
 
 export * from '@sysprefs/general/options';
-export { validateSettings as validateSysPrefsGeneralSettings };
+export { default as validateSysPrefsGeneralSettings } from '@sysprefs/general/options';
 
+// Map appearances from input values to query values.
 const appearancesMap = {
   [Appearances.LIGHT]: { help: 'Use a light appearance for buttons,\nmenus, and windows.' },
   [Appearances.DARK]: { help: 'Use a dark appearance for buttons,\nmenus, and windows.' },
   [Appearances.AUTO]: { help: 'Automatically adjusts the appearance of buttons, menus and windows throughout the day.' },
 };
 
+// Map accentColors from input values to query values.
 const accentColorsMap = {
   [AccentColors.BLUE]: { name: 'Blue' },
   [AccentColors.PURPLE]: { name: 'Purple' },
@@ -32,52 +32,36 @@ const accentColorsMap = {
   [AccentColors.GRAPHITE]: { name: 'Graphite' },
 };
 
-const showScrollBarTriggersMap = {
+// Map showScrollBarTriggers from input values to query values.
+const showScrollBarsTriggersMap = {
   [ShowScrollBarsTriggers.AUTO]: { name: 'Automatically based on mouse or trackpad' },
   [ShowScrollBarsTriggers.WHEN_SCROLLING]: { name: 'When scrolling' },
   [ShowScrollBarsTriggers.ALWAYS]: { name: 'Always' },
 };
 
+// Map clickScrollBarActions from input values to query values.
 const clickScrollBarActionsMap = {
   [ClickScrollBarActions.JUMP_TO_SPOT_CLICKED]: ScrollBarActions.JUMP_TO_HERE,
   [ClickScrollBarActions.JUMP_TO_NEXT_PAGE]: ScrollBarActions.JUMP_TO_NEXT_PAGE,
 };
 
 /**
- * @type {import('@sysprefs/options').HighlightColors}
- * @type {import('@sysprefs/options').SidebarIconSizes}
+ * @typedef {import('@sysprefs/general/options').SysPrefsGeneralSettings} SysPrefsGeneralSettings
  */
 
 /**
  * Apply System Preferences/General settings.
  *
- * @param {object} settings The settings object to apply.
- * @param {Appearances} settings.appearance
- * @param {AccentColors} settings.accentColor
- * @param {HighlightColors} settings.highlightColor
- * @param {SidebarIconSizes} settings.sidebarIconSize
- * @param {boolean} settings.autoHideMenuBar
- * @param {ShowScrollBarsTriggers} settings.showScrollBars
- * @param {ClickScrollBarActions} settings.clickScrollBar
- * @param {string} settings.defaultWebBrowser
- * @param {boolean} settings.askWhenClosingDocuments
- * @param {boolean} settings.closeWindowsWhenQuittingApp
- * @param {number} settings.recentItems
- * @param {boolean} settings.allowHandoff
- * @param {boolean} settings.useFontSmoothing
+ * @param {SysPrefsGeneralSettings} settings The settings object to apply.
+ * @param {object} opts Options.
  */
 export default function applySysPrefsGeneralSettings(settings, opts) {
-  const { progress } = opts;
-
   if (isDevelopment()) {
-    if (!isObject(settings)) throw new Error(`${nameOf({ settings })} must be an object.`);
+    if (!isObject(settings)) throw new Error('applySysPrefsGeneralSettings.settings must be an object.');
+    if (!isObject(opts)) throw new Error('applySysPrefsGeneralSettings.opts must be an object.');
   }
 
-  const errs = validateSettings(settings);
-  if (!isNil(errs)) {
-    throw new Error(JSON.stringify(errs, null, 2));
-  }
-
+  const { progress } = opts;
   const {
     appearance,
     accentColor,
@@ -116,8 +100,8 @@ export default function applySysPrefsGeneralSettings(settings, opts) {
       selectCheckbox(window, { name: 'Automatically hide and show the menu bar' }, autoHideMenuBar);
     }
     if (!isUndefined(showScrollBars)) {
-      progress.description = 'setting show scroll bars';
-      selectRadio(window, 1, showScrollBarTriggersMap[showScrollBars]);
+      progress.description = 'setting show scroll bars trigger';
+      selectRadio(window, 1, showScrollBarsTriggersMap[showScrollBars]);
     }
     if (!isUndefined(clickScrollBar)) {
       progress.description = 'setting click scroll bar action';
@@ -150,7 +134,7 @@ export default function applySysPrefsGeneralSettings(settings, opts) {
       selectCheckbox(window, { name: 'Allow Handoff between this Mac and your iCloud devices' }, allowHandoff);
     }
     if (!isUndefined(useFontSmoothing)) {
-      progress.description = 'setting font smoothing';
+      progress.description = 'setting use font smoothing';
       retry(() => {
         appearancePreferencesObject.fontSmoothing = useFontSmoothing;
       });

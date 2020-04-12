@@ -1,3 +1,5 @@
+import { isObject, isEmpty } from 'lodash';
+import { join } from '@utils';
 import * as validate from 'validate.js';
 
 /**
@@ -76,10 +78,12 @@ export const ClickScrollBarActions = {
 };
 
 // Helper function generates constraint object for an inclusion constraint.
-function inclusionCons(vals) {
+function inclusionConstraint(vals) {
   return {
-    within: vals,
-    message: `is invalid, must be within [${vals.map((val) => JSON.stringify(val)).join(', ')}].`,
+    inclusion: {
+      within: isObject(vals) ? Object.values(vals) : vals,
+      message: `is invalid, must be within [${join(vals)}].`,
+    },
   };
 }
 
@@ -87,29 +91,50 @@ function inclusionCons(vals) {
  * System Preferences/General settings' constraints.
  */
 const constraints = {
-  appearance: { inclusion: inclusionCons(Object.values(Appearances)) },
-  accentColor: { inclusion: inclusionCons(Object.values(AccentColors)) },
-  highlightColor: { inclusion: inclusionCons(Object.values(HighlightColors)) },
-  sidebarIconSize: { inclusion: inclusionCons(Object.values(SidebarIconSizes)) },
+  appearance: inclusionConstraint(Appearances),
+  accentColor: inclusionConstraint(AccentColors),
+  highlightColor: inclusionConstraint(HighlightColors),
+  sidebarIconSize: inclusionConstraint(SidebarIconSizes),
   autoHideMenuBar: { type: 'boolean' },
-  showScrollBars: { inclusion: inclusionCons(Object.values(ShowScrollBarsTriggers)) },
-  clickScrollBar: { inclusion: inclusionCons(Object.values(ClickScrollBarActions)) },
+  showScrollBars: inclusionConstraint(ShowScrollBarsTriggers),
+  clickScrollBar: inclusionConstraint(ClickScrollBarActions),
   defaultWebBrowser: { type: 'string' },
   askWhenClosingDocuments: { type: 'boolean' },
   closeWindowsWhenQuittingApp: { type: 'boolean' },
-  recentItems: { inclusion: inclusionCons([0, 5, 10, 15, 20, 30, 50]) },
+  recentItems: inclusionConstraint([0, 5, 10, 15, 20, 30, 50]),
   allowHandoff: { type: 'boolean' },
   useFontSmoothing: { type: 'boolean' },
 };
+
+/**
+ * @typedef {object} SysPrefsGeneralSettings System Preferences/General settings object.
+ *
+ * @property {Appearances} appearance Appearance.
+ * @property {AccentColors} accentColor Accent color.
+ * @property {HighlightColors} highlightColor Highlight color.
+ * @property {SidebarIconSizes} sidebarIconSize Sidebar icon size.
+ * @property {boolean} autoHideMenuBar Automatically hide and show menu bar.
+ * @property {ShowScrollBarsTriggers} showScrollBars Show scroll bars trigger.
+ * @property {ClickScrollBarActions} clickScrollBar Click scroll bar to.
+ * @property {string} defaultWebBrowser Default web browser.
+ * @property {boolean} askWhenClosingDocuments Ask to keep changes when closing documents.
+ * @property {boolean} closeWindowsWhenQuittingApp Close windows when quitting an app.
+ * @property {number} recentItems Number of items to show in Recent items.
+ * @property {boolean} allowHandoff Allow Handoff between this Mac and your iCloud devices.
+ * @property {boolean} useFontSmoothing Use font smoothing when available.
+ */
 
 /**
  * Validate a System Preferences/General settings object, return all errors or undefined if no
  * error found. Errors are returned an object whose keys are the invalid attributes' names and
  * values are arrays of error messages.
  *
- * @param {object} settings The settings object to be validated.
+ * @param {SysPrefsGeneralSettings} settings The settings object to be validated.
  * @returns {any} The errors object or undefined if no error found.
  */
 export default function validateSettings(settings) {
+  if (!isObject(settings) || isEmpty(Object.values(settings))) {
+    return { '.': ['no argument provided'] };
+  }
   return validate(settings, constraints, { fullMessages: false });
 }
