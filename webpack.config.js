@@ -1,5 +1,6 @@
-const path = require('path');
 const webpack = require('webpack');
+const path = require('path');
+const extractAlias = require('./scripts/extract-webpack-alias-from-jsconfig');
 
 function isDev(env) {
   return env && env.dev;
@@ -8,11 +9,7 @@ function isDev(env) {
 module.exports = (env) => ({
   mode: isDev(env) ? 'development' : 'production',
   resolve: {
-    alias: {
-      '@core': path.resolve(__dirname, 'src', 'core'),
-      '@sysprefs': path.resolve(__dirname, 'src', 'sysprefs'),
-      '@util': path.resolve(__dirname, 'src', 'util'),
-    },
+    alias: extractAlias(path.resolve(__dirname, 'jsconfig.json')),
   },
   module: {
     rules: [
