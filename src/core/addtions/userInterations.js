@@ -1,5 +1,5 @@
 /**
- * User Interaction suite provides basic commands for interacting with the user.
+ * User Interaction Suite: Basic commands for interacting with the user.
  */
 
 import app from '@core/app';

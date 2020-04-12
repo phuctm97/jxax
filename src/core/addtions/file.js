@@ -1,5 +1,5 @@
 /**
- * File Read/Write suite provides commands for reading and writing information in a file.
+ * File Read/Write Suite: Commands for reading and writing information in a file.
  */
 
 import app from '@core/app';

@@ -4,7 +4,7 @@
  */
 
 import { isObject, isFunction } from 'lodash';
-import { isDevelopment, nameOf } from '@util';
+import { isDevelopment } from '@util';
 
 /**
  * The OSA application that is running the script (OSAScript).
@@ -48,9 +48,9 @@ export function delay(secs) {
  * @returns {any} Returns of fn.
  */
 export function retry(fn, opts = {}) {
-  if (isDevelopment()) {
-    if (!isFunction(fn)) throw new Error(`${nameOf({ fn })} must be a function.`);
-    if (!isObject(opts)) throw new Error(`${nameOf({ opts })} must be an object.`);
+  if (isDevelopment()) { // Validate arguments.
+    if (!isFunction(fn)) throw new Error('retry.fn must be a function.');
+    if (!isObject(opts)) throw new Error('retry.opts must be an object.');
   }
 
   const { maxAttempts, delayInterval } = { ...retry.defaultOpts, ...opts };
