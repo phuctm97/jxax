@@ -1,7 +1,7 @@
 import {
   isObject, isUndefined, isNil, capitalize,
 } from 'lodash';
-import { isDevelopment, nameOf } from '@util';
+import { isDevelopment, nameOf } from '@utils';
 import { retry } from '@core/app';
 import appearancePreferencesObject, { ScrollBarActions } from '@core/appearance';
 import {

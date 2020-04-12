@@ -1,5 +1,5 @@
 import { isFunction, isString, isEmpty } from 'lodash';
-import { isDevelopment, nameOf } from '@util';
+import { isDevelopment, nameOf } from '@utils';
 import { retry } from '@core/app';
 import runInApp from '@core/uiAutomation';
 

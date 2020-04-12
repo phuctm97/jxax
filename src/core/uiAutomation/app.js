@@ -1,7 +1,7 @@
 import {
   isFunction, isString, isSafeInteger, isNil, isUndefined,
 } from 'lodash';
-import { isDevelopment } from '@util';
+import { isDevelopment } from '@utils';
 import { access, retry } from '@core/app';
 import { accessApplicationProcess } from '@core/processes';
 

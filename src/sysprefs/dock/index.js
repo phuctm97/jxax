@@ -1,5 +1,5 @@
 import { isObject, isNil, isUndefined } from 'lodash';
-import { isDevelopment, nameOf } from '@util';
+import { isDevelopment, nameOf } from '@utils';
 import { retry } from '@core/app';
 import dockPreferencesObject from '@core/dock';
 import { selectPopUpButton, selectCheckbox } from '@core/uiAutomation';
