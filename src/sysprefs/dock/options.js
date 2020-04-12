@@ -1,3 +1,5 @@
+import { isObject, isEmpty } from 'lodash';
+import { join } from '@utils';
 import * as validate from 'validate.js';
 import { ScreenEdges, MinimizeEffects } from '@core/dock';
 
@@ -26,10 +28,12 @@ export const DoubleClickTitleBarActions = {
 };
 
 // Helper function generates constraint object for an inclusion constraint.
-function inclusionCons(vals) {
+function inclusionConstraint(vals) {
   return {
-    within: vals,
-    message: `is invalid, must be within [${vals.map((val) => JSON.stringify(val)).join(', ')}].`,
+    inclusion: {
+      within: isObject(vals) ? Object.values(vals) : vals,
+      message: `is invalid, must be within [${join(vals)}].`,
+    },
   };
 }
 
@@ -52,12 +56,10 @@ const constraints = {
       lessThanOrEqualTo: 1,
     },
   },
-  position: { inclusion: inclusionCons(Object.values(ScreenEdges)) },
-  minimizeEffect: { inclusion: inclusionCons(Object.values(MinimizeEffects)) },
-  preferTabsWhenOpeningDocuments: {
-    inclusion: inclusionCons(Object.values(TabsWhenOpeningDocumentsPreferences)),
-  },
-  doubleClickTitleBar: { inclusion: inclusionCons(Object.values(DoubleClickTitleBarActions)) },
+  position: inclusionConstraint(ScreenEdges),
+  minimizeEffect: inclusionConstraint(MinimizeEffects),
+  preferTabsWhenOpeningDocuments: inclusionConstraint(TabsWhenOpeningDocumentsPreferences),
+  doubleClickTitleBar: inclusionConstraint(DoubleClickTitleBarActions),
   minimizeToAppIcon: { type: 'boolean' },
   animate: { type: 'boolean' },
   autohide: { type: 'boolean' },
@@ -66,13 +68,35 @@ const constraints = {
 };
 
 /**
+ * @typedef {object} SysPrefsDockSettings System Preferences/Dock settings object.
+ *
+ * @property {number} size Size/height of the items (between 0.0 (minimum) and 1.0 (maximum)).
+ * @property {boolean} magnification Is magnification on or off?
+ * @property {boolean} magnificationSize Maximum magnification size when magnification is on
+ * (between 0.0 (minimum) and 1.0 (maximum)).
+ * @property {ScreenEdges} position Location on screen.
+ * @property {MinimizeEffects} minimizeEffect Minimization effect.
+ * @property {TabsWhenOpeningDocumentsPreferences} preferTabsWhenOpeningDocuments Prefer tabs when
+ * opening documents.
+ * @property {DoubleClickTitleBarActions} doubleClickTitleBar Double-click window's title bar to.
+ * @property {boolean} minimizeToAppIcon Minimize windows to application icon.
+ * @property {boolean} animate Is the animation of opening applications on or off?
+ * @property {boolean} autohide Is autohiding the dock on or off?
+ * @property {boolean} showOpenIndicators Show indicators for opening applications.
+ * @property {boolean} showRecentApps Show recent applications in Dock.
+ */
+
+/**
  * Validate a System Preferences/Dock settings object, return all errors or undefined if no error
  * found. Errors are returned an object whose keys are the invalid attributes' names and values are
  * arrays of error messages.
  *
- * @param {object} settings The settings object to be validated.
+ * @param {SysPrefsDockSettings} settings The settings object to be validated.
  * @returns {any} The errors object or undefined if no error found.
  */
 export default function validateSettings(settings) {
+  if (!isObject(settings) || isEmpty(Object.values(settings))) {
+    return { '.': ['no argument provided'] };
+  }
   return validate(settings, constraints, { fullMessages: false });
 }

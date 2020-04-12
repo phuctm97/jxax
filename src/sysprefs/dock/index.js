@@ -1,14 +1,15 @@
-import { isObject, isNil, isUndefined } from 'lodash';
-import { isDevelopment, nameOf } from '@utils';
+import { isObject, isUndefined } from 'lodash';
+import { isDevelopment } from '@utils';
 import { retry } from '@core/app';
 import dockPreferencesObject from '@core/dock';
 import { selectPopUpButton, selectCheckbox } from '@core/uiAutomation';
 import runInSystemPrefs from '@sysprefs/app';
-import validateSettings, { TabsWhenOpeningDocumentsPreferences, DoubleClickTitleBarActions } from '@sysprefs/dock/options';
+import { TabsWhenOpeningDocumentsPreferences, DoubleClickTitleBarActions } from '@sysprefs/dock/options';
 
 export * from '@sysprefs/dock/options';
-export { validateSettings as validateSysPrefsDockSettings };
+export { default as validateSysPrefsDockSettings } from '@sysprefs/dock/options';
 
+// Map tabsWhenOpeningDocumentsPreferences input values to query values.
 const tabsWhenOpeningDocumentsPreferencesMap = {
   [TabsWhenOpeningDocumentsPreferences.ALWAYS]: 'Always',
   [TabsWhenOpeningDocumentsPreferences.IN_FULL_SCREEN_ONLY]: 'In Full Screen Only',
@@ -16,39 +17,25 @@ const tabsWhenOpeningDocumentsPreferencesMap = {
 };
 
 /**
- * @type {import('@sysprefs/dock/options').ScreenEdges}
- * @type {import('@sysprefs/dock/options').MinimizeEffects}
+ * @typedef {import('@sysprefs/dock/options').SysPrefsDockSettings} SysPrefsDockSettings
  */
+
+// Default options.
+const defaultOpts = { progress: { description: '' } };
 
 /**
  * Apply System Preferences/Dock settings.
  *
- * @param {object} settings The settings object to apply.
- * @param {number} settings.size
- * @param {boolean} settings.magnification
- * @param {boolean} settings.magnificationSize
- * @param {ScreenEdges} settings.position
- * @param {MinimizeEffects} settings.minimizeEffect
- * @param {TabsWhenOpeningDocumentsPreferences} settings.preferTabsWhenOpeningDocuments
- * @param {DoubleClickTitleBarActions} settings.doubleClickTitleBar
- * @param {boolean} settings.minimizeToAppIcon
- * @param {boolean} settings.animate
- * @param {boolean} settings.autohide
- * @param {boolean} settings.showOpenIndicators
- * @param {boolean} settings.showRecentApps
+ * @param {SysPrefsDockSettings} settings The settings object to apply.
+ * @param {object} opts Options.
  */
-export default function applySysPrefsDockSettings(settings, opts) {
-  const { progress } = opts;
-
+export default function applySysPrefsDockSettings(settings, opts = defaultOpts) {
   if (isDevelopment()) {
-    if (!isObject(settings)) throw new Error(`${nameOf({ settings })} must be an object.`);
+    if (!isObject(settings)) throw new Error('applySysPrefsDockSettings.settings must be an object.');
+    if (!isObject(opts)) throw new Error('applySysPrefsDockSettings.opts must be an object.');
   }
 
-  const errs = validateSettings(settings);
-  if (!isNil(errs)) {
-    throw new Error(JSON.stringify(errs, null, 2));
-  }
-
+  const { progress } = opts;
   const {
     size,
     magnification,
@@ -97,11 +84,13 @@ export default function applySysPrefsDockSettings(settings, opts) {
     }
     if (!isUndefined(preferTabsWhenOpeningDocuments)) {
       progress.description = 'setting tabs when opening documents preferences';
+
       selectPopUpButton(window, { description: 'prefer tabs options' },
         tabsWhenOpeningDocumentsPreferencesMap[preferTabsWhenOpeningDocuments]);
     }
     if (!isUndefined(doubleClickTitleBar)) {
       progress.description = 'setting double-click windows\' title bar action';
+
       const checkboxQ = { name: 'Double-click a window’s title bar to' };
       if (doubleClickTitleBar === DoubleClickTitleBarActions.NONE) {
         selectCheckbox(window, checkboxQ, false);
