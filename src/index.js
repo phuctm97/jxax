@@ -29,7 +29,7 @@ scpt.run = () => {
     size: 0.25,
     magnification: false,
     magnificationSize: 0.0,
-    position: ScreenEdges.LEFT,
+    location: ScreenEdges.LEFT,
     minimizeEffect: MinimizeEffects.GENIE,
     preferTabsWhenOpeningDocuments: TabsWhenOpeningDocumentsPreferences.IN_FULL_SCREEN_ONLY,
     doubleClickTitleBar: DoubleClickTitleBarActions.ZOOM,

@@ -1,4 +1,6 @@
-import { isObject, isFunction, isBoolean } from 'lodash';
+import {
+  isObject, isFunction, isBoolean, isUndefined,
+} from 'lodash';
 import { isDevelopment } from '@utils';
 import * as ansi from 'ansi-escape-sequences';
 import { delay } from '@core/app';
@@ -87,7 +89,9 @@ const DELAY = 0.05;
 export function createConsoleReporter(opts = {}) {
   if (isDevelopment()) { // Validate arguments.
     if (!isObject(opts)) throw new TypeError('createConsoleReporter.opts must be an object.');
-    if (!isBoolean(opts.color)) throw new TypeError('createConsoleReporter.opts.color must be a boolean.');
+    if (!isUndefined(opts.color) && !isBoolean(opts.color)) {
+      throw new TypeError('createConsoleReporter.opts.color must be a boolean.');
+    }
   }
 
   // Extract options.

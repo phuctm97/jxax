@@ -1,4 +1,7 @@
-import { isObject, isArray } from 'lodash';
+import {
+  isObject, isArray, isNil, difference, merge,
+} from 'lodash';
+import * as validatejs from 'validate.js';
 
 /**
  * Check if the application is running in development mode.
@@ -48,4 +51,25 @@ export function join(collection, separator = ', ') {
  */
 export function nameOf(obj) {
   return Object.keys(obj)[0];
+}
+
+/**
+ * Validates the attributes object against the constraints.
+ * The attributes must be a plain object or a form element, things like backbone models etc are not
+ * supported. See https://validatejs.org/#constraints for constraints details.
+ *
+ * @param {object} attributes The attributes to validate.
+ * @param {object} constraints The constraints object.
+ * @returns {object} An object of array of errors message or `undefined` if no error found.
+ */
+export function validate(attributes, constraints) {
+  const unknownKeys = difference(Object.keys(attributes), Object.keys(constraints));
+  const unknownOptErrors = unknownKeys ? Object.fromEntries(unknownKeys.map((key) => [key, ['is unknown option']])) : undefined;
+  const validationErrors = validatejs(attributes, constraints, { fullMessages: false });
+  if (isNil(validationErrors) && isNil(unknownOptErrors)) return undefined;
+  if (!isNil(validationErrors) && !isNil(unknownOptErrors)) {
+    return merge(validationErrors, unknownOptErrors);
+  }
+  if (!isNil(validationErrors)) return validationErrors;
+  return unknownOptErrors;
 }

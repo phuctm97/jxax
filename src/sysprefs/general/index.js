@@ -51,7 +51,7 @@ const clickScrollBarActionsMap = {
  */
 
 /**
- * Apply System Preferences/General settings.
+ * Apply _System Preferences/General_ settings.
  *
  * @param {SysPrefsGeneralSettings} settings The settings object to apply.
  * @param {object} opts Options.
@@ -59,9 +59,9 @@ const clickScrollBarActionsMap = {
  * @returns {object[]} The job's run result details.
  */
 export default function applySysPrefsGeneralSettings(settings, opts = {}) {
-  if (isDevelopment()) {
-    if (!isObject(settings)) throw new Error('applySysPrefsGeneralSettings.settings must be an object.');
-    if (!isObject(opts)) throw new Error('applySysPrefsGeneralSettings.opts must be an object.');
+  if (isDevelopment()) { // Validate arguments.
+    if (!isObject(settings)) throw new TypeError('applySysPrefsGeneralSettings.settings must be an object.');
+    if (!isObject(opts)) throw new TypeError('applySysPrefsGeneralSettings.opts must be an object.');
   }
 
   const { progress } = opts;
