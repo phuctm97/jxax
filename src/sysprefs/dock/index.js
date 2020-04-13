@@ -26,7 +26,6 @@ const tabsWhenOpeningDocumentsPreferencesMap = {
  *
  * @param {SysPrefsDockSettings} settings The settings object to apply.
  * @param {object} opts Options.
- * @param {Progress} opts.progress A progress reporter object for the job to report its progress.
  * @returns {object[]} The job's run result details.
  */
 export default function applySysPrefsDockSettings(settings, opts = {}) {
@@ -35,7 +34,6 @@ export default function applySysPrefsDockSettings(settings, opts = {}) {
     if (!isObject(opts)) throw new TypeError('applySysPrefsDockSettings.opts must be an object.');
   }
 
-  const { progress } = opts;
   const {
     size,
     magnification,
@@ -52,7 +50,7 @@ export default function applySysPrefsDockSettings(settings, opts = {}) {
   } = settings;
 
   return runInSystemPrefs('Dock', ({ window }) => {
-    const stepper = createStepper({ progress });
+    const stepper = createStepper(opts);
     stepper.addStep('set dock size', !isUndefined(size), () => {
       dockPreferencesObject.dockSize = size;
     });

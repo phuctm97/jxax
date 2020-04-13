@@ -55,7 +55,6 @@ const clickScrollBarActionsMap = {
  *
  * @param {SysPrefsGeneralSettings} settings The settings object to apply.
  * @param {object} opts Options.
- * @param {Progress} opts.progress A progress reporter object for the job to report its progress.
  * @returns {object[]} The job's run result details.
  */
 export default function applySysPrefsGeneralSettings(settings, opts = {}) {
@@ -64,7 +63,6 @@ export default function applySysPrefsGeneralSettings(settings, opts = {}) {
     if (!isObject(opts)) throw new TypeError('applySysPrefsGeneralSettings.opts must be an object.');
   }
 
-  const { progress } = opts;
   const {
     appearance,
     accentColor,
@@ -82,7 +80,7 @@ export default function applySysPrefsGeneralSettings(settings, opts = {}) {
   } = settings;
 
   return runInSystemPrefs('General', ({ window }) => {
-    const stepper = createStepper({ progress });
+    const stepper = createStepper(opts);
     stepper.addStep('set appearance', !isUndefined(appearance), () => {
       selectToggle(window, appearancesMap[appearance]);
     });
