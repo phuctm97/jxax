@@ -12,8 +12,8 @@ import query, { isValidQuery, invalidQuery } from '@core/uiAutomation/query';
  */
 export default function selectCheckbox(parent, q, val) {
   if (isDevelopment()) { // Validate arguments.
-    if (!isValidQuery(q)) throw new Error(invalidQuery('selectCheckbox.q'));
-    if (!isBoolean(val)) throw new Error('selectCheckbox.val must be a boolean.');
+    if (!isValidQuery(q)) throw new TypeError(invalidQuery('selectCheckbox.q'));
+    if (!isBoolean(val)) throw new TypeError('selectCheckbox.val must be a boolean.');
   }
 
   return retry(() => {

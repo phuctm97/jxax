@@ -6,14 +6,14 @@ import query, { isValidQuery, invalidQuery } from '@core/uiAutomation/query';
 /**
  * Select and set value of a pop up button element.
  *
- * @param {object} parent The checkbox's parent object.
+ * @param {object} parent The pop up button's parent object.
  * @param {(number|string|object)} q The query to the pop up button.
  * @param {string} val The value to set.
  */
 export default function selectPopUpButton(parent, q, val) {
   if (isDevelopment()) { // Validate arguments.
-    if (!isValidQuery(q)) throw new Error(invalidQuery('selectPopUpButton.q'));
-    if (!isString(val)) throw new Error('selectPopUpButton.val must be a string.');
+    if (!isValidQuery(q)) throw new TypeError(invalidQuery('selectPopUpButton.q'));
+    if (!isString(val)) throw new TypeError('selectPopUpButton.val must be a string.');
   }
 
   return retry(() => {

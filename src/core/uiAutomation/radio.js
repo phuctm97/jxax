@@ -3,16 +3,16 @@ import { retry } from '@core/app';
 import query, { isValidQuery, invalidQuery } from '@core/uiAutomation/query';
 
 /**
- * Select a radio button (set it to be selected) in a radio group.
+ * Select a radio button (set its value to be selected) in a radio group.
  *
- * @param {object} parent The checkbox's parent object.
+ * @param {object} parent The radio group's parent object.
  * @param {(number|string|object)} groupQ The query to the radio group.
  * @param {(number|string|object)} buttonQ The query to the radio button within the radio group.
  */
 export default function selectRadio(parent, groupQ, buttonQ) {
   if (isDevelopment()) { // Validate arguments.
-    if (!isValidQuery(groupQ)) throw new Error(invalidQuery('selectRadio.groupQ'));
-    if (!isValidQuery(buttonQ)) throw new Error(invalidQuery('selectRadio.buttonQ'));
+    if (!isValidQuery(groupQ)) throw new TypeError(invalidQuery('selectRadio.groupQ'));
+    if (!isValidQuery(buttonQ)) throw new TypeError(invalidQuery('selectRadio.buttonQ'));
   }
 
   return retry(() => {
