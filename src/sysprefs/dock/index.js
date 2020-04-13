@@ -1,6 +1,6 @@
 import { isObject, isUndefined } from 'lodash';
 import { isDevelopment } from '@utils';
-import { retry } from '@core/app';
+import { createStepper } from '@core/workflow';
 import dockPreferencesObject from '@core/dock';
 import { selectPopUpButton, selectCheckbox } from '@core/uiAutomation';
 import runInSystemPrefs from '@sysprefs/app';
@@ -18,18 +18,18 @@ const tabsWhenOpeningDocumentsPreferencesMap = {
 
 /**
  * @typedef {import('@sysprefs/dock/options').SysPrefsDockSettings} SysPrefsDockSettings
+ * @typedef {import('@core/workflow').Progress} Progress
  */
-
-// Default options.
-const defaultOpts = { progress: { description: '' } };
 
 /**
  * Apply System Preferences/Dock settings.
  *
  * @param {SysPrefsDockSettings} settings The settings object to apply.
  * @param {object} opts Options.
+ * @param {Progress} opts.progress A progress reporter object for the job to report its progress.
+ * @returns {object[]} The job's run result details.
  */
-export default function applySysPrefsDockSettings(settings, opts = defaultOpts) {
+export default function applySysPrefsDockSettings(settings, opts = {}) {
   if (isDevelopment()) {
     if (!isObject(settings)) throw new Error('applySysPrefsDockSettings.settings must be an object.');
     if (!isObject(opts)) throw new Error('applySysPrefsDockSettings.opts must be an object.');
@@ -52,76 +52,56 @@ export default function applySysPrefsDockSettings(settings, opts = defaultOpts) 
   } = settings;
 
   return runInSystemPrefs('Dock', ({ window }) => {
-    if (!isUndefined(size)) {
-      progress.description = 'setting size';
-      retry(() => {
-        dockPreferencesObject.dockSize = size;
+    const stepper = createStepper({ progress });
+    stepper.addStep('set dock size', !isUndefined(size), () => {
+      dockPreferencesObject.dockSize = size;
+    });
+    stepper.addStep('set magnification', !isUndefined(magnification), () => {
+      dockPreferencesObject.magnification = magnification;
+    });
+    stepper.addStep('set magnification size', !isUndefined(magnificationSize), () => {
+      dockPreferencesObject.magnificationSize = magnificationSize;
+    });
+    stepper.addStep('set position', !isUndefined(position), () => {
+      dockPreferencesObject.screenEdge = position;
+    });
+    stepper.addStep('set minimization effect', !isUndefined(minimizeEffect), () => {
+      dockPreferencesObject.minimizeEffect = minimizeEffect;
+    });
+    stepper.addStep('set tabs when opening documents preferences',
+      !isUndefined(preferTabsWhenOpeningDocuments),
+      () => {
+        selectPopUpButton(window, { description: 'prefer tabs options' },
+          tabsWhenOpeningDocumentsPreferencesMap[preferTabsWhenOpeningDocuments]);
       });
-    }
-    if (!isUndefined(magnification)) {
-      progress.description = 'setting magnification';
-      retry(() => {
-        dockPreferencesObject.magnification = magnification;
+    stepper.addStep('set double-click windows\' title bar action',
+      !isUndefined(doubleClickTitleBar),
+      () => {
+        const checkboxQ = { name: 'Double-click a window’s title bar to' };
+        if (doubleClickTitleBar === DoubleClickTitleBarActions.NONE) {
+          selectCheckbox(window, checkboxQ, false);
+        } else {
+          selectCheckbox(window, checkboxQ, true);
+          selectPopUpButton(window, { description: 'double click options' }, doubleClickTitleBar);
+        }
       });
-    }
-    if (!isUndefined(magnificationSize)) {
-      progress.description = 'setting magnification size';
-      retry(() => {
-        dockPreferencesObject.magnificationSize = magnificationSize;
-      });
-    }
-    if (!isUndefined(position)) {
-      progress.description = 'setting position';
-      retry(() => {
-        dockPreferencesObject.screenEdge = position;
-      });
-    }
-    if (!isUndefined(minimizeEffect)) {
-      progress.description = 'setting minimization effect';
-      retry(() => {
-        dockPreferencesObject.minimizeEffect = minimizeEffect;
-      });
-    }
-    if (!isUndefined(preferTabsWhenOpeningDocuments)) {
-      progress.description = 'setting tabs when opening documents preferences';
-
-      selectPopUpButton(window, { description: 'prefer tabs options' },
-        tabsWhenOpeningDocumentsPreferencesMap[preferTabsWhenOpeningDocuments]);
-    }
-    if (!isUndefined(doubleClickTitleBar)) {
-      progress.description = 'setting double-click windows\' title bar action';
-
-      const checkboxQ = { name: 'Double-click a window’s title bar to' };
-      if (doubleClickTitleBar === DoubleClickTitleBarActions.NONE) {
-        selectCheckbox(window, checkboxQ, false);
-      } else {
-        selectCheckbox(window, checkboxQ, true);
-        selectPopUpButton(window, { description: 'double click options' }, doubleClickTitleBar);
-      }
-    }
-    if (!isUndefined(minimizeToAppIcon)) {
-      progress.description = 'setting minimize windows action';
+    stepper.addStep('set minimize windows action', !isUndefined(minimizeToAppIcon), () => {
       selectCheckbox(window, { name: 'Minimize windows into application icon' }, minimizeToAppIcon);
-    }
-    if (!isUndefined(animate)) {
-      progress.description = 'setting animation';
-      retry(() => {
-        dockPreferencesObject.animate = animate;
+    });
+    stepper.addStep('set animate', !isUndefined(animate), () => {
+      dockPreferencesObject.animate = animate;
+    });
+    stepper.addStep('set autohide', !isUndefined(autohide), () => {
+      dockPreferencesObject.autohide = autohide;
+    });
+    stepper.addStep('set show indicators for open applications',
+      !isUndefined(showOpenIndicators),
+      () => {
+        selectCheckbox(window, { name: 'Show indicators for open applications' }, showOpenIndicators);
       });
-    }
-    if (!isUndefined(autohide)) {
-      progress.description = 'setting autohide';
-      retry(() => {
-        dockPreferencesObject.autohide = autohide;
-      });
-    }
-    if (!isUndefined(showOpenIndicators)) {
-      progress.description = 'setting show indicators for open applications';
-      selectCheckbox(window, { name: 'Show indicators for open applications' }, showOpenIndicators);
-    }
-    if (!isUndefined(showRecentApps)) {
-      progress.description = 'setting show recent apps';
+    stepper.addStep('set show recent apps', !isUndefined(showRecentApps), () => {
       selectCheckbox(window, { name: 'Show recent applications in Dock' }, showRecentApps);
-    }
+    });
+    return stepper.run();
   });
 }
