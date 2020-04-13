@@ -1,5 +1,5 @@
 import { isObject, isUndefined, capitalize } from 'lodash';
-import { isDevelopment } from '@utils';
+import { IS_DEV } from '@utils';
 import { createStepper } from '@core/workflow';
 import appearancePreferencesObject, { ScrollBarActions } from '@core/appearance';
 import {
@@ -59,7 +59,7 @@ const clickScrollBarActionsMap = {
  * @returns {object[]} The job's run result details.
  */
 export default function applySysPrefsGeneralSettings(settings, opts = {}) {
-  if (isDevelopment()) { // Validate arguments.
+  if (IS_DEV) { // Validate arguments.
     if (!isObject(settings)) throw new TypeError('applySysPrefsGeneralSettings.settings must be an object.');
     if (!isObject(opts)) throw new TypeError('applySysPrefsGeneralSettings.opts must be an object.');
   }

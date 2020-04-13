@@ -1,5 +1,5 @@
 import { isFunction, isString, isEmpty } from 'lodash';
-import { isDevelopment } from '@utils';
+import { IS_DEV } from '@utils';
 import { retry } from '@core/app';
 import runInApp from '@core/uiAutomation';
 
@@ -15,7 +15,7 @@ import runInApp from '@core/uiAutomation';
  * @returns {any} Return(s) of `fn`.
  */
 export default function runInSystemPrefs(pane, fn) {
-  if (isDevelopment()) { // Validate arguments.
+  if (IS_DEV) { // Validate arguments.
     if (!isString(pane)) throw new TypeError('runInSystemPrefs.pane must be a string.');
     if (!isFunction(fn)) throw new TypeError('runInSystemPrefs.fn must be a function.');
   }

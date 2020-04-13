@@ -1,5 +1,5 @@
 import { isBoolean } from 'lodash';
-import { isDevelopment } from '@utils';
+import { IS_DEV } from '@utils';
 import { retry } from '@core/app';
 import query, { isValidQuery, invalidQuery } from '@core/uiAutomation/query';
 
@@ -11,7 +11,7 @@ import query, { isValidQuery, invalidQuery } from '@core/uiAutomation/query';
  * @param {boolean} val The value to set.
  */
 export default function selectCheckbox(parent, q, val) {
-  if (isDevelopment()) { // Validate arguments.
+  if (IS_DEV) { // Validate arguments.
     if (!isValidQuery(q)) throw new TypeError(invalidQuery('selectCheckbox.q'));
     if (!isBoolean(val)) throw new TypeError('selectCheckbox.val must be a boolean.');
   }

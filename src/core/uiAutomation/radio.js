@@ -1,4 +1,4 @@
-import { isDevelopment } from '@utils';
+import { IS_DEV } from '@utils';
 import { retry } from '@core/app';
 import query, { isValidQuery, invalidQuery } from '@core/uiAutomation/query';
 
@@ -10,7 +10,7 @@ import query, { isValidQuery, invalidQuery } from '@core/uiAutomation/query';
  * @param {(number|string|object)} buttonQ The query to the radio button within the radio group.
  */
 export default function selectRadio(parent, groupQ, buttonQ) {
-  if (isDevelopment()) { // Validate arguments.
+  if (IS_DEV) { // Validate arguments.
     if (!isValidQuery(groupQ)) throw new TypeError(invalidQuery('selectRadio.groupQ'));
     if (!isValidQuery(buttonQ)) throw new TypeError(invalidQuery('selectRadio.buttonQ'));
   }
