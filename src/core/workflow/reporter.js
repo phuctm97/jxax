@@ -5,6 +5,8 @@ import { delay } from '@core/app';
 
 /**
  * @typedef {object} Reporter A workflow reporter.
+ * Reporter is designed to be used with `runWorkflow`, a workflow uses reporter to report its
+ * progress, the reporter renders the workflow's progress.
  *
  * @property {({name: string, description: string}) => undefined} newJob Report there's a new job.
  * @property {({name: string, description: string}) => undefined} updateJob Update the current
@@ -76,11 +78,12 @@ const DEFAULT_DESCRIPTION_FORMAT = 'grey';
 const DELAY = 0.05;
 
 /**
- * Create a console reporter.
+ * Create a console reporter, which report workflows' progresses to the console or terminal it's
+ * attached to.
  *
  * @param {object} opts Options.
  * @param {boolean} opts.color Whether report to console in colorful format.
- * @returns {Reporter} The created reporter.
+ * @returns {Reporter} A console reporter.
  */
 export function createConsoleReporter(opts = {}) {
   const { color } = { ...createConsoleReporter.defaultOpts, ...opts };

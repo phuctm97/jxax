@@ -1,6 +1,6 @@
 import { isObject, isUndefined, capitalize } from 'lodash';
 import { isDevelopment } from '@utils';
-import { retry } from '@core/app';
+import { createStepper } from '@core/workflow';
 import appearancePreferencesObject, { ScrollBarActions } from '@core/appearance';
 import {
   selectCheckbox, selectPopUpButton, selectRadio, selectToggle,
@@ -47,6 +47,7 @@ const clickScrollBarActionsMap = {
 
 /**
  * @typedef {import('@sysprefs/general/options').SysPrefsGeneralSettings} SysPrefsGeneralSettings
+ * @typedef {import('@core/workflow').Progress} Progress
  */
 
 /**
@@ -54,8 +55,10 @@ const clickScrollBarActionsMap = {
  *
  * @param {SysPrefsGeneralSettings} settings The settings object to apply.
  * @param {object} opts Options.
+ * @param {Progress} opts.progress A progress reporter object for the job to report its progress.
+ * @returns {object[]} The job's run result details.
  */
-export default function applySysPrefsGeneralSettings(settings, opts) {
+export default function applySysPrefsGeneralSettings(settings, opts = {}) {
   if (isDevelopment()) {
     if (!isObject(settings)) throw new Error('applySysPrefsGeneralSettings.settings must be an object.');
     if (!isObject(opts)) throw new Error('applySysPrefsGeneralSettings.opts must be an object.');
@@ -79,65 +82,52 @@ export default function applySysPrefsGeneralSettings(settings, opts) {
   } = settings;
 
   return runInSystemPrefs('General', ({ window }) => {
-    if (!isUndefined(appearance)) {
-      progress.description = 'setting appearance';
+    const stepper = createStepper({ progress });
+    stepper.addStep('set appearance', !isUndefined(appearance), () => {
       selectToggle(window, appearancesMap[appearance]);
-    }
-    if (!isUndefined(accentColor)) {
-      progress.description = 'setting accent color';
+    });
+    stepper.addStep('set accent color', !isUndefined(accentColor), () => {
       selectToggle(window, accentColorsMap[accentColor]);
-    }
-    if (!isUndefined(highlightColor)) {
-      progress.description = 'setting highlight color';
+    });
+    stepper.addStep('set highlight color', !isUndefined(highlightColor), () => {
       selectPopUpButton(window, { name: 'Highlight color:' }, capitalize(highlightColor));
-    }
-    if (!isUndefined(sidebarIconSize)) {
-      progress.description = 'setting sidebar icon size';
+    });
+    stepper.addStep('set sidebar icon size', !isUndefined(sidebarIconSize), () => {
       selectPopUpButton(window, { name: 'Sidebar icon size:' }, capitalize(sidebarIconSize));
-    }
-    if (!isUndefined(autoHideMenuBar)) {
-      progress.description = 'setting autohide menu bar';
+    });
+    stepper.addStep('set autohide menu bar', !isUndefined(autoHideMenuBar), () => {
       selectCheckbox(window, { name: 'Automatically hide and show the menu bar' }, autoHideMenuBar);
-    }
-    if (!isUndefined(showScrollBars)) {
-      progress.description = 'setting show scroll bars trigger';
+    });
+    stepper.addStep('set show scroll bars trigger', !isUndefined(showScrollBars), () => {
       selectRadio(window, 1, showScrollBarsTriggersMap[showScrollBars]);
-    }
-    if (!isUndefined(clickScrollBar)) {
-      progress.description = 'setting click scroll bar action';
-      retry(() => {
-        appearancePreferencesObject.scrollBarAction = clickScrollBarActionsMap[clickScrollBar];
-      });
-    }
-    if (!isUndefined(defaultWebBrowser)) {
-      progress.description = 'setting default web browser';
+    });
+    stepper.addStep('set click scroll bar action', !isUndefined(clickScrollBar), () => {
+      appearancePreferencesObject.scrollBarAction = clickScrollBarActionsMap[clickScrollBar];
+    });
+    stepper.addStep('set default web browser', !isUndefined(defaultWebBrowser), () => {
       selectPopUpButton(window, { description: 'Default Web Browser popup' }, defaultWebBrowser);
-    }
-    if (!isUndefined(askWhenClosingDocuments)) {
-      progress.description = 'setting ask when closing documents';
-      selectCheckbox(window, { name: 'Ask to keep changes when closing documents' }, askWhenClosingDocuments);
-    }
-    if (!isUndefined(closeWindowsWhenQuittingApp)) {
-      progress.description = 'setting close windows when quitting app';
-      selectCheckbox(window, { name: 'Close windows when quitting an app' }, closeWindowsWhenQuittingApp);
-    }
-    if (!isUndefined(recentItems)) {
-      progress.description = 'setting recent items';
-      retry(() => {
-        appearancePreferencesObject.recentApplicationsLimit = recentItems;
-        appearancePreferencesObject.recentDocumentsLimit = recentItems;
-        appearancePreferencesObject.recentServersLimit = recentItems;
+    });
+    stepper.addStep('set ask when closing documents',
+      !isUndefined(askWhenClosingDocuments),
+      () => {
+        selectCheckbox(window, { name: 'Ask to keep changes when closing documents' }, askWhenClosingDocuments);
       });
-    }
-    if (!isUndefined(allowHandoff)) {
-      progress.description = 'setting allow handoff';
+    stepper.addStep('set close windows when quitting app',
+      !isUndefined(closeWindowsWhenQuittingApp),
+      () => {
+        selectCheckbox(window, { name: 'Close windows when quitting an app' }, closeWindowsWhenQuittingApp);
+      });
+    stepper.addStep('set recent items', !isUndefined(recentItems), () => {
+      appearancePreferencesObject.recentApplicationsLimit = recentItems;
+      appearancePreferencesObject.recentDocumentsLimit = recentItems;
+      appearancePreferencesObject.recentServersLimit = recentItems;
+    });
+    stepper.addStep('set allow handoff', !isUndefined(allowHandoff), () => {
       selectCheckbox(window, { name: 'Allow Handoff between this Mac and your iCloud devices' }, allowHandoff);
-    }
-    if (!isUndefined(useFontSmoothing)) {
-      progress.description = 'setting use font smoothing';
-      retry(() => {
-        appearancePreferencesObject.fontSmoothing = useFontSmoothing;
-      });
-    }
+    });
+    stepper.addStep('set use font smoothing', !isUndefined(useFontSmoothing), () => {
+      appearancePreferencesObject.fontSmoothing = useFontSmoothing;
+    });
+    return stepper.run();
   });
 }

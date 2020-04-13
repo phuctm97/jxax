@@ -6,6 +6,7 @@ import defaultReporter, { isReporter, JobStatuses, ResultDetailMessageTypes } fr
 
 export * from '@core/workflow/reporter';
 export { default as defaultReporter } from '@core/workflow/reporter';
+export { default as createStepper } from '@core/workflow/stepper';
 
 // Some texts.
 const Strings = {
@@ -23,6 +24,7 @@ const Strings = {
 
 /**
  * @typedef {import('@core/workflow/reporter').Reporter} Reporter
+ * @typedef {import('@core/workflow/stepper').Progress} Progress
  */
 
 /**
@@ -146,6 +148,7 @@ export default function runWorkflow(jobs, { reporter } = { reporter: defaultRepo
     reporter.newJob({ name: job.name });
 
     // Build progress object for the job to report its progress.
+    /** @type {Progress} */
     const progress = {
       set description(description) { reporter.updateJob({ name: job.name, description }); },
     };
