@@ -61,7 +61,8 @@ export function nameOf(obj) {
  */
 export function validate(attributes, constraints) {
   const unknownKeys = difference(Object.keys(attributes), Object.keys(constraints));
-  const unknownOptErrors = unknownKeys ? Object.fromEntries(unknownKeys.map((key) => [key, ['is unknown option']])) : undefined;
+  const unknownOptErrors = unknownKeys.length > 0
+    ? Object.fromEntries(unknownKeys.map((key) => [key, ['is unknown option']])) : undefined;
   const validationErrors = validatejs(attributes, constraints, { fullMessages: false });
   if (isNil(validationErrors) && isNil(unknownOptErrors)) return undefined;
   if (!isNil(validationErrors) && !isNil(unknownOptErrors)) {
