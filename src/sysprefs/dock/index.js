@@ -22,7 +22,7 @@ const tabsWhenOpeningDocumentsPreferencesMap = {
  */
 
 /**
- * Apply System Preferences/Dock settings.
+ * Apply _System Preferences/Dock_ settings.
  *
  * @param {SysPrefsDockSettings} settings The settings object to apply.
  * @param {object} opts Options.
@@ -30,9 +30,9 @@ const tabsWhenOpeningDocumentsPreferencesMap = {
  * @returns {object[]} The job's run result details.
  */
 export default function applySysPrefsDockSettings(settings, opts = {}) {
-  if (isDevelopment()) {
-    if (!isObject(settings)) throw new Error('applySysPrefsDockSettings.settings must be an object.');
-    if (!isObject(opts)) throw new Error('applySysPrefsDockSettings.opts must be an object.');
+  if (isDevelopment()) { // Validate arguments.
+    if (!isObject(settings)) throw new TypeError('applySysPrefsDockSettings.settings must be an object.');
+    if (!isObject(opts)) throw new TypeError('applySysPrefsDockSettings.opts must be an object.');
   }
 
   const { progress } = opts;
@@ -40,7 +40,7 @@ export default function applySysPrefsDockSettings(settings, opts = {}) {
     size,
     magnification,
     magnificationSize,
-    position,
+    location,
     minimizeEffect,
     preferTabsWhenOpeningDocuments,
     doubleClickTitleBar,
@@ -62,8 +62,8 @@ export default function applySysPrefsDockSettings(settings, opts = {}) {
     stepper.addStep('set magnification size', !isUndefined(magnificationSize), () => {
       dockPreferencesObject.magnificationSize = magnificationSize;
     });
-    stepper.addStep('set position', !isUndefined(position), () => {
-      dockPreferencesObject.screenEdge = position;
+    stepper.addStep('set location', !isUndefined(location), () => {
+      dockPreferencesObject.screenEdge = location;
     });
     stepper.addStep('set minimization effect', !isUndefined(minimizeEffect), () => {
       dockPreferencesObject.minimizeEffect = minimizeEffect;

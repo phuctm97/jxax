@@ -114,7 +114,7 @@ export default function runWorkflow(jobs, { reporter } = { reporter: defaultRepo
       )) {
         throw new TypeError(`Job '${job.name}''s \`validate\` function returned invalid data. `
           + 'All jobs\' `validate` functions must return errors as an object of array of error '
-          + 'messages or undefined if there\'s no error.');
+          + 'messages or `undefined` if there\'s no error.');
       }
     }
 

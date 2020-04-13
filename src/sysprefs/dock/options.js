@@ -1,6 +1,5 @@
 import { isObject, isEmpty } from 'lodash';
-import { join } from '@utils';
-import * as validate from 'validate.js';
+import { join, validate } from '@utils';
 import { ScreenEdges, MinimizeEffects } from '@core/dock';
 
 export { ScreenEdges, MinimizeEffects };
@@ -27,8 +26,8 @@ export const DoubleClickTitleBarActions = {
   MINIMIZE: 'minimize',
 };
 
-// Helper function generates constraint object for an inclusion constraint.
-function inclusionConstraint(vals) {
+// Helper function generates inclusion constraints.
+function inclusion(vals) {
   return {
     inclusion: {
       within: isObject(vals) ? Object.values(vals) : vals,
@@ -38,7 +37,7 @@ function inclusionConstraint(vals) {
 }
 
 /**
- * System Preferences/Dock settings' constraints.
+ * _System Preferences/Dock_ settings' constraints.
  */
 const constraints = {
   size: {
@@ -56,10 +55,10 @@ const constraints = {
       lessThanOrEqualTo: 1,
     },
   },
-  position: inclusionConstraint(ScreenEdges),
-  minimizeEffect: inclusionConstraint(MinimizeEffects),
-  preferTabsWhenOpeningDocuments: inclusionConstraint(TabsWhenOpeningDocumentsPreferences),
-  doubleClickTitleBar: inclusionConstraint(DoubleClickTitleBarActions),
+  location: inclusion(ScreenEdges),
+  minimizeEffect: inclusion(MinimizeEffects),
+  preferTabsWhenOpeningDocuments: inclusion(TabsWhenOpeningDocumentsPreferences),
+  doubleClickTitleBar: inclusion(DoubleClickTitleBarActions),
   minimizeToAppIcon: { type: 'boolean' },
   animate: { type: 'boolean' },
   autohide: { type: 'boolean' },
@@ -68,13 +67,13 @@ const constraints = {
 };
 
 /**
- * @typedef {object} SysPrefsDockSettings System Preferences/Dock settings object.
+ * @typedef {object} SysPrefsDockSettings The _System Preferences/Dock_ settings object.
  *
  * @property {number} size Size/height of the items (between 0.0 (minimum) and 1.0 (maximum)).
  * @property {boolean} magnification Is magnification on or off?
  * @property {boolean} magnificationSize Maximum magnification size when magnification is on
  * (between 0.0 (minimum) and 1.0 (maximum)).
- * @property {ScreenEdges} position Location on screen.
+ * @property {ScreenEdges} location Location on screen.
  * @property {MinimizeEffects} minimizeEffect Minimization effect.
  * @property {TabsWhenOpeningDocumentsPreferences} preferTabsWhenOpeningDocuments Prefer tabs when
  * opening documents.
@@ -87,16 +86,16 @@ const constraints = {
  */
 
 /**
- * Validate a System Preferences/Dock settings object, return all errors or undefined if no error
- * found. Errors are returned an object whose keys are the invalid attributes' names and values are
- * arrays of error messages.
+ * Validate a +System Preferences/Dock_ settings object, return all errors or `undefined` if no
+ * error found. Errors are returned as an object whose keys are the invalid attributes' names and
+ * values are arrays of error messages.
  *
- * @param {SysPrefsDockSettings} settings The settings object to be validated.
- * @returns {any} The errors object or undefined if no error found.
+ * @param {SysPrefsDockSettings} settings The settings object to validate.
+ * @returns {any} The errors object or `undefined` if no error found.
  */
 export default function validateSettings(settings) {
   if (!isObject(settings) || isEmpty(Object.values(settings))) {
-    return { '.': ['no argument provided'] };
+    return { '.': ['no argument'] };
   }
-  return validate(settings, constraints, { fullMessages: false });
+  return validate(settings, constraints);
 }

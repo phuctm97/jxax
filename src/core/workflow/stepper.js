@@ -1,4 +1,6 @@
-import { isFunction, isString, isObject } from 'lodash';
+import {
+  isFunction, isString, isObject, isUndefined,
+} from 'lodash';
 import { isDevelopment } from '@utils';
 import { retry } from '@core/app';
 
@@ -33,7 +35,9 @@ import { retry } from '@core/app';
 export default function createStepper(opts = {}) {
   if (isDevelopment()) { // Validate arguments.
     if (!isObject(opts)) throw new TypeError('createStepper.opts must be an object.');
-    if (!isObject(opts.progress)) throw new TypeError('createStepper.opts.progress must be an object.');
+    if (!isUndefined(opts.progress) && !isObject(opts.progress)) {
+      throw new TypeError('createStepper.opts.progress must be an object.');
+    }
   }
 
   const { progress } = { ...createStepper.defaultOpts, ...opts };

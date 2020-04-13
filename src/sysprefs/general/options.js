@@ -1,6 +1,5 @@
 import { isObject, isEmpty } from 'lodash';
-import { join } from '@utils';
-import * as validate from 'validate.js';
+import { join, validate } from '@utils';
 
 /**
  * Appearances.
@@ -77,8 +76,8 @@ export const ClickScrollBarActions = {
   JUMP_TO_SPOT_CLICKED: 'jumpToSpotClicked',
 };
 
-// Helper function generates constraint object for an inclusion constraint.
-function inclusionConstraint(vals) {
+// Helper function generates inclusion constraints.
+function inclusion(vals) {
   return {
     inclusion: {
       within: isObject(vals) ? Object.values(vals) : vals,
@@ -88,26 +87,26 @@ function inclusionConstraint(vals) {
 }
 
 /**
- * System Preferences/General settings' constraints.
+ * _System Preferences/General_ settings' constraints.
  */
 const constraints = {
-  appearance: inclusionConstraint(Appearances),
-  accentColor: inclusionConstraint(AccentColors),
-  highlightColor: inclusionConstraint(HighlightColors),
-  sidebarIconSize: inclusionConstraint(SidebarIconSizes),
+  appearance: inclusion(Appearances),
+  accentColor: inclusion(AccentColors),
+  highlightColor: inclusion(HighlightColors),
+  sidebarIconSize: inclusion(SidebarIconSizes),
   autoHideMenuBar: { type: 'boolean' },
-  showScrollBars: inclusionConstraint(ShowScrollBarsTriggers),
-  clickScrollBar: inclusionConstraint(ClickScrollBarActions),
+  showScrollBars: inclusion(ShowScrollBarsTriggers),
+  clickScrollBar: inclusion(ClickScrollBarActions),
   defaultWebBrowser: { type: 'string' },
   askWhenClosingDocuments: { type: 'boolean' },
   closeWindowsWhenQuittingApp: { type: 'boolean' },
-  recentItems: inclusionConstraint([0, 5, 10, 15, 20, 30, 50]),
+  recentItems: inclusion([0, 5, 10, 15, 20, 30, 50]),
   allowHandoff: { type: 'boolean' },
   useFontSmoothing: { type: 'boolean' },
 };
 
 /**
- * @typedef {object} SysPrefsGeneralSettings System Preferences/General settings object.
+ * @typedef {object} SysPrefsGeneralSettings The _System Preferences/General_ settings object.
  *
  * @property {Appearances} appearance Appearance.
  * @property {AccentColors} accentColor Accent color.
@@ -125,16 +124,16 @@ const constraints = {
  */
 
 /**
- * Validate a System Preferences/General settings object, return all errors or undefined if no
+ * Validate a _System Preferences/General_ settings object, return all errors or `undefined` if no
  * error found. Errors are returned an object whose keys are the invalid attributes' names and
  * values are arrays of error messages.
  *
- * @param {SysPrefsGeneralSettings} settings The settings object to be validated.
- * @returns {any} The errors object or undefined if no error found.
+ * @param {SysPrefsGeneralSettings} settings The settings object to validate.
+ * @returns {any} The errors object or `undefined` if no error found.
  */
 export default function validateSettings(settings) {
   if (!isObject(settings) || isEmpty(Object.values(settings))) {
-    return { '.': ['no argument provided'] };
+    return { '.': ['no argument'] };
   }
-  return validate(settings, constraints, { fullMessages: false });
+  return validate(settings, constraints);
 }
