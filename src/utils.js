@@ -33,7 +33,7 @@ export function join(collection, separator = ', ') {
   if (isArray(collection)) {
     return collection.join(separator);
   }
-  throw new Error('collection must be either an object or an array.');
+  throw new TypeError('join.collection must be either an object or an array.');
 }
 
 /**

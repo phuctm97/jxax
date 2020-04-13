@@ -1,6 +1,6 @@
 /**
- * The JXA standard scripting additions module provides APIs for working with JXA standard
- * scripting addtions features, see Script Editor/Library/StandardAddtions.
+ * The JXA standard scripting additions module exports APIs for working with JXA standard scripting
+ * addtions features, see `Script Editor.app/Library/StandardAddtions`.
  */
 
 export * from '@core/addtions/file';

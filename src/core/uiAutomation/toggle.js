@@ -3,14 +3,14 @@ import { retry } from '@core/app';
 import query, { isValidQuery, invalidQuery } from '@core/uiAutomation/query';
 
 /**
- * Select a toggle element (set it to be selected).
+ * Select a toggle element (set its value to be selected).
  *
- * @param {object} parent The checkbox's parent object.
+ * @param {object} parent The toggle's parent object.
  * @param {(number|string|object)} q The query to the toggle.
  */
 export default function selectToggle(parent, q) {
   if (isDevelopment()) { // Validate arguments.
-    if (!isValidQuery(q)) throw new Error(invalidQuery('selectToggle.q'));
+    if (!isValidQuery(q)) throw new TypeError(invalidQuery('selectToggle.q'));
   }
 
   return retry(() => {

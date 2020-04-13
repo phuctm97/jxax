@@ -1,6 +1,6 @@
 /**
  * Dock Preferences Suite: Terms and Events for controlling the dock preferences.
- * See Script Editor/Library/System Events/Dock Preferences Suite.
+ * See `Script Editor.app/Library/System Events/Dock Preferences Suite`.
  */
 
 import {
@@ -16,7 +16,7 @@ export * from '@core/dock/options';
 const { dockPreferences } = access('System Events');
 
 /**
- * Dock preferences object.
+ * The dock preferences object exports APIs for getting and changing dock preferences.
  */
 const dockPreferencesObject = {
   /**
@@ -27,7 +27,7 @@ const dockPreferencesObject = {
     return dockPreferences.animate();
   },
   set animate(val) {
-    if (!isBoolean(val)) throw new Error('animate must be a boolean.');
+    if (!isBoolean(val)) throw new TypeError('dockPreferencesObject.animate must be a boolean.');
     dockPreferences.animate = val;
   },
 
@@ -39,7 +39,7 @@ const dockPreferencesObject = {
     return dockPreferences.autohide();
   },
   set autohide(val) {
-    if (!isBoolean(val)) throw new Error('animate must be a boolean.');
+    if (!isBoolean(val)) throw new TypeError('dockPreferencesObject.autohide must be a boolean.');
     dockPreferences.autohide = val;
   },
 
@@ -51,10 +51,10 @@ const dockPreferencesObject = {
     return dockPreferences.dockSize();
   },
   set dockSize(val) {
-    if (!isNumber(val)) throw new Error('animate must be a number.');
+    if (!isNumber(val)) throw new TypeError('dockPreferencesObject.dockSize must be a number.');
 
     const roundedVal = round(val, 2);
-    if (roundedVal < 0 || roundedVal > 1) throw new Error('animate must be between 0.00 and 1.00.');
+    if (roundedVal < 0 || roundedVal > 1) throw new TypeError('dockPreferencesObject.dockSize must be between 0.00 and 1.00.');
 
     dockPreferences.dockSize = roundedVal;
   },
@@ -67,7 +67,7 @@ const dockPreferencesObject = {
     return dockPreferences.magnification();
   },
   set magnification(val) {
-    if (!isBoolean(val)) throw new Error('magnification must be a boolean.');
+    if (!isBoolean(val)) throw new TypeError('dockPreferencesObject.magnification must be a boolean.');
     dockPreferences.magnification = val;
   },
 
@@ -79,10 +79,10 @@ const dockPreferencesObject = {
     return dockPreferences.magnificationSize();
   },
   set magnificationSize(val) {
-    if (!isNumber(val)) throw new Error('magnificationSize must be a number.');
+    if (!isNumber(val)) throw new TypeError('dockPreferencesObject.magnificationSize must be a number.');
 
     const roundedVal = round(val, 2);
-    if (roundedVal < 0 || roundedVal > 1) throw new Error('magnificationSize must be between 0.00 and 1.00.');
+    if (roundedVal < 0 || roundedVal > 1) throw new TypeError('dockPreferencesObject.magnificationSize must be between 0.00 and 1.00.');
 
     dockPreferences.magnificationSize = roundedVal;
   },
@@ -96,7 +96,7 @@ const dockPreferencesObject = {
   },
   set minimizeEffect(val) {
     if (!includes(MinimizeEffects, val)) {
-      throw new Error(`minimizeEffect must be within [${join(MinimizeEffects)}].`);
+      throw new TypeError(`dockPreferencesObject.minimizeEffect must be within [${join(MinimizeEffects)}].`);
     }
     dockPreferences.minimizeEffect = val;
   },
@@ -110,7 +110,7 @@ const dockPreferencesObject = {
   },
   set screenEdge(val) {
     if (!includes(ScreenEdges, val)) {
-      throw new Error(`screenEdge must be within [${join(ScreenEdges)}].`);
+      throw new TypeError(`dockPreferencesObject.screenEdge must be within [${join(ScreenEdges)}].`);
     }
     dockPreferences.screenEdge = val;
   },

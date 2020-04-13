@@ -1,5 +1,5 @@
 /**
- * The JXA core application module provides APIs for accessing the current OSA application running
+ * The JXA core application module exports APIs for accessing the current OSA application running
  * the script, other scriptable applications and builtin JXA functions.
  */
 
@@ -34,11 +34,11 @@ export default app;
 /**
  * Get access to a scriptable application.
  *
- * @param {(string|number)} url The application's name, bundle ID, path or process ID.
+ * @param {(string|number)} appUrl The application's name, bundle ID, path or process ID.
  * @returns {object} The scriptable application's object specifier.
  */
-export function access(url) {
-  return global.Application(url);
+export function access(appUrl) {
+  return global.Application(appUrl);
 }
 
 /**
@@ -51,21 +51,21 @@ export function delay(secs) {
 }
 
 /**
- * Retry a function til it succeeded or attempts exceeded opts.maxAttempts. Between each retry
- * attempt there's a delay of opts.delayInterval seconds.
+ * Retry a function until it either succeeded or exceeded `opts.maxAttempts`. Between each retry
+ * attempt there's a delay of `opts.delayInterval` seconds.
  *
- * @param {() => any} fn The function to execute.
+ * @param {() => any} fn The function to attempt.
  * @param {object} opts Options.
  * @param {number} opts.maxAttempts The maximum attempts allowed (first invocation is inclusive)
- * (default is retry.defaultOpts.maxAttempts = 3).
+ * (default is `retry.defaultOpts.maxAttempts = 3`).
  * @param {number} opts.delayInterval The delay in seconds between each retry attempt (default is
- * retry.defaultOpts.delayInterval = 0.5).
- * @returns {any} Returns of fn.
+ * `retry.defaultOpts.delayInterval = 0.5`).
+ * @returns {any} Return(s) of `fn`.
  */
 export function retry(fn, opts = {}) {
   if (isDevelopment()) { // Validate arguments.
-    if (!isFunction(fn)) throw new Error('retry.fn must be a function.');
-    if (!isObject(opts)) throw new Error('retry.opts must be an object.');
+    if (!isFunction(fn)) throw new TypeError('retry.fn must be a function.');
+    if (!isObject(opts)) throw new TypeError('retry.opts must be an object.');
   }
 
   const { maxAttempts, delayInterval } = { ...retry.defaultOpts, ...opts };
@@ -77,7 +77,9 @@ export function retry(fn, opts = {}) {
     try {
       return fn();
     } catch (e) {
-      if (attempts >= maxAttempts) {
+      if ((e instanceof TypeError) || (attempts >= maxAttempts)) {
+        // Error is of type TypeEror or max attempts exceeded, throw the error and fail.
+        // TypeError is thrown directly without retry as TypeError is mostly non-retriable.
         throw e;
       }
       delay(delayInterval);

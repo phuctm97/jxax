@@ -6,20 +6,23 @@ import { access, retry } from '@core/app';
 import { accessApplicationProcess } from '@core/processes';
 
 /**
- * Invoke a function within an application by activating the application beforing invoking the
- * function and quitting the application after the function's invocation is finished. The function
- * receives the application, the application's process and first window as its first argument.
+ * Invoke a function within an application's scope by activating the application before invoking
+ * the function and quitting the application after the function's invocation has finished. The
+ * function receives the application, the application's process and first window as its first
+ * argument (as an object).
  *
- * @param {(string|number)} url The application's name, bundle ID, path or process ID.
+ * @param {(string|number)} appUrl The application's name, bundle ID, path or process ID.
  * @param {({app: object, process: object, window: object}) => any} fn The function to invoke.
- * @returns {any} Returns of fn.
+ * @returns {any} Return(s) of `fn`.
  */
-export default function runInApp(url, fn) {
-  if (isDevelopment()) {
-    if (!isString(url) && !isSafeInteger(url)) {
-      throw new Error('runInApp.url must be either a string or an integer.');
+export default function runInApp(appUrl, fn) {
+  if (isDevelopment()) { // Validate arguments.
+    if (!isString(appUrl) && !isSafeInteger(appUrl)) {
+      throw new TypeError('runInApp.appUrl must be either a string or an integer.');
     }
-    if (!isFunction(fn)) throw new Error('runInApp.fn must be a function.');
+    if (!isFunction(fn)) {
+      throw new TypeError('runInApp.fn must be a function.');
+    }
   }
 
   let app;
@@ -28,13 +31,13 @@ export default function runInApp(url, fn) {
 
   // Try activate the application.
   retry(() => {
-    app = access(url);
+    app = access(appUrl);
     app.activate();
   });
 
   // Try access the application's process and first window (0th).
   retry(() => {
-    process = accessApplicationProcess(url);
+    process = accessApplicationProcess(appUrl);
     window = process.windows.at(0);
   });
 

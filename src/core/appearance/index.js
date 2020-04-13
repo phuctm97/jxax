@@ -1,6 +1,6 @@
 /**
  * Appearance Suite: Terms for controlling Appearance preferences.
- * See Script Editor/Library/System Events/Appearance Suite.
+ * See `Script Editor.app/Library/System Events/Appearance Suite`.
  */
 
 import {
@@ -22,7 +22,7 @@ const { appearancePreferences } = access('System Events');
  */
 
 /**
- * Appearance preferences object.
+ * The appearance preferences object exports APIs for getting and changing appearance preferences.
  */
 const appearancePreferencesObject = {
   /**
@@ -34,7 +34,7 @@ const appearancePreferencesObject = {
   },
   set appearance(val) {
     if (!includes(Appearances, val)) {
-      throw new Error(`appearance must be within [${join(Appearances)}].`);
+      throw new TypeError(`appearancePreferencesObject.appearance must be within [${join(Appearances)}].`);
     }
     appearancePreferences.appearance = val;
   },
@@ -47,7 +47,7 @@ const appearancePreferencesObject = {
     return appearancePreferences.fontSmoothing();
   },
   set fontSmoothing(val) {
-    if (!isBoolean(val)) throw new Error('fontSmoothing must be a boolean.');
+    if (!isBoolean(val)) throw new TypeError('appearancePreferencesObject.fontSmoothing must be a boolean.');
     appearancePreferences.fontSmoothing = val;
   },
 
@@ -60,13 +60,13 @@ const appearancePreferencesObject = {
   },
   set fontSmoothingStyle(val) {
     if (!includes(FontSmoothingStyles, val)) {
-      throw new Error(`fontSmoothingStyle must be within [${join(FontSmoothingStyles)}].`);
+      throw new TypeError(`appearancePreferencesObject.fontSmoothingStyle must be within [${join(FontSmoothingStyles)}].`);
     }
     appearancePreferences.fontSmoothingStyle = val;
   },
 
   /**
-   * Color used for hightlighting selected text and lists.
+   * Color used for highlighting selected text and lists.
    * @type {(HighlightColors|Color)}
    */
   get highlightColor() {
@@ -75,14 +75,14 @@ const appearancePreferencesObject = {
   set highlightColor(val) {
     if (isString(val)) {
       if (!includes(HighlightColors, val)) {
-        throw new Error(`highlightColor must be within [${join(HighlightColors)}].`);
+        throw new TypeError(`appearancePreferencesObject.highlightColor must be within [${join(HighlightColors)}].`);
       }
     } else if (isArray(val)) {
       if (val.length !== 3 || !every(val, isSafeInteger)) {
-        throw new Error('highlightColor must be an array of three integers.');
+        throw new TypeError('appearancePreferencesObject.highlightColor must be an array of three integers.');
       }
     } else {
-      throw new Error('highlightColor must be either a string or an array of three integers.');
+      throw new TypeError('appearancePreferencesObject.highlightColor must be either a string or an array of three integers.');
     }
     appearancePreferences.highlightColor = val;
   },
@@ -95,7 +95,7 @@ const appearancePreferencesObject = {
     return appearancePreferences.recentApplicationsLimit();
   },
   set recentApplicationsLimit(val) {
-    if (!isSafeInteger(val)) throw new Error('recentApplicationsLimit must be an integer.');
+    if (!isSafeInteger(val)) throw new TypeError('appearancePreferencesObject.recentApplicationsLimit must be an integer.');
     appearancePreferences.recentApplicationsLimit = val;
   },
 
@@ -107,7 +107,7 @@ const appearancePreferencesObject = {
     return appearancePreferences.recentDocumentsLimit();
   },
   set recentDocumentsLimit(val) {
-    if (!isSafeInteger(val)) throw new Error('recentDocumentsLimit must be an integer.');
+    if (!isSafeInteger(val)) throw new TypeError('appearancePreferencesObject.recentDocumentsLimit must be an integer.');
     appearancePreferences.recentDocumentsLimit = val;
   },
 
@@ -119,7 +119,7 @@ const appearancePreferencesObject = {
     return appearancePreferences.recentServersLimit();
   },
   set recentServersLimit(val) {
-    if (!isSafeInteger(val)) throw new Error('recentServersLimit must be an integer.');
+    if (!isSafeInteger(val)) throw new TypeError('appearancePreferencesObject.recentServersLimit must be an integer.');
     appearancePreferences.recentServersLimit = val;
   },
 
@@ -132,7 +132,7 @@ const appearancePreferencesObject = {
   },
   set scrollBarAction(val) {
     if (!includes(ScrollBarActions, val)) {
-      throw new Error(`scrollBarAction must be within [${join(ScrollBarActions)}].`);
+      throw new TypeError(`appearancePreferencesObject.scrollBarAction must be within [${join(ScrollBarActions)}].`);
     }
     appearancePreferences.scrollBarAction = val;
   },
@@ -145,7 +145,7 @@ const appearancePreferencesObject = {
     return appearancePreferences.smoothScrolling();
   },
   set smoothScrolling(val) {
-    if (!isBoolean(val)) throw new Error('smoothScrolling must be a boolean.');
+    if (!isBoolean(val)) throw new TypeError('appearancePreferencesObject.smoothScrolling must be a boolean.');
     appearancePreferences.smoothScrolling = val;
   },
 
@@ -157,7 +157,7 @@ const appearancePreferencesObject = {
     return appearancePreferences.darkMode();
   },
   set darkMode(val) {
-    if (!isBoolean(val)) throw new Error('darkMode must be a boolean.');
+    if (!isBoolean(val)) throw new TypeError('appearancePreferencesObject.darkMode must be a boolean.');
     appearancePreferences.darkMode = val;
   },
 };

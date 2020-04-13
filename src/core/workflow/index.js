@@ -2,7 +2,7 @@ import {
   isObject, isFunction, isString, isArray, isNil, isEmpty, every,
 } from 'lodash';
 import { isDevelopment } from '@utils';
-import defaultReporter, { isReporter, JobStatuses, ResultDetailMessageTypes } from '@core/workflow/reporter';
+import defaultReporter, { isReporter, JobStatuses, ResultDetailTypes } from '@core/workflow/reporter';
 
 export * from '@core/workflow/reporter';
 export { default as defaultReporter } from '@core/workflow/reporter';
@@ -38,23 +38,23 @@ const Strings = {
  */
 export function createJob(name, validate, run, args) {
   if (isDevelopment()) { // Validate arguments.
-    if (!isString(name)) throw new Error('createJob.name must be a string.');
+    if (!isString(name)) throw new TypeError('createJob.name must be a string.');
     if (!isNil(validate) && !isFunction(validate)) {
-      throw new Error('createJob.validate must be a function or nullish.');
+      throw new TypeError('createJob.validate must be a function or nullish.');
     }
-    if (!isFunction(run)) throw new Error('createJob.run must be a function.');
-    if (!isObject(args)) throw new Error('createJob.args must be an object.');
+    if (!isFunction(run)) throw new TypeError('createJob.run must be a function.');
+    if (!isObject(args)) throw new TypeError('createJob.args must be an object.');
   }
 
   return {
     name,
     validate: validate ? () => validate(args) : undefined,
-    run: (opts) => run(args, opts),
+    run: (opts = {}) => run(args, opts),
   };
 }
 
 /**
- * Check if an object is a valid job or not.
+ * Check if an object is a valid job.
  *
  * @param {any} obj The object to check.
  * @returns {boolean} Whether the object is a valid job.
@@ -67,19 +67,19 @@ export function isJob(obj) {
 }
 
 /**
- * Run a workflow of list of jobs.
+ * Run a workflow, which essentially is a list of jobs.
  *
- * @param {Job[]} jobs The array of jobs to be run.
+ * @param {Job[]} jobs The array of jobs to run.
  * @param {object} opts Options.
  * @param {Reporter} opts.reporter A reporter for the workflow to report progress, errors and
  * results.
- * @returns {boolean} Whether the workflow run succeeded or not. The workflow only succeeds if all
- * jobs succeed, it fails if any job fails.
+ * @returns {boolean} Whether the workflow run succeeded or not. A workflow is considered succeeded
+ * if all of its jobs succeeded, otherwise it's considered failed.
  */
 export default function runWorkflow(jobs, { reporter } = { reporter: defaultReporter }) {
   if (isDevelopment()) { // Validate arguments.
-    if (!isArray(jobs) || !every(jobs, isJob)) throw new Error('runWorkflow.jobs must be an array of jobs.');
-    if (!isReporter(reporter)) throw new Error('runWorkflow.opts.reporter must be a reporter.');
+    if (!isArray(jobs) || !every(jobs, isJob)) throw new TypeError('runWorkflow.jobs must be an array of jobs.');
+    if (!isReporter(reporter)) throw new TypeError('runWorkflow.opts.reporter must be a reporter.');
   }
 
   // Run all jobs' validations.
@@ -108,20 +108,20 @@ export default function runWorkflow(jobs, { reporter } = { reporter: defaultRepo
     const jobErrors = job.validate();
     if (isNil(jobErrors)) return; // No error.
 
-    if (isDevelopment()) { // Validate job's validate returns.
+    if (isDevelopment()) { // Validate the job's validate return(s).
       if (!isObject(jobErrors) || !every(
         Object.values(jobErrors), (errs) => every(errs, isString),
       )) {
-        throw new Error(`Job ${job.name}'s validate function returned invalid data. `
-          + 'All jobs\' validate functions must return errors as an object of array of error '
-          + 'messages or undefined if no error found.');
+        throw new TypeError(`Job '${job.name}''s \`validate\` function returned invalid data. `
+          + 'All jobs\' `validate` functions must return errors as an object of array of error '
+          + 'messages or undefined if there\'s no error.');
       }
     }
 
     // Map the job's validation errors into a single array of validation errors.
     Object.entries(jobErrors).forEach(([arg, errs]) => {
       errors.push(...errs.map((err) => ({
-        type: ResultDetailMessageTypes.VALIDATION_ERROR,
+        type: ResultDetailTypes.VALIDATION_ERROR,
         job: job.name,
         argument: arg,
         message: err,
@@ -138,13 +138,13 @@ export default function runWorkflow(jobs, { reporter } = { reporter: defaultRepo
     return false;
   }
 
-  // Report validation finished successfully.
+  // Report that validation has finished successfully.
   reporter.endJob({ status: JobStatuses.SUCCEEDED });
 
-  // Run all jobs, workflow fails if any job fails, workflow only succeeds if all jobs succeed.
+  // Run all jobs, fails if any job fails, succeeds if all jobs succeed.
   let result = true;
   jobs.forEach((job) => {
-    // Report new job running.
+    // Report that a new job is in run.
     reporter.newJob({ name: job.name });
 
     // Build progress object for the job to report its progress.
@@ -162,7 +162,7 @@ export default function runWorkflow(jobs, { reporter } = { reporter: defaultRepo
       // One job failed, keep running other jobs but workflow is now considered failed.
       result = false;
 
-      // Report job failed.
+      // Report that the current job has failed.
       reporter.endJob({
         status: JobStatuses.FAILED,
         description: err.message,
