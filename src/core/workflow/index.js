@@ -1,5 +1,5 @@
 import {
-  isObject, isFunction, isString, isArray, isNil, isEmpty, every,
+  isObject, isFunction, isString, isArray, isBoolean, isNil, isEmpty, has, every,
 } from 'lodash';
 import { IS_DEV } from '@utils';
 import defaultReporter, { isReporter, JobStatuses, ResultDetailTypes } from '@core/workflow/reporter';
@@ -73,14 +73,18 @@ export function isJob(obj) {
  * @param {object} opts Options.
  * @param {Reporter} opts.reporter A reporter for the workflow to report progress, errors and
  * results.
- * @returns {boolean} Whether the workflow run succeeded or not. A workflow is considered succeeded
- * if all of its jobs succeeded, otherwise it's considered failed.
+ * @param {Reporter} opts.verbose Whether to print jobs' summaries.
+ * @returns {boolean} Whether the workflow run succeeded or not. The workflow only succeeds if all
+ * jobs succeed, it fails if any job fails.
  */
-export default function runWorkflow(jobs, { reporter } = { reporter: defaultReporter }) {
+export default function runWorkflow(jobs, opts = {}) {
   if (IS_DEV) { // Validate arguments.
     if (!isArray(jobs) || !every(jobs, isJob)) throw new TypeError('runWorkflow.jobs must be an array of jobs.');
-    if (!isReporter(reporter)) throw new TypeError('runWorkflow.opts.reporter must be a reporter.');
+    if (!isObject(opts)) throw new TypeError('runWorkflow.opts must be an object.');
+    if (has(opts, 'reporter') && !isReporter(opts.reporter)) throw new TypeError('runWorkflow.opts.reporter must be a reporter.');
+    if (has(opts, 'verbose') && !isBoolean(opts.verbose)) throw new TypeError('runWorkflow.opts.verbose must be a boolean.');
   }
+  const { reporter, verbose } = { ...runWorkflow.defaultOpts, ...opts };
 
   // Run all jobs' validations.
   reporter.newJob({ name: Strings.VALIDATE_CONFIGURATIONS });
@@ -154,15 +158,22 @@ export default function runWorkflow(jobs, { reporter } = { reporter: defaultRepo
     };
 
     try {
-      job.run({ progress });
+      const details = job.run({ progress, summarizeResult: verbose });
 
-      // Report job succeeded.
-      reporter.endJob({ status: JobStatuses.SUCCEEDED });
+      if (isArray(details) && !isEmpty(details)) {
+        // The job returned result details, summarize and report those details.
+        const nProblems = details.filter((detail) => detail.type !== JobStatuses.SUCCEEDED).length;
+        reporter.endJob({
+          status: nProblems === 0 ? JobStatuses.SUCCEEDED : JobStatuses.WARNING,
+          description: nProblems === 0 ? `(${details.length}/${details.length})` : `${nProblems} problems`,
+          details,
+        });
+      } else {
+        reporter.endJob({ status: JobStatuses.SUCCEEDED });
+      }
     } catch (err) {
       // One job failed, keep running other jobs but workflow is now considered failed.
       result = false;
-
-      // Report that the current job has failed.
       reporter.endJob({
         status: JobStatuses.FAILED,
         description: err.message,
@@ -172,3 +183,11 @@ export default function runWorkflow(jobs, { reporter } = { reporter: defaultRepo
 
   return result;
 }
+
+/**
+ * Run workflow default options.
+ */
+runWorkflow.defaultOpts = {
+  reporter: defaultReporter,
+  verbose: true,
+};

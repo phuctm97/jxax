@@ -1,8 +1,9 @@
 import {
-  isFunction, isString, isObject, isUndefined,
+  isFunction, isString, isObject, isBoolean, has,
 } from 'lodash';
 import { IS_DEV } from '@utils';
 import { retry } from '@core/app';
+import { JobStatuses } from '@core/workflow/reporter';
 
 /**
  * @typedef {object} Progress A job progress reporter.
@@ -30,17 +31,21 @@ import { retry } from '@core/app';
  *
  * @param {object} opts Options.
  * @param {Progress} opts.progress A progress object for the stepper to report its progress.
+ * @param {boolean} opts.summarizeResult Whether to summarize result details?
  * @returns {Stepper} A stepper object.
  */
 export default function createStepper(opts = {}) {
   if (IS_DEV) { // Validate arguments.
     if (!isObject(opts)) throw new TypeError('createStepper.opts must be an object.');
-    if (!isUndefined(opts.progress) && !isObject(opts.progress)) {
+    if (has(opts, 'progress') && !isObject(opts.progress)) {
       throw new TypeError('createStepper.opts.progress must be an object.');
+    }
+    if (has(opts, 'summarizeResult') && !isBoolean(opts.summarizeResult)) {
+      throw new TypeError('createStepper.opts.summarizeResult must be a boolean.');
     }
   }
 
-  const { progress } = { ...createStepper.defaultOpts, ...opts };
+  const { progress, summarizeResult } = { ...createStepper.defaultOpts, ...opts };
   const steps = [];
 
   // The stepper's addStep.
@@ -61,10 +66,33 @@ export default function createStepper(opts = {}) {
     ));
 
     const total = effectiveSteps.length;
+    const results = summarizeResult ? [] : undefined;
+
     effectiveSteps.forEach((step, index) => {
-      progress.description = `${step.name} [${index + 1}/${total}]`;
-      retry(step.fn);
+      progress.description = `${step.name} (${index + 1}/${total})`;
+
+      if (!summarizeResult) {
+        // Don't summarize result, simply run `fn`.
+        retry(step.fn);
+        return;
+      }
+
+      // Try run `fn` and summarize result.
+      try {
+        retry(step.fn);
+        results.push({
+          type: JobStatuses.SUCCEEDED,
+          message: step.name,
+        });
+      } catch (e) {
+        results.push({
+          type: JobStatuses.FAILED,
+          message: `${step.name}: ${e.message ?? e.toString()}`,
+        });
+      }
     });
+
+    return results;
   };
 
   return { addStep, run };
@@ -75,4 +103,5 @@ export default function createStepper(opts = {}) {
  */
 createStepper.defaultOpts = {
   progress: { description: '' },
+  summarizeResult: true,
 };

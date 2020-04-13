@@ -1,5 +1,5 @@
 import {
-  isObject, isFunction, isBoolean, isUndefined,
+  isObject, isFunction, isBoolean, has, capitalize,
 } from 'lodash';
 import { IS_DEV } from '@utils';
 import * as ansi from 'ansi-escape-sequences';
@@ -66,6 +66,8 @@ const FINISH_FORMATS = {
   [JobStatuses.FAILED]: ['red', 'bold'],
   [JobStatuses.WARNING]: ['yellow', 'bold'],
 };
+const DEFAULT_JOB_FORMAT = 'bold';
+const HIGHLIGHT_JOB_FORMAT = ['bold', 'underline'];
 const DEFAULT_RUNNING_DESCRIPTION = 'running, please wait...';
 const DEFAULT_FINISH_DESCRIPTIONS = {
   default: 'finished',
@@ -73,10 +75,26 @@ const DEFAULT_FINISH_DESCRIPTIONS = {
   [JobStatuses.FAILED]: 'failed',
   [JobStatuses.WARNING]: 'finished ungracefully',
 };
-const DEFAULT_JOB_FORMAT = 'bold';
-const HIGHLIGHT_JOB_FORMAT = ['bold', 'underline'];
-const DEFAULT_DESCRIPTION_FORMAT = 'grey';
+const DESCRIPTION_FORMATS = {
+  default: 'grey',
+  [JobStatuses.SUCCEEDED]: 'green',
+  [JobStatuses.FAILED]: 'red',
+  [JobStatuses.WARNING]: 'yellow',
+};
+const DETAIL_MESSAGE_FORMATS = {
+  default: 'grey',
+  [JobStatuses.SUCCEEDED]: 'grey',
+  [JobStatuses.FAILED]: 'red',
+  [JobStatuses.WARNING]: 'yellow',
+};
 const DELAY = 0.05;
+
+// Helper function beautifies messages.
+function beautifyMessage(message) {
+  let m = capitalize(message);
+  if (!m.endsWith('.')) m += '.';
+  return m;
+}
 
 /**
  * Create a console reporter, which reports workflows' progresses to the console or terminal it's
@@ -89,7 +107,7 @@ const DELAY = 0.05;
 export function createConsoleReporter(opts = {}) {
   if (IS_DEV) { // Validate arguments.
     if (!isObject(opts)) throw new TypeError('createConsoleReporter.opts must be an object.');
-    if (!isUndefined(opts.color) && !isBoolean(opts.color)) {
+    if (has(opts, 'color') && !isBoolean(opts.color)) {
       throw new TypeError('createConsoleReporter.opts.color must be a boolean.');
     }
   }
@@ -110,9 +128,12 @@ export function createConsoleReporter(opts = {}) {
 
   // Build a message from a job's name and description, accept empty values, in which case default
   // values are used.
-  const getMessage = ({ name, description }, { highlight } = {}) => {
+  const getMessage = ({ name, description }, { highlight, status } = {}) => {
     const job = format(name ?? `Job ${jobsCounter}`, highlight ? HIGHLIGHT_JOB_FORMAT : DEFAULT_JOB_FORMAT);
-    const desc = format(description ?? DEFAULT_RUNNING_DESCRIPTION, DEFAULT_DESCRIPTION_FORMAT);
+    const desc = format(
+      description ?? DEFAULT_RUNNING_DESCRIPTION,
+      DESCRIPTION_FORMATS[status] ?? DESCRIPTION_FORMATS.default,
+    );
     return `${job}: ${desc}`;
   };
 
@@ -126,14 +147,19 @@ export function createConsoleReporter(opts = {}) {
           FINISH_CHARS[JobStatuses.FAILED],
           FINISH_FORMATS[JobStatuses.FAILED],
         );
-        const jobF = format(`${job}:`, 'grey');
-        const argF = format(argument, ['red', 'underline']);
-        const msgF = format(message, 'red');
+        const jobF = format(`${job}:`, DETAIL_MESSAGE_FORMATS.default);
+        const argF = format(argument, [DETAIL_MESSAGE_FORMATS[JobStatuses.FAILED], 'underline']);
+        const msgF = format(message, DETAIL_MESSAGE_FORMATS[JobStatuses.FAILED]);
         return `${finishChar} ${jobF}${argF} ${msgF}`;
       }
       default: {
-        const finishChar = format(FINISH_CHARS.default, FINISH_FORMATS.default);
-        return `${finishChar} ${message}`;
+        const finishChar = format(
+          FINISH_CHARS[type] ?? FINISH_CHARS.default,
+          FINISH_FORMATS[type] ?? FINISH_FORMATS.default,
+        );
+        const msgF = format(beautifyMessage(message),
+          DETAIL_MESSAGE_FORMATS[type] ?? DETAIL_MESSAGE_FORMATS.default);
+        return `${finishChar} ${msgF}`;
       }
     }
   };
@@ -161,12 +187,12 @@ export function createConsoleReporter(opts = {}) {
       FINISH_CHARS[status] ?? FINISH_CHARS.default,
       FINISH_FORMATS[status] ?? FINISH_FORMATS.default,
     );
-    console.log(`${CONTROL_CHARS}${finishChar} ${getMessage({ name, description })}`);
+    console.log(`${CONTROL_CHARS}${finishChar} ${getMessage({ name, description }, { status })}`);
 
     if (details) {
       // If the job reported its result details, print those details.
       details.forEach((detail, index) => {
-        const boxChar = format(index < details.length - 1 ? '┝' : '┕', ['grey']); // Nice box-drawing.
+        const boxChar = format(index < details.length - 1 ? '┝' : '┕', FINISH_FORMATS.default); // Nice box-drawing.
         console.log(`${boxChar} ${getDetailMessage(detail)}`);
       });
     }
