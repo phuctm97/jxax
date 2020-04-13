@@ -4,7 +4,7 @@
  */
 
 import { isObject, isFunction } from 'lodash';
-import { isDevelopment } from '@utils';
+import { IS_DEV } from '@utils';
 
 /**
  * @typedef {object} FilePath The OSA file path object.
@@ -63,7 +63,7 @@ export function delay(secs) {
  * @returns {any} Return(s) of `fn`.
  */
 export function retry(fn, opts = {}) {
-  if (isDevelopment()) { // Validate arguments.
+  if (IS_DEV) { // Validate arguments.
     if (!isFunction(fn)) throw new TypeError('retry.fn must be a function.');
     if (!isObject(opts)) throw new TypeError('retry.opts must be an object.');
   }

@@ -1,7 +1,7 @@
 import {
   isObject, isFunction, isString, isArray, isNil, isEmpty, every,
 } from 'lodash';
-import { isDevelopment } from '@utils';
+import { IS_DEV } from '@utils';
 import defaultReporter, { isReporter, JobStatuses, ResultDetailTypes } from '@core/workflow/reporter';
 
 export * from '@core/workflow/reporter';
@@ -37,7 +37,7 @@ const Strings = {
  * @returns {Job} The created job.
  */
 export function createJob(name, validate, run, args) {
-  if (isDevelopment()) { // Validate arguments.
+  if (IS_DEV) { // Validate arguments.
     if (!isString(name)) throw new TypeError('createJob.name must be a string.');
     if (!isNil(validate) && !isFunction(validate)) {
       throw new TypeError('createJob.validate must be a function or nullish.');
@@ -77,7 +77,7 @@ export function isJob(obj) {
  * if all of its jobs succeeded, otherwise it's considered failed.
  */
 export default function runWorkflow(jobs, { reporter } = { reporter: defaultReporter }) {
-  if (isDevelopment()) { // Validate arguments.
+  if (IS_DEV) { // Validate arguments.
     if (!isArray(jobs) || !every(jobs, isJob)) throw new TypeError('runWorkflow.jobs must be an array of jobs.');
     if (!isReporter(reporter)) throw new TypeError('runWorkflow.opts.reporter must be a reporter.');
   }
@@ -108,7 +108,7 @@ export default function runWorkflow(jobs, { reporter } = { reporter: defaultRepo
     const jobErrors = job.validate();
     if (isNil(jobErrors)) return; // No error.
 
-    if (isDevelopment()) { // Validate the job's validate return(s).
+    if (IS_DEV) { // Validate the job's validate return(s).
       if (!isObject(jobErrors) || !every(
         Object.values(jobErrors), (errs) => every(errs, isString),
       )) {

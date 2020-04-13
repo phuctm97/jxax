@@ -1,5 +1,5 @@
 import { isObject, isUndefined } from 'lodash';
-import { isDevelopment } from '@utils';
+import { IS_DEV } from '@utils';
 import { createStepper } from '@core/workflow';
 import dockPreferencesObject from '@core/dock';
 import { selectPopUpButton, selectCheckbox } from '@core/uiAutomation';
@@ -30,7 +30,7 @@ const tabsWhenOpeningDocumentsPreferencesMap = {
  * @returns {object[]} The job's run result details.
  */
 export default function applySysPrefsDockSettings(settings, opts = {}) {
-  if (isDevelopment()) { // Validate arguments.
+  if (IS_DEV) { // Validate arguments.
     if (!isObject(settings)) throw new TypeError('applySysPrefsDockSettings.settings must be an object.');
     if (!isObject(opts)) throw new TypeError('applySysPrefsDockSettings.opts must be an object.');
   }

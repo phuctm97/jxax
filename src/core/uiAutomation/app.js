@@ -1,7 +1,7 @@
 import {
   isFunction, isString, isSafeInteger, isNil, isUndefined,
 } from 'lodash';
-import { isDevelopment } from '@utils';
+import { IS_DEV } from '@utils';
 import { access, retry } from '@core/app';
 import { accessApplicationProcess } from '@core/processes';
 
@@ -16,7 +16,7 @@ import { accessApplicationProcess } from '@core/processes';
  * @returns {any} Return(s) of `fn`.
  */
 export default function runInApp(appUrl, fn) {
-  if (isDevelopment()) { // Validate arguments.
+  if (IS_DEV) { // Validate arguments.
     if (!isString(appUrl) && !isSafeInteger(appUrl)) {
       throw new TypeError('runInApp.appUrl must be either a string or an integer.');
     }

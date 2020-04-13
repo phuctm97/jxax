@@ -4,13 +4,10 @@ import {
 import * as validatejs from 'validate.js';
 
 /**
- * Check if the application is running in development mode.
- *
- * @returns {boolean} Whether the application is running in development mode.
+ * A boolean indicates whether the application is running in development mode.
+ * @type {boolean}
  */
-export function isDevelopment() {
-  return process.env.NODE_ENV === 'development';
-}
+export const IS_DEV = process.env.NODE_ENV === 'development';
 
 /**
  * Check if a value is a promise.
