@@ -38,4 +38,4 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: dist-0.git${{ github.sha }}
-          path: dist
+          path: dist/main.js
