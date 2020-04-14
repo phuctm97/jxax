@@ -31,7 +31,7 @@ function inclusion(vals) {
   return {
     inclusion: {
       within: isObject(vals) ? Object.values(vals) : vals,
-      message: `is invalid, must be within [${join(vals)}].`,
+      message: `is invalid, must be within [${join(vals)}]`,
     },
   };
 }

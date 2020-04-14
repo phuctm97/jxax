@@ -161,15 +161,17 @@ export default function runWorkflow(jobs, opts = {}) {
     try {
       const details = job.run({ progress, summarizeResult: verbose });
 
-      if (isArray(details) && !isEmpty(details)) {
+      if (isArray(details) && !isEmpty(details)
+        && every(details, (detail) => has(detail, 'step') && has(detail, 'succeeded'))) {
         // The job returned result details, summarize and report those details.
-        const nProblems = details.filter((detail) => detail.type !== JobStatuses.SUCCEEDED).length;
+        const nProblems = details.filter((detail) => !detail.succeeded).length;
         reporter.endJob({
           status: nProblems === 0 ? JobStatuses.SUCCEEDED : JobStatuses.WARNING,
           description: nProblems === 0 ? `(${details.length}/${details.length})` : `${nProblems} problems`,
           details,
         });
       } else {
+        // Unknown or `undefined` result details, simply report the job succeeded.
         reporter.endJob({ status: JobStatuses.SUCCEEDED });
       }
     } catch (err) {
@@ -182,6 +184,8 @@ export default function runWorkflow(jobs, opts = {}) {
     }
   });
 
+  // Summarize result.
+  reporter.close();
   return result;
 }
 
