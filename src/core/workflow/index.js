@@ -2,10 +2,11 @@ import {
   isObject, isFunction, isString, isArray, isBoolean, isNil, isEmpty, has, every,
 } from 'lodash';
 import { IS_DEV } from '@utils';
-import defaultReporter, { isReporter, JobStatuses, ResultDetailTypes } from '@core/workflow/reporter';
+import {
+  emptyReporter, isReporter, JobStatuses, ResultDetailTypes,
+} from '@core/workflow/reporter';
 
 export * from '@core/workflow/reporter';
-export { default as defaultReporter } from '@core/workflow/reporter';
 export { default as createStepper } from '@core/workflow/stepper';
 
 // Some texts.
@@ -188,6 +189,6 @@ export default function runWorkflow(jobs, opts = {}) {
  * Run workflow default options.
  */
 runWorkflow.defaultOpts = {
-  reporter: defaultReporter,
+  reporter: emptyReporter,
   verbose: true,
 };

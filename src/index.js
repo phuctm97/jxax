@@ -7,6 +7,7 @@ import applySysPrefsDockSettings, {
   validateSysPrefsDockSettings, ScreenEdges, MinimizeEffects, TabsWhenOpeningDocumentsPreferences,
   DoubleClickTitleBarActions,
 } from '@sysprefs/dock';
+import createConsoleReporter from '@reporters/console';
 
 scpt.run = () => {
   const generalSettings = {
@@ -40,10 +41,11 @@ scpt.run = () => {
     showRecentApps: false,
   };
 
+  const reporter = createConsoleReporter();
   runWorkflow([
     createJob('sysprefs.general.applySettings',
       validateSysPrefsGeneralSettings, applySysPrefsGeneralSettings, generalSettings),
     createJob('sysprefs.dock.applySettings',
       validateSysPrefsDockSettings, applySysPrefsDockSettings, dockSettings),
-  ]);
+  ], { reporter });
 };
