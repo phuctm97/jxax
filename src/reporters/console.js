@@ -1,5 +1,5 @@
 import {
-  isObject, isBoolean, has, capitalize,
+  isObject, isBoolean, isUndefined, has, capitalize,
 } from 'lodash';
 import { IS_DEV } from '@utils';
 import { JobStatuses, ResultDetailTypes } from '@core/workflow/reporter';
@@ -36,12 +36,6 @@ const DEFAULT_FINISH_DESCRIPTIONS = {
 const DESCRIPTION_FORMATS = {
   default: 'grey',
   [JobStatuses.SUCCEEDED]: 'green',
-  [JobStatuses.FAILED]: 'red',
-  [JobStatuses.WARNING]: 'yellow',
-};
-const DETAIL_MESSAGE_FORMATS = {
-  default: 'grey',
-  [JobStatuses.SUCCEEDED]: 'grey',
   [JobStatuses.FAILED]: 'red',
   [JobStatuses.WARNING]: 'yellow',
 };
@@ -169,7 +163,7 @@ export default function createConsoleReporter(opts = {}) {
 
   // Build a message from a job's result detail.
   const getDetailMessage = ({
-    type, job, argument, message,
+    type, step, succeeded, job, argument, message, error,
   }) => {
     switch (type) {
       case ResultDetailTypes.VALIDATION_ERROR: {
@@ -177,18 +171,33 @@ export default function createConsoleReporter(opts = {}) {
           FINISH_CHARS[JobStatuses.FAILED],
           FINISH_FORMATS[JobStatuses.FAILED],
         );
-        const jobF = format(`${job}:`, DETAIL_MESSAGE_FORMATS.default);
-        const argF = format(argument, [DETAIL_MESSAGE_FORMATS[JobStatuses.FAILED], 'underline']);
-        const msgF = format(message, DETAIL_MESSAGE_FORMATS[JobStatuses.FAILED]);
-        return `${finishChar} ${jobF}${argF} ${msgF}`;
+        const jobF = format(job, [DESCRIPTION_FORMATS.default, 'italic']);
+        const colonF = format(':', DESCRIPTION_FORMATS.default);
+        const argF = format(argument, [DESCRIPTION_FORMATS[JobStatuses.FAILED], 'underline', 'bold']);
+        const msgF = format(message, DESCRIPTION_FORMATS[JobStatuses.FAILED]);
+        return `${finishChar} ${jobF}${colonF}${argF} ${msgF}`;
       }
       default: {
-        const finishChar = format(
-          FINISH_CHARS[type] ?? FINISH_CHARS.default,
-          FINISH_FORMATS[type] ?? FINISH_FORMATS.default,
-        );
-        const msgF = format(beautifyMessage(message),
-          DETAIL_MESSAGE_FORMATS[type] ?? DETAIL_MESSAGE_FORMATS.default);
+        if (isUndefined(step) || isUndefined(succeeded)) {
+          return undefined; // Unknown detail, skip it.
+        }
+
+        let finishChar;
+        let msgF;
+        if (succeeded) {
+          finishChar = format(
+            FINISH_CHARS[JobStatuses.SUCCEEDED],
+            FINISH_FORMATS[JobStatuses.SUCCEEDED],
+          );
+          msgF = `${format(beautifyMessage(step), DESCRIPTION_FORMATS.default)}`;
+        } else {
+          finishChar = format(FINISH_CHARS[JobStatuses.FAILED], FINISH_FORMATS[JobStatuses.FAILED]);
+          msgF = `${
+            format(capitalize(step), [DESCRIPTION_FORMATS[JobStatuses.FAILED], 'underline'])}${
+            format(': ', DESCRIPTION_FORMATS.default)}${
+            format(beautifyMessage(error), DESCRIPTION_FORMATS[JobStatuses.FAILED])
+          }`;
+        }
         return `${finishChar} ${msgF}`;
       }
     }
@@ -223,8 +232,11 @@ export default function createConsoleReporter(opts = {}) {
     if (details) {
       // If the job reported its result details, print those details.
       details.forEach((detail, index) => {
+        const message = getDetailMessage(detail);
+        if (!message) return; // Unknow result detail, can not format as message, skip it.
+
         const boxChar = format(index < details.length - 1 ? '┝' : '┕', FINISH_FORMATS.default); // Nice box-drawing.
-        console.log(`${boxChar} ${getDetailMessage(detail)}`);
+        console.log(`${boxChar} ${message}`);
       });
     }
   };
@@ -267,7 +279,14 @@ export default function createConsoleReporter(opts = {}) {
     console.log(`${controlChars}${spinner} ${message}`);
   };
 
-  return { newJob, updateJob, endJob };
+  // The reporter's close.
+  const close = () => {
+    // Do nothing.
+  };
+
+  return {
+    newJob, updateJob, endJob, close,
+  };
 }
 
 /**

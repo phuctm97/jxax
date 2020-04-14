@@ -10,6 +10,7 @@ import { isObject, isFunction } from 'lodash';
  * job's progress and description.
  * @property {({name: string, description: string}) => undefined} endJob Report that the current
  * job has finished.
+ * @property {() => undefined} close Summarize, report results and close the reporter.
  */
 
 /**
@@ -42,7 +43,8 @@ export function isReporter(obj) {
   return isObject(obj)
     && isFunction(obj.newJob)
     && isFunction(obj.updateJob)
-    && isFunction(obj.endJob);
+    && isFunction(obj.endJob)
+    && isFunction(obj.close);
 }
 
 /**
@@ -54,4 +56,5 @@ export const emptyReporter = {
   newJob: () => undefined,
   updateJob: () => undefined,
   endJob: () => undefined,
+  close: () => undefined,
 };

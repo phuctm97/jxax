@@ -3,7 +3,6 @@ import {
 } from 'lodash';
 import { IS_DEV } from '@utils';
 import { retry } from '@core/app';
-import { JobStatuses } from '@core/workflow/reporter';
 
 /**
  * @typedef {object} Progress A job progress reporter.
@@ -81,13 +80,14 @@ export default function createStepper(opts = {}) {
       try {
         retry(step.fn);
         results.push({
-          type: JobStatuses.SUCCEEDED,
-          message: step.name,
+          step: step.name,
+          succeeded: true,
         });
       } catch (e) {
         results.push({
-          type: JobStatuses.FAILED,
-          message: `${step.name}: ${e.message ?? e.toString()}`,
+          step: step.name,
+          succeeded: false,
+          error: e.message ?? e.toString(),
         });
       }
     });
