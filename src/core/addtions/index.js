@@ -5,3 +5,4 @@
 
 export * from '@core/addtions/file';
 export * from '@core/addtions/userInterations';
+export * from '@core/addtions/misc';
