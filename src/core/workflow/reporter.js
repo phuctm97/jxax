@@ -53,7 +53,6 @@ export const ResultDetailTypes = {
 // Effect options.
 const SPINNER_CHARS = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
 const SPINNER_FORMAT = 'cyan';
-const CONTROL_CHARS = ansi.cursor.previousLine() + ansi.erase.display();
 const FINISH_CHARS = {
   default: '•',
   [JobStatuses.SUCCEEDED]: '✔',
@@ -96,6 +95,74 @@ function beautifyMessage(message) {
   return m;
 }
 
+// Helper function to break lines in a paragraph so that its lines don't exceed `max` columns.
+function breakParagraph(paragraph, max, { padding, prefixLength } = { padding: '', prefixLength: 0 }) {
+  if (prefixLength > max) throw new Error('breakParagraph.prefixLength must be smaller than breakParagraph.max.length.');
+  if (padding.length >= max) throw new Error('breakParagraph.padding must be shorter than breakParagraph.max.');
+  if (prefixLength + paragraph.length <= max) return [paragraph, prefixLength + paragraph.length];
+
+  let p = '';
+  let lastPrefixLength = 0;
+  const paddedMax = max - padding.length;
+  let firstStep = true;
+  let lastIndex = 0;
+
+  for (;;) {
+    if (firstStep && prefixLength === max) {
+      firstStep = false;
+    }
+    if (!firstStep) {
+      p += `\n${padding}`;
+      if (lastIndex + paddedMax >= paragraph.length) {
+        const lastPart = paragraph.substring(lastIndex);
+        p += lastPart;
+        lastPrefixLength = padding.length + lastPart.length;
+        break;
+      }
+    }
+
+    const nextPart = paragraph.substring(lastIndex,
+      lastIndex + (firstStep ? max - prefixLength : paddedMax) + 1);
+    const lastSpaceIndex = nextPart.lastIndexOf(' ');
+    if (lastSpaceIndex === -1) {
+      p += `${nextPart.substring(0, nextPart.length - 1)}`;
+      lastIndex += nextPart.length - 1;
+    } else {
+      p += nextPart.substring(0, lastSpaceIndex);
+      lastIndex += lastSpaceIndex + 1;
+    }
+
+    firstStep = false;
+  }
+
+  return [p, lastPrefixLength];
+}
+
+// Helper function gets number of columns in the current console/terminal.
+function getConsoleColumns() {
+  // Import Foundation library to use NSTask.
+  ObjC.import('Foundation');
+
+  // Launch NSTask 'tput cols' and parse result get number of cols.
+  const { pipe } = $.NSPipe;
+  const file = pipe.fileHandleForReading;
+  const task = $.NSTask.alloc.init;
+
+  task.launchPath = '/bin/sh';
+  task.arguments = ['-c', 'tput cols'];
+  task.standardOutput = pipe;
+
+  (() => task.launch)(); // Run the task.
+
+  let data = file.readDataToEndOfFile; // Read the task's output.
+  (() => file.closeFile)();
+
+  // Parse the task output.
+  data = $.NSString.alloc.initWithDataEncoding(data, $.NSUTF8StringEncoding);
+  const result = ObjC.unwrap(data); // Unwrap NSString.
+  return parseInt(result, 10);
+}
+
 /**
  * Create a console reporter, which reports workflows' progresses to the console or terminal it's
  * attached to (stderr is used by default).
@@ -114,11 +181,13 @@ export function createConsoleReporter(opts = {}) {
 
   // Extract options.
   const { color } = { ...createConsoleReporter.defaultOpts, ...opts };
+  const cols = getConsoleColumns();
 
   // The reporter's variables.
   let jobsCounter = 0;
   let currentJob;
   let spinning = 0;
+  let previousLines = 0;
 
   // Format messages with colors and styles.
   const format = (str, fmt) => {
@@ -129,12 +198,15 @@ export function createConsoleReporter(opts = {}) {
   // Build a message from a job's name and description, accept empty values, in which case default
   // values are used.
   const getMessage = ({ name, description }, { highlight, status } = {}) => {
-    const job = format(name ?? `Job ${jobsCounter}`, highlight ? HIGHLIGHT_JOB_FORMAT : DEFAULT_JOB_FORMAT);
-    const desc = format(
-      description ?? DEFAULT_RUNNING_DESCRIPTION,
-      DESCRIPTION_FORMATS[status] ?? DESCRIPTION_FORMATS.default,
-    );
-    return `${job}: ${desc}`;
+    const [job, jobPrefixLength] = breakParagraph(name ?? `Job ${jobsCounter}`, cols,
+      { padding: '  ', prefixLength: 2 });
+    const jobF = format(job, highlight ? HIGHLIGHT_JOB_FORMAT : DEFAULT_JOB_FORMAT);
+    const [colon, jobColonPrefixLength] = breakParagraph(': ', cols,
+      { padding: '  ', prefixLength: jobPrefixLength });
+    const [desc] = breakParagraph(description ?? DEFAULT_RUNNING_DESCRIPTION, cols,
+      { padding: '  ', prefixLength: jobColonPrefixLength });
+    const descF = format(desc, DESCRIPTION_FORMATS[status] ?? DESCRIPTION_FORMATS.default);
+    return `${jobF}${colon}${descF}`;
   };
 
   // Build a message from a job's result detail.
@@ -183,11 +255,12 @@ export function createConsoleReporter(opts = {}) {
     currentJob = null;
 
     // Print the job's finish line.
+    const controlChars = ansi.cursor.previousLine(previousLines) + ansi.erase.display();
     const finishChar = format(
       FINISH_CHARS[status] ?? FINISH_CHARS.default,
       FINISH_FORMATS[status] ?? FINISH_FORMATS.default,
     );
-    console.log(`${CONTROL_CHARS}${finishChar} ${getMessage({ name, description }, { status })}`);
+    console.log(`${controlChars}${finishChar} ${getMessage({ name, description }, { status })}`);
 
     if (details) {
       // If the job reported its result details, print those details.
@@ -212,7 +285,9 @@ export function createConsoleReporter(opts = {}) {
     spinning += 1;
 
     // Print a new line reporting the new job.
-    console.log(`${spinner} ${getMessage(job, { highlight: true })}`);
+    const message = getMessage(job, { highlight: true });
+    previousLines = message.split('\n').length; // Track previous lines to erase in next print.
+    console.log(`${spinner} ${message}`);
     delay(DELAY); // Delay shortly for visualization purpose.
   };
 
@@ -222,11 +297,14 @@ export function createConsoleReporter(opts = {}) {
     currentJob = { ...currentJob, ...job };
 
     // Get next spinner char and increase the spinning counter.
+    const controlChars = ansi.cursor.previousLine(previousLines) + ansi.erase.display();
     const spinner = format(SPINNER_CHARS[spinning % SPINNER_CHARS.length], SPINNER_FORMAT);
     spinning += 1;
 
     // Update the job's line.
-    console.log(`${CONTROL_CHARS}${spinner} ${getMessage(currentJob, { highlight: true })}`);
+    const message = getMessage(currentJob, { highlight: true });
+    previousLines = message.split('\n').length; // Track previous lines to erase in next print.
+    console.log(`${controlChars}${spinner} ${message}`);
     delay(DELAY); // Delay shortly for visualization purpose.
   };
 
