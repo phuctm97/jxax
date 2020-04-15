@@ -4,7 +4,7 @@
     "paths": {
       "@bin/*": ["src/bin/*"],
       "@core/*": ["src/core/*"],
-      "@sysprefs/*": ["src/sysprefs/*"],
+      "@apps/*": ["src/apps/*"],
       "@reporters/*": ["src/reporters/*"],
       "@utils": ["src/utils"]
     }

@@ -1,13 +1,13 @@
 import runWorkflow, { createJob } from '@core/workflow';
+import createConsoleReporter from '@reporters/console';
 import applySysPrefsGeneralSettings, {
   validateSysPrefsGeneralSettings, Appearances, AccentColors, ClickScrollBarActions,
   HighlightColors, SidebarIconSizes, ShowScrollBarsTriggers,
-} from '@sysprefs/general';
+} from '@apps/sysprefs/general';
 import applySysPrefsDockSettings, {
   validateSysPrefsDockSettings, ScreenEdges, MinimizeEffects, TabsWhenOpeningDocumentsPreferences,
   DoubleClickTitleBarActions,
-} from '@sysprefs/dock';
-import createConsoleReporter from '@reporters/console';
+} from '@apps/sysprefs/dock';
 
 scpt.run = () => {
   const generalSettings = {

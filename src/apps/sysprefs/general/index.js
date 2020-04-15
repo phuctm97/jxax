@@ -1,17 +1,16 @@
-import { isObject, isUndefined, capitalize } from 'lodash';
-import { IS_DEV } from '@utils';
+import { isUndefined, capitalize } from 'lodash';
 import { createStepper } from '@core/workflow';
-import appearancePreferencesObject, { ScrollBarActions } from '@core/appearance';
 import {
   selectCheckbox, selectPopUpButton, selectRadio, selectToggle,
 } from '@core/uiAutomation';
-import runInSystemPrefs from '@sysprefs/app';
+import appearancePreferencesObject, { ScrollBarActions } from '@core/appearance';
+import runInSysPrefs from '@apps/sysprefs/app';
 import {
   Appearances, AccentColors, ClickScrollBarActions, ShowScrollBarsTriggers,
-} from '@sysprefs/general/options';
+} from '@apps/sysprefs/general/options';
 
-export * from '@sysprefs/general/options';
-export { default as validateSysPrefsGeneralSettings } from '@sysprefs/general/options';
+export * from '@apps/sysprefs/general/options';
+export { default as validateSysPrefsGeneralSettings } from '@apps/sysprefs/general/options';
 
 // Map appearances from input values to query values.
 const appearancesMap = {
@@ -46,8 +45,7 @@ const clickScrollBarActionsMap = {
 };
 
 /**
- * @typedef {import('@sysprefs/general/options').SysPrefsGeneralSettings} SysPrefsGeneralSettings
- * @typedef {import('@core/workflow').Progress} Progress
+ * @typedef {import('./options').SysPrefsGeneralSettings} SysPrefsGeneralSettings
  */
 
 /**
@@ -58,11 +56,6 @@ const clickScrollBarActionsMap = {
  * @returns {object[]} The job's run result details.
  */
 export default function applySysPrefsGeneralSettings(settings, opts = {}) {
-  if (IS_DEV) { // Validate arguments.
-    if (!isObject(settings)) throw new TypeError('applySysPrefsGeneralSettings.settings must be an object.');
-    if (!isObject(opts)) throw new TypeError('applySysPrefsGeneralSettings.opts must be an object.');
-  }
-
   const {
     appearance,
     accentColor,
@@ -79,7 +72,7 @@ export default function applySysPrefsGeneralSettings(settings, opts = {}) {
     useFontSmoothing,
   } = settings;
 
-  return runInSystemPrefs('General', ({ window }) => {
+  return runInSysPrefs('General', ({ window }) => {
     const stepper = createStepper(opts);
     stepper.addStep('set appearance', !isUndefined(appearance), () => {
       selectToggle(window, appearancesMap[appearance]);

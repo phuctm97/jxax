@@ -1,9 +1,8 @@
-import { isObject, isFunction } from 'lodash';
-
 /**
- * @typedef {object} Reporter A workflow reporter.
- * Reporter is designed to be used with `runWorkflow`, a workflow uses a reporter to report its
- * progress, the reporter renders the workflow's progress.
+ * @typedef {object} Reporter The `Workflow`'s progress reporter.
+ *
+ * `Reporter` is designed to be used with `runWorkflow` function. A `Workflow` uses a `Reporter` to
+ * report its progress, the `Reporter` renders the `Workflow`'s progress.
  *
  * @property {({name: string, description: string}) => undefined} newJob Report there's a new job.
  * @property {({name: string, description: string}) => undefined} updateJob Update the current
@@ -32,20 +31,6 @@ export const JobStatuses = {
 export const ResultDetailTypes = {
   VALIDATION_ERROR: 'validation-error',
 };
-
-/**
- * Check if an object is a valid reporter.
- *
- * @param {any} obj The object to check.
- * @returns {boolean} Whether the object is a valid reporter.
- */
-export function isReporter(obj) {
-  return isObject(obj)
-    && isFunction(obj.newJob)
-    && isFunction(obj.updateJob)
-    && isFunction(obj.endJob)
-    && isFunction(obj.close);
-}
 
 /**
  * An empty reporter does nothing.

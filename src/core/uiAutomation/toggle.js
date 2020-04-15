@@ -1,6 +1,5 @@
-import { IS_DEV } from '@utils';
 import { retry } from '@core/app';
-import query, { isValidQuery, invalidQuery } from '@core/uiAutomation/query';
+import query from '@core/uiAutomation/query';
 
 /**
  * Select a toggle element (set its value to be selected).
@@ -9,10 +8,6 @@ import query, { isValidQuery, invalidQuery } from '@core/uiAutomation/query';
  * @param {(number|string|object)} q The query to the toggle.
  */
 export default function selectToggle(parent, q) {
-  if (IS_DEV) { // Validate arguments.
-    if (!isValidQuery(q)) throw new TypeError(invalidQuery('selectToggle.q'));
-  }
-
   return retry(() => {
     const toggle = query(parent.checkboxes, q, { postQ: { subrole: 'AXToggle' } });
 

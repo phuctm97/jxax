@@ -1,13 +1,12 @@
-import { isObject, isUndefined } from 'lodash';
-import { IS_DEV } from '@utils';
+import { isUndefined } from 'lodash';
 import { createStepper } from '@core/workflow';
-import dockPreferencesObject from '@core/dock';
 import { selectPopUpButton, selectCheckbox } from '@core/uiAutomation';
-import runInSystemPrefs from '@sysprefs/app';
-import { TabsWhenOpeningDocumentsPreferences, DoubleClickTitleBarActions } from '@sysprefs/dock/options';
+import dockPreferencesObject from '@core/dock';
+import runInSysPrefs from '@apps/sysprefs/app';
+import { TabsWhenOpeningDocumentsPreferences, DoubleClickTitleBarActions } from '@apps/sysprefs/dock/options';
 
-export * from '@sysprefs/dock/options';
-export { default as validateSysPrefsDockSettings } from '@sysprefs/dock/options';
+export * from '@apps/sysprefs/dock/options';
+export { default as validateSysPrefsDockSettings } from '@apps/sysprefs/dock/options';
 
 // Map tabsWhenOpeningDocumentsPreferences input values to query values.
 const tabsWhenOpeningDocumentsPreferencesMap = {
@@ -17,8 +16,7 @@ const tabsWhenOpeningDocumentsPreferencesMap = {
 };
 
 /**
- * @typedef {import('@sysprefs/dock/options').SysPrefsDockSettings} SysPrefsDockSettings
- * @typedef {import('@core/workflow').Progress} Progress
+ * @typedef {import('./options').SysPrefsDockSettings} SysPrefsDockSettings
  */
 
 /**
@@ -29,11 +27,6 @@ const tabsWhenOpeningDocumentsPreferencesMap = {
  * @returns {object[]} The job's run result details.
  */
 export default function applySysPrefsDockSettings(settings, opts = {}) {
-  if (IS_DEV) { // Validate arguments.
-    if (!isObject(settings)) throw new TypeError('applySysPrefsDockSettings.settings must be an object.');
-    if (!isObject(opts)) throw new TypeError('applySysPrefsDockSettings.opts must be an object.');
-  }
-
   const {
     size,
     magnification,
@@ -49,7 +42,7 @@ export default function applySysPrefsDockSettings(settings, opts = {}) {
     showRecentApps,
   } = settings;
 
-  return runInSystemPrefs('Dock', ({ window }) => {
+  return runInSysPrefs('Dock', ({ window }) => {
     const stepper = createStepper(opts);
     stepper.addStep('set dock size', !isUndefined(size), () => {
       dockPreferencesObject.dockSize = size;

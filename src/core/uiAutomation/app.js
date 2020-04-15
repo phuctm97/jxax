@@ -1,14 +1,11 @@
-import {
-  isFunction, isString, isSafeInteger, isNil, isUndefined,
-} from 'lodash';
-import { IS_DEV } from '@utils';
+import { isNil, isUndefined } from 'lodash';
 import { access, retry } from '@core/app';
-import { accessApplicationProcess } from '@core/processes';
+import { accessApplicationProcess } from '@core/sysEvents';
 
 /**
  * Invoke a function within an application's scope by activating the application before invoking
  * the function and quitting the application after the function's invocation has finished. The
- * function receives the application, the application's process and first window as its first
+ * function receives the application, the application's process and its first window as the first
  * argument (as an object).
  *
  * @param {(string|number)} appUrl The application's name, bundle ID, path or process ID.
@@ -16,15 +13,6 @@ import { accessApplicationProcess } from '@core/processes';
  * @returns {any} Return(s) of `fn`.
  */
 export default function runInApp(appUrl, fn) {
-  if (IS_DEV) { // Validate arguments.
-    if (!isString(appUrl) && !isSafeInteger(appUrl)) {
-      throw new TypeError('runInApp.appUrl must be either a string or an integer.');
-    }
-    if (!isFunction(fn)) {
-      throw new TypeError('runInApp.fn must be a function.');
-    }
-  }
-
   let app;
   let process;
   let window;

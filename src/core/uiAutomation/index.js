@@ -1,3 +1,8 @@
+/**
+ * The UI automation module exports APIs for common UI automation tasks e.g. selecting a checkbox,
+ * a pop up button or a raido button, etc.
+ */
+
 export { default } from '@core/uiAutomation/app';
 export { default as selectCheckbox } from '@core/uiAutomation/checkbox';
 export { default as selectPopUpButton } from '@core/uiAutomation/popUpButton';

@@ -1,5 +1,5 @@
-import applySysPrefsGeneralSettings, { validateSysPrefsGeneralSettings } from '@sysprefs/general';
-import applySysPrefsDockSettings, { validateSysPrefsDockSettings } from '@sysprefs/dock';
+import applySysPrefsGeneralSettings, { validateSysPrefsGeneralSettings } from '@apps/sysprefs/general';
+import applySysPrefsDockSettings, { validateSysPrefsDockSettings } from '@apps/sysprefs/dock';
 
 /**
  * Create an usable action.

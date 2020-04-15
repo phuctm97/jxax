@@ -3,15 +3,12 @@
  * the script, other scriptable applications and builtin JXA functions.
  */
 
-import { isObject, isFunction } from 'lodash';
-import { IS_DEV } from '@utils';
-
 /**
  * @typedef {object} FilePath The OSA file path object.
  *
- * When you need to interact with files, such as a document in TextEdit, you will need a file path
- * object, not just a string with a path in it. You can use the Path constructor to instantiate
- * file paths.
+ * When you need to interact with files, such as a document in `TextEdit.app`, you will need a file
+ * path object, not just a string with a path in it. You can use the `Path` constructor to
+ * instantiate file paths.
  *
  * @property {() => string} toString Get the string value of the file path.
  */
@@ -22,7 +19,7 @@ import { IS_DEV } from '@utils';
  */
 
 /**
- * The OSA application that is running the script (OSAScript).
+ * The current OSA application is running the script (most likely is `osascript`).
  */
 const app = global.Application.currentApplication();
 app.strictPropertyScope = true;
@@ -34,6 +31,12 @@ export default app;
 /**
  * Get access to a scriptable application.
  *
+ * @description
+ * Alias of `global.Application` function.
+ *
+ * @example
+ * access('System Events'); // ~ Application('System Events');
+ *
  * @param {(string|number)} appUrl The application's name, bundle ID, path or process ID.
  * @returns {object} The scriptable application's object specifier.
  */
@@ -42,7 +45,26 @@ export function access(appUrl) {
 }
 
 /**
+ * Instantiate a file path object from a file path string.
+ *
+ * @description
+ * Alias of `global.Path` function.
+ *
+ * @example
+ * path('/path/to/a/file'); // ~ Path('/path/to/a/file/');
+ *
+ * @param {string} url The file path string.
+ * @returns {FilePath} The file path object.
+ */
+export function path(url) {
+  return global.Path(url);
+}
+
+/**
  * Pause for a fixed amount of time.
+ *
+ * @description
+ * Alias of `global.delay` function.
  *
  * @param {number} secs The number of seconds to delay.
  */
@@ -51,7 +73,7 @@ export function delay(secs) {
 }
 
 /**
- * Retry a function until it either succeeded or exceeded `opts.maxAttempts`. Between each retry
+ * Retry a function until it either succeeds or exceeds `opts.maxAttempts`. Between each retry
  * attempt there's a delay of `opts.delayInterval` seconds.
  *
  * @param {() => any} fn The function to attempt.
@@ -63,11 +85,6 @@ export function delay(secs) {
  * @returns {any} Return(s) of `fn`.
  */
 export function retry(fn, opts = {}) {
-  if (IS_DEV) { // Validate arguments.
-    if (!isFunction(fn)) throw new TypeError('retry.fn must be a function.');
-    if (!isObject(opts)) throw new TypeError('retry.opts must be an object.');
-  }
-
   const { maxAttempts, delayInterval } = { ...retry.defaultOpts, ...opts };
   let attempts = 0;
 
@@ -78,8 +95,8 @@ export function retry(fn, opts = {}) {
       return fn();
     } catch (e) {
       if ((e instanceof TypeError) || (attempts >= maxAttempts)) {
-        // Error is of type TypeEror or max attempts exceeded, throw the error and fail.
-        // TypeError is thrown directly without retry as TypeError is mostly non-retriable.
+        // Error is of type TypeEror or it exceeds max attempts, throw the error and fail.
+        // TypeError is thrown directly without retrying as TypeError is mostly non-retriable.
         throw e;
       }
       delay(delayInterval);
