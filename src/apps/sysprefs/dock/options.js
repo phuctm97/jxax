@@ -1,8 +1,26 @@
 import { isObject, isEmpty } from 'lodash';
 import { join, validate } from '@utils';
-import { ScreenEdges, MinimizeEffects } from '@core/dock';
 
-export { ScreenEdges, MinimizeEffects };
+/**
+ * Screen edges.
+ *
+ * @enum {string}
+ */
+export const ScreenEdges = {
+  BOTTOM: 'bottom',
+  LEFT: 'left',
+  RIGHT: 'right',
+};
+
+/**
+ * Minimization effects.
+ *
+ * @enum {string}
+ */
+export const MinimizeEffects = {
+  GENIE: 'genie',
+  SCALE: 'scale',
+};
 
 /**
  * Tabs when opening documents preferences.
@@ -86,14 +104,11 @@ const constraints = {
  */
 
 /**
- * Validate a +System Preferences/Dock_ settings object, return all errors or `undefined` if no
- * error found. Errors are returned as an object whose keys are the invalid attributes' names and
- * values are arrays of error messages.
+ * Validate a _System Preferences/Dock_ settings object.
  *
- * @param {SysPrefsDockSettings} settings The settings object to validate.
- * @returns {any} The errors object or `undefined` if no error found.
+ * @param {SysPrefsDockSettings} settings The settings object.
  */
-export default function validateSettings(settings) {
+export function validateConfigureDock(settings) {
   if (!isObject(settings) || isEmpty(Object.values(settings))) {
     return { '.': ['no argument'] };
   }

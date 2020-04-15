@@ -1,5 +1,4 @@
-import applySysPrefsGeneralSettings, { validateSysPrefsGeneralSettings } from '@apps/sysprefs/general';
-import applySysPrefsDockSettings, { validateSysPrefsDockSettings } from '@apps/sysprefs/dock';
+import * as sysprefs from '@apps/sysprefs';
 
 /**
  * Create an usable action.
@@ -15,8 +14,8 @@ function action(validate, run) {
  * The library of usable actions.
  */
 const library = {
-  'sysprefs.configureGeneral': action(validateSysPrefsGeneralSettings, applySysPrefsGeneralSettings),
-  'sysprefs.configureDock': action(validateSysPrefsDockSettings, applySysPrefsDockSettings),
+  'sysprefs.configureGeneral': action(sysprefs.validateConfigureGeneral, sysprefs.configureGeneral),
+  'sysprefs.configureDock': action(sysprefs.validateConfigureDock, sysprefs.configureDock),
 };
 
 export default library;
