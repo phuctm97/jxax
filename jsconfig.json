@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@bin/*": ["src/bin/*"],
       "@core/*": ["src/core/*"],
       "@sysprefs/*": ["src/sysprefs/*"],
       "@reporters/*": ["src/reporters/*"],
