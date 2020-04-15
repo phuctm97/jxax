@@ -1,12 +1,14 @@
-import {
-  isObject, isBoolean, isUndefined, has, capitalize,
-} from 'lodash';
-import { IS_DEV } from '@utils';
-import { JobStatuses, ResultDetailTypes } from '@core/workflow/reporter';
+/**
+ * The console reporter module exports a `Reporter` implementation which reports `Workflow`(s)'
+ * progresses to the console or terminal to which the application is currently attached.
+ */
+
+import { isUndefined, capitalize } from 'lodash';
 import * as ansi from 'ansi-escape-sequences';
+import { JobStatuses, ResultDetailTypes } from '@core/workflow/reporter';
 
 /**
- * @typedef {import{'@core/workflow/reporter'}.Reporter} Reporter
+ * @typedef {import('@core/workflow/reporter').Reporter} Reporter
  */
 
 // Effect options.
@@ -47,7 +49,7 @@ function beautifyMessage(message) {
   return m;
 }
 
-// Helper function to break lines in a paragraph so that its lines don't exceed `max` columns.
+// Helper function breaks a paragraph into lines that don't exceed `max` columns.
 function breakParagraph(paragraph, max, { padding, prefixLength } = { padding: '', prefixLength: 0 }) {
   if (prefixLength > max) throw new TypeError('breakParagraph.prefixLength must be smaller than breakParagraph.max.length.');
   if (padding.length >= max) throw new TypeError('breakParagraph.padding must be shorter than breakParagraph.max.');
@@ -92,10 +94,10 @@ function breakParagraph(paragraph, max, { padding, prefixLength } = { padding: '
 
 // Helper function gets number of columns in the current console/terminal.
 function getConsoleColumns() {
-  // Import Foundation library to use NSTask.
+  // Import `Foundation` to be able use `NSTask`.
   ObjC.import('Foundation');
 
-  // Launch NSTask 'tput cols' and parse result get number of cols.
+  // Launch `NSTask` `tput cols` to get number of cols.
   const { pipe } = $.NSPipe;
   const file = pipe.fileHandleForReading;
   const task = $.NSTask.alloc.init;
@@ -109,29 +111,21 @@ function getConsoleColumns() {
   let data = file.readDataToEndOfFile; // Read the task's output.
   (() => file.closeFile)();
 
-  // Parse the task output.
+  // Parse the task's output.
   data = $.NSString.alloc.initWithDataEncoding(data, $.NSUTF8StringEncoding);
-  const result = ObjC.unwrap(data); // Unwrap NSString.
+  const result = ObjC.unwrap(data); // Unwrap `NSString`.
   return parseInt(result, 10);
 }
 
 /**
- * Create a console reporter, which reports workflows' progresses to the console or terminal it's
- * attached to (stderr is used by default).
+ * Create a console `Reporter`, which reports `Workflow`(s)' progresses to the console or terminal
+ * the application is currently attached to. All outputs are printed to `stderr`, not `stdout`.
  *
  * @param {object} opts Options.
- * @param {boolean} opts.color Whether report in colorful format.
- * @returns {Reporter} A console reporter.
+ * @param {boolean} opts.color Report in colorful or plain text format?
+ * @returns {Reporter} The `Reporter`.
  */
 export default function createConsoleReporter(opts = {}) {
-  if (IS_DEV) { // Validate arguments.
-    if (!isObject(opts)) throw new TypeError('createConsoleReporter.opts must be an object.');
-    if (has(opts, 'color') && !isBoolean(opts.color)) {
-      throw new TypeError('createConsoleReporter.opts.color must be a boolean.');
-    }
-  }
-
-  // Extract options.
   const { color } = { ...createConsoleReporter.defaultOpts, ...opts };
   let cols = 80; // Default console columns.
 

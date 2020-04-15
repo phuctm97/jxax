@@ -1,23 +1,24 @@
-import {
-  isFunction, isString, isObject, isBoolean, has,
-} from 'lodash';
-import { IS_DEV } from '@utils';
+import { isFunction } from 'lodash';
 import { retry } from '@core/app';
 
 /**
- * @typedef {object} Progress A job progress reporter.
- * Progress is designed to be used in workflow's jobs. A job uses a progress to report its
- * progress, the progress renders the job's progress. Usually, a progress is created by a workflow
- * using its reporter and used by workflow's jobs. Progress is not likely to be used publicly.
+ * @typedef {object} Progress The `Workflow`'s `Job`(s)' progress reporter.
  *
- * @property {string} description The job's description, writeonly, set to update the job's
- * description.
+ * `Progress` is designed to be used within `Workflow`'s `Job`(s). A `Job` uses a `Progress` to
+ * report its progress, the `Progress` renders the `Job`'s progress. Usually, a `Progress` is
+ * created internally by a `Workflow` using its `Reporter` and used by the `Workflow`'s `Job`(s).
+ * `Progress` is unlikely to be used externally.
+ *
+ * @property {string} description The progress's description, `write only`, set to update the
+ * progress's latest information.
  */
 
 /**
- * @typedef {object} Stepper A stepper object.
- * Stepper helps run jobs' tasks as steps and reports jobs' progresses as well as results. Use
- * stepper in your jobs to easily integrate your jobs with workflow APIs.
+ * @typedef {object} Stepper
+ *
+ * `Stepper` is a helper API to run a `Job`' tasks as steps in combination with reporting the
+ * `Job`'s progress and result. Using `Stepper` is a convenient and easy way to integrate `Job`(s)
+ * with `Workflow` APIs.
  *
  * @property {(name: string, condition: any, fn: () => void) => void} addStep Add a step to the
  * stepper.
@@ -26,36 +27,19 @@ import { retry } from '@core/app';
  */
 
 /**
- * Create a stepper object.
+ * Create a `Stepper` object.
  *
  * @param {object} opts Options.
- * @param {Progress} opts.progress A progress object for the stepper to report its progress.
- * @param {boolean} opts.summarizeResult Whether to summarize result details?
- * @returns {Stepper} A stepper object.
+ * @param {Progress} opts.progress A `Progress` object for the `Stepper` to report its progress.
+ * @returns {Stepper} The `Stepper` object.
  */
 export default function createStepper(opts = {}) {
-  if (IS_DEV) { // Validate arguments.
-    if (!isObject(opts)) throw new TypeError('createStepper.opts must be an object.');
-    if (has(opts, 'progress') && !isObject(opts.progress)) {
-      throw new TypeError('createStepper.opts.progress must be an object.');
-    }
-    if (has(opts, 'summarizeResult') && !isBoolean(opts.summarizeResult)) {
-      throw new TypeError('createStepper.opts.summarizeResult must be a boolean.');
-    }
-  }
-
-  const { progress, summarizeResult } = { ...createStepper.defaultOpts, ...opts };
+  const { progress } = { ...createStepper.defaultOpts, ...opts };
   const steps = [];
 
   // The stepper's addStep.
   const addStep = (name, condition, fn) => {
-    if (IS_DEV) { // Validate arguments.
-      if (!isString(name)) throw new TypeError('addStep.name must be a string.');
-      if (!isFunction(fn)) throw new TypeError('addStep.fn must be a function.');
-    }
-    steps.push({
-      name, condition, fn,
-    });
+    steps.push({ name, condition, fn });
   };
 
   // The stepper's run.
@@ -65,18 +49,11 @@ export default function createStepper(opts = {}) {
     ));
 
     const total = effectiveSteps.length;
-    const results = summarizeResult ? [] : undefined;
+    const results = [];
 
     effectiveSteps.forEach((step, index) => {
       progress.description = `${step.name} (${index + 1}/${total})`;
 
-      if (!summarizeResult) {
-        // Don't summarize result, simply run `fn`.
-        retry(step.fn);
-        return;
-      }
-
-      // Try run `fn` and summarize result.
       try {
         retry(step.fn);
         results.push({
@@ -103,5 +80,4 @@ export default function createStepper(opts = {}) {
  */
 createStepper.defaultOpts = {
   progress: { description: '' },
-  summarizeResult: true,
 };
