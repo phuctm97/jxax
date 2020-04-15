@@ -1,0 +1,30 @@
+jobs:
+  - uses: sysprefs.configureGeneral
+    args:
+      appearance: dark
+      accentColor: blue
+      highlightColor: blue
+      sidebarIconSize: small
+      autoHideMenuBar: false
+      showScrollBars: auto
+      clickScrollBar: jumpToNextPage
+      defaultWebBrowser: Safari
+      askWhenClosingDocuments: true
+      closeWindowsWhenQuittingApp: true
+      recentItems: 0
+      allowHandoff: true
+      useFontSmoothing: true
+  - uses: sysprefs.configureDock
+    args:
+      size: 0.25
+      magnification: false
+      magnificationSize: 0
+      location: left
+      minimizeEffect: genie
+      preferTabsWhenOpeningDocuments: inFullScreenOnly
+      doubleClickTitleBar: zoom
+      minimizeToAppIcon: false
+      animate: true
+      autohide: true
+      showOpenIndicators: true
+      showRecentApps: false
