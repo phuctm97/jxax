@@ -30,4 +30,10 @@ jobs:
       showRecentApps: false
   - uses: desktops.changePicture
     args:
-      picture: ~/Pictures/wallpaper.jpg
+      picture: ~/Pictures/Wallpaper.jpg
+  - uses: desktops.configureScreenSaver
+    args:
+      screenSaver: Brooklyn
+      delayInterval: 5
+      mainScreenOnly: false
+      showClock: true

@@ -9,6 +9,7 @@ const library = {
   'sysprefs.configureGeneral': createAction(sysprefs.validateConfigureGeneral, sysprefs.configureGeneral),
   'sysprefs.configureDock': createAction(sysprefs.validateConfigureDock, sysprefs.configureDock),
   'desktops.changePicture': createAction(desktops.validateChangePicture, desktops.changePicture),
+  'desktops.configureScreenSaver': createAction(desktops.validateConfigureScreenSaver, desktops.configureScreenSaver),
 };
 
 export default library;
