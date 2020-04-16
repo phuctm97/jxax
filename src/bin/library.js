@@ -1,21 +1,12 @@
+import { createAction } from '@core/workflow';
 import * as sysprefs from '@apps/sysprefs';
 
 /**
- * Create an usable action.
- *
- * @param {() => undefined} validate The action's validate function.
- * @param {() => undefined} run The action's run function.
- */
-function action(validate, run) {
-  return { validate, run };
-}
-
-/**
- * The library of usable actions.
+ * The library of usable `Action`(s).
  */
 const library = {
-  'sysprefs.configureGeneral': action(sysprefs.validateConfigureGeneral, sysprefs.configureGeneral),
-  'sysprefs.configureDock': action(sysprefs.validateConfigureDock, sysprefs.configureDock),
+  'sysprefs.configureGeneral': createAction(sysprefs.validateConfigureGeneral, sysprefs.configureGeneral),
+  'sysprefs.configureDock': createAction(sysprefs.validateConfigureDock, sysprefs.configureDock),
 };
 
 export default library;

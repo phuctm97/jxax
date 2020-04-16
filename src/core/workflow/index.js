@@ -11,6 +11,7 @@ import {
   emptyReporter, JobStatuses, ResultDetailTypes,
 } from '@core/workflow/reporter';
 
+export * from '@core/workflow/config';
 export * from '@core/workflow/reporter';
 export { default as createStepper } from '@core/workflow/stepper';
 
@@ -21,36 +22,10 @@ const Strings = {
 };
 
 /**
+ * @typedef {import('@core/workflow/config').Job} Job
  * @typedef {import('@core/workflow/reporter').Reporter} Reporter
  * @typedef {import('@core/workflow/stepper').Progress} Progress
  */
-
-/**
- * @typedef {object} Job
- *
- * `Job` is a part of a `Workflow`. A `Workflow` is a sequential list of `Job`(s).
- *
- * @property {string} name The job's name.
- * @property {() => any} validate The job's validation logic.
- * @property {(object) => any} run The job's execution logic.
- */
-
-/**
- * Create a `Job`.
- *
- * @param {string} name The job's name.
- * @param {() => any} validate The job's `validate` function.
- * @param {(object) => any} run The job's `run` function.
- * @param {object} args The job's arguments.
- * @returns {Job} The `Job`.
- */
-export function createJob(name, validate, run, args) {
-  return {
-    name,
-    validate: validate ? () => validate(args) : undefined,
-    run: (opts = {}) => run(args, opts),
-  };
-}
 
 /**
  * Run a `Workflow`, which is essentially a sequential list of `Job`(s).

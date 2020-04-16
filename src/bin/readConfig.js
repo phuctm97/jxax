@@ -98,16 +98,7 @@ function validateConfig(obj) {
 }
 
 /**
- * @typedef {object} WorkflowConfig The workflow configuration model.
- *
- * @property {JobConfig[]} jobs The workflow's job configuration objects.
- */
-
-/**
- * @typedef {object} JobConfig The job configuration model.
- *
- * @property {string} uses The action to use for the job.
- * @property {object} args The job's arguments.
+ * @typedef {import('@core/workflow').WorkflowConfig} WorkflowConfig
  */
 
 /**
