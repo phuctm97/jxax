@@ -28,19 +28,6 @@ export function createJob(name, validate, run, args) {
 }
 
 /**
- * @typedef {object} WorkflowConfig The `Workflow` configuration model.
- *
- * @property {JobConfig[]} jobs The `Workflow`'s `Job` configuration objects.
- */
-
-/**
- * @typedef {object} JobConfig The `Job` configuration model.
- *
- * @property {string} uses The action to use for the job.
- * @property {object} args The job's arguments.
- */
-
-/**
  * @typedef {object} Action
  *
  * `Action` is a usable command or function which can be used in combination with a set of
@@ -60,6 +47,19 @@ export function createJob(name, validate, run, args) {
 export function createAction(validate, run) {
   return { validate, run };
 }
+
+/**
+ * @typedef {object} WorkflowConfig The `Workflow` configuration model.
+ *
+ * @property {JobConfig[]} jobs The `Workflow`'s `Job` configuration objects.
+ */
+
+/**
+ * @typedef {object} JobConfig The `Job` configuration model.
+ *
+ * @property {string} uses The action to use for the job.
+ * @property {object} args The job's arguments.
+ */
 
 /**
  * Load `Job`(s) for a `Workflow` based on its configuration object.
