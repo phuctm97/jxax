@@ -28,3 +28,6 @@ jobs:
       autohide: true
       showOpenIndicators: true
       showRecentApps: false
+  - uses: desktops.changePicture
+    args:
+      picture: ~/Pictures/wallpaper.jpg

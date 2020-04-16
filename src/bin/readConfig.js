@@ -2,32 +2,8 @@ import {
   isObject, isString, isArray, isEmpty, isNil, has,
 } from 'lodash';
 import { safeLoad as loadYAML, YAMLException } from 'js-yaml';
-import { doShellScript, read } from '@core/addtions';
-
-// The lazily-loaded absolute path to the current working directory.
-let CWD;
-
-/**
- * Get absolute path to the current working directory.
- *
- * @returns {string} The abosulute path to the current working directory.
- */
-function getCwd() {
-  if (!CWD) CWD = doShellScript('pwd');
-  return CWD;
-}
-
-/**
- * Get real path to a relative path (absolute path is accepted and returned as is).
- *
- * @param {string} path The relative path.
- * @returns {string} The absolute path.
- */
-function getRealPath(path) {
-  if (path.startsWith('/')) return path;
-  if (path.startsWith('./')) return `${getCwd()}/${path.substring(2)}`;
-  return `${getCwd()}/${path}`;
-}
+import { read } from '@core/addtions';
+import { getRealPath } from '@core/files';
 
 /**
  * Read content of a file from a path (both absolute and relative values are applicable).
