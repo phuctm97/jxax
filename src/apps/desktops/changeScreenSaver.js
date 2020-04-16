@@ -49,7 +49,7 @@ export function validateConfigureScreenSaver(args) {
  * @param {ConfigureScreenSaverArgs} args The arguments.
  * @param {object} opts Options.
  */
-export function configureScreenSaver(args, opts) {
+export function configureScreenSaver(args, opts = {}) {
   const {
     screenSaver, delayInterval, mainScreenOnly, showClock,
   } = args;

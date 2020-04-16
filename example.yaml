@@ -28,6 +28,15 @@ jobs:
       autohide: true
       showOpenIndicators: true
       showRecentApps: false
+  - uses: sysprefs.configureMissionControl
+    args:
+      autoRearrangeSpaces: false
+      switchSpaceWhenSwithToApp: true
+      groupWindowsByApp: false
+      displaysHaveSeparateSpaces: true
+      missionControlKeyShortcut: "[control][up]"
+      appWindowsKeyShortcut: "[control][down]"
+      showDesktopKeyShortcut: F11
   - uses: desktops.changePicture
     args:
       picture: ~/Pictures/Wallpaper.jpg
