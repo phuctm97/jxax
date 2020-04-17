@@ -31,16 +31,19 @@ jobs:
         run: |
           mv dist/jxax.js dist/jxax
           chmod +x dist/jxax
+      - id: get-tag
+        name: Get Git tag
+        run: echo "::set-output name=tag::${GITHUB_REF/refs\/tags\//}"
       - name: Create tar
-        run: tar -cvf dist/jxax-${{ github.ref }}.tar.gz --owner 0 --group 0 -C dist/ jxax
+        run: tar -cvf dist/jxax-${{ steps.get-tag.outputs.tag }}.tar.gz --owner 0 --group 0 -C dist/ jxax
       - id: create-release
         name: Create Github Release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
+          tag_name: ${{ steps.get-tag.outputs.tag }}
+          release_name: ${{ steps.get-tag.outputs.tag }}
           prerelease: true
       - name: Upload release asset
         uses: actions/upload-release-asset@v1
@@ -48,6 +51,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: dist/jxax-${{ github.ref }}.tar.gz
-          asset_name: jxax-${{ github.ref }}.tar.gz
+          asset_path: dist/jxax-${{ steps.get-tag.outputs.tag }}.tar.gz
+          asset_name: jxax-${{ steps.get-tag.outputs.tag }}.tar.gz
           asset_content_type: application/gzip
