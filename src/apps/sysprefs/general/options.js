@@ -87,7 +87,7 @@ function inclusion(vals) {
 }
 
 /**
- * _System Preferences/General_ settings' constraints.
+ * The _System Preferences/General_ settings' constraints.
  */
 const constraints = {
   appearance: inclusion(Appearances),

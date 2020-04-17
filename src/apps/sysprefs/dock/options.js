@@ -55,7 +55,7 @@ function inclusion(vals) {
 }
 
 /**
- * _System Preferences/Dock_ settings' constraints.
+ * The _System Preferences/Dock_ settings' constraints.
  */
 const constraints = {
   size: {

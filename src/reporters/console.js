@@ -44,7 +44,7 @@ const DESCRIPTION_FORMATS = {
 
 // Helper function beautifies messages.
 function beautifyMessage(message) {
-  let m = capitalize(message);
+  let m = `${message[0].toUpperCase()}${message.substring(1)}`;
   if (!m.endsWith('.')) m += '.';
   return m;
 }
