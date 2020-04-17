@@ -31,7 +31,6 @@
     "eslint-import-resolver-webpack": "^0.12.1",
     "eslint-plugin-import": "^2.20.1",
     "prettier": "^2.0.4",
-    "source-map-support": "^0.5.16",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
   }

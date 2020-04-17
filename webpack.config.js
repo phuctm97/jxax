@@ -33,5 +33,7 @@ module.exports = (env) => ({
     // Add shebang.
     new webpack.BannerPlugin({ banner: '#!/usr/bin/env osascript -l JavaScript', raw: true }),
   ],
-  devtool: isDev(env) ? 'source-map' : false,
+  performance: {
+    hints: false,
+  },
 });
