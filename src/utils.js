@@ -38,6 +38,17 @@ export function join(collection, separator = ', ') {
 }
 
 /**
+ * Add a custom type validation for validations using the `validate` function.
+ *
+ * @param {string} name The type's name.
+ * @param {() => any} validator The type's validator function.
+ */
+export function addCustomTypeValidation(name, message, validator) {
+  validatejs.validators.type.types[name] = validator;
+  validatejs.validators.type.messages[name] = message;
+}
+
+/**
  * Validates the attributes object against the constraints.
  * The attributes must be a plain object or a form element, things like backbone models etc are not
  * supported. See https://validatejs.org/#constraints for constraints details.

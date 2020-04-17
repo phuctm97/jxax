@@ -15,6 +15,9 @@ const library = {
   'sysprefs.configureMissionControl': createAction(
     sysprefs.validateConfigureMissionControl, sysprefs.configureMissionControl,
   ),
+  'sysprefs.configureSpotlight': createAction(
+    sysprefs.validateConfigureSplotlight, sysprefs.configureSpotlight,
+  ),
   'desktops.changePicture': createAction(
     desktops.validateChangePicture, desktops.changePicture,
   ),

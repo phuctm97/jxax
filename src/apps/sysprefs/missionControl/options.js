@@ -2,7 +2,7 @@ import { isObject, isEmpty } from 'lodash';
 import { validate } from '@utils';
 
 /**
- *  _System Preferences/Mission Control_ settings' constraints.
+ * The  _System Preferences/Mission Control_ settings' constraints.
  */
 const constraints = {
   autoRearrangeSpaces: { type: 'boolean' },
