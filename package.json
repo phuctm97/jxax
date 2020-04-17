@@ -1,6 +1,6 @@
 {
   "name": "jxax",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.1",
   "private": false,
   "description": "JavaScript for Automation (JXA) extensions kit automate macOS Desktop setup, configuring preferences, personalization, etc, over command-line interface (CLI).",
   "repository": "github:deskp/jxax",
