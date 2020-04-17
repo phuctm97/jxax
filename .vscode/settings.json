@@ -7,9 +7,9 @@
     "yarn.lock": true,
     "dist": true
   },
+  "javascript.preferences.quoteStyle": "single",
   "javascript.validate.enable": false,
   "javascript.format.enable": false,
-  "javascript.preferences.quoteStyle": "single",
   "typescript.validate.enable": false,
   "typescript.format.enable": false,
   "json.format.enable": false,

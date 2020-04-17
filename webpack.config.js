@@ -9,6 +9,9 @@ function isDev(env) {
 module.exports = (env) => ({
   mode: isDev(env) ? 'development' : 'production',
   entry: path.resolve(__dirname, 'src', 'bin', 'index.js'),
+  output: {
+    filename: 'jxax.js',
+  },
   resolve: {
     alias: extractAlias(path.resolve(__dirname, 'jsconfig.json')),
   },
