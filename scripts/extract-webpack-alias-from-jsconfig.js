@@ -1,11 +1,12 @@
 const path = require('path');
 
 /**
- * Helper function infers Webpack aliases from jsconfig.json compilerOptions.baseUrl and
- * compilerOptions.paths.
+ * Helper function infers Webpack `alias`(es) from `jsconfig.json` `compilerOptions.baseUrl` and
+ * `compilerOptions.paths`.
  *
- * @param {string} jsconfigPath Path to jsconfig.json (can be either relative or absolute path).
- * @return {object} An object representing corresponding Webpack alias.
+ * @param {string} jsconfigPath Path to the `jsconfig.json` (can be either relative or absolute
+ * path).
+ * @return {object} The Webpack `alias`(es).
  */
 module.exports = (jsconfigPath = './jsconfig.json') => {
   const jsconfig = require(jsconfigPath);
