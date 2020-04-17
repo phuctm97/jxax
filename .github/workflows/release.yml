@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  tags:
+    - v1.*
+
+jobs:
+  build-release:
+    name: build,release
+    runs-on: ubuntu-18.04
+    env:
+      node-version: 12.x
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node.js ${{ env.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.node-version }}
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build
+        run: yarn build
+      - name: Upload distribution bundle
+        uses: actions/upload-artifact@v1
+        with:
+          name: jxax-0.git${{ github.sha }}
+          path: dist/jxax.js
+      - name: Create executable
+        run: |
+          mv dist/jxax.js dist/jxax
+          chmod +x dist/jxax
+      - name: Create tar
+        run: tar -cvf dist/jxax-${{ github.ref }}.tar.gz --owner 0 --group 0 -C dist/ jxax
+      - id: create-release
+        name: Create Github Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          prerelease: true
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: dist/jxax-${{ github.ref }}.tar.gz
+          asset_name: jxax-${{ github.ref }}.tar.gz
+          asset_content_type: application/gzip
