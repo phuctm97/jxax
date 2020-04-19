@@ -1,5 +1,6 @@
 ---
 name: Request a feature 💡
+about: You've an idea and think we should add it. Great! We'd love to hear it!
 ---
 
 ## Feature Request

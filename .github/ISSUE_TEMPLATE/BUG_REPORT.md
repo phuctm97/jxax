@@ -1,5 +1,6 @@
 ---
 name: Report a bug 🐞
+about: You've been using JXAX and discovered a bug. Thank you for using and helping us improve!
 ---
 
 ## Bug Report
