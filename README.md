@@ -120,7 +120,7 @@ home (`~`) paths are applicable.
 $ jxax your-workflow.yml
 ```
 
-### Features
+## Features
 
 Currently, JXAX supports:
 
