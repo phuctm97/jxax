@@ -2,10 +2,10 @@
   "name": "jxax",
   "version": "1.0.0-rc.1",
   "private": false,
-  "description": "JavaScript for Automation (JXA) extensions kit automate macOS Desktop setup, configuring preferences, personalization, etc, over command-line interface (CLI).",
+  "description": "JavaScript for Automation (JXA) Extensions Kit & CLI automate macOS setup, configuring preferences, personalization, etc.",
   "repository": "github:deskp/jxax",
   "license": "MIT",
-  "author": "Minh-Phuc Tran (@phuctm97)",
+  "author": "Phuc (Minh) Tran",
   "main": "dist/jxax.js",
   "scripts": {
     "start": "yarn build:dev --watch",
