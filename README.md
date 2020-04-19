@@ -35,10 +35,10 @@ $ curl -L https://github.com/deskp/jxax/releases/download/v1.0.0-rc.1/jxax-1.0.0
 
 ## Usage
 
-The `jxax` CLI allows you to write, store and run your workflows as YAML files, enables
+JXAX allows you to write, store and run your workflows as YAML files, enables
 writing workflows once and running them many times at many places, which automation is all about.
 
-> The JXAX's concept is relatively similar to but simpler than CI/CD workflows.
+> JXAX's workflows are relatively similar to but simpler than CI/CD workflows.
 
 #### Configure your workflow in YAML
 
@@ -122,14 +122,19 @@ $ jxax your-workflow.yml
 
 ### Features
 
-Currently, the `jxax` CLI supports:
+Currently, JXAX supports:
 
 - `sysprefs.configureGeneral`: configure _System Preferences/General_.
+
 - `sysprefs.configureDock`: configure _System Preferences/Dock_.
+
 - `sysprefs.configureMissionControl`: configure _System Preferences/Mission Control_.
+
 - `sysprefs.configureSpotlight`: configure _System Preferences/Spotlight_.
+
 - `desktops.changePicture`: change desktop picture, either picture names in
   _Apple Desktop Pictures_ or absolute or relative paths are all applicable.
+
 - `sysprefs.configureScreenSaver`: change screen saver, configure screen saver options. Screen
   savers have to be added before being able to be configured.
 
@@ -139,10 +144,12 @@ a PR!
 
 ## Contributing
 
-The JXAX is designed to be extended by its users and community. So if you've ever used it and
-wanted to add or added an automation, why don't you create an issue or submit a PR, there may be
-many people out there share the same interest with you, your contribution is very likely to be
-highly appreciated! 💚
+JXAX is designed to be extended by its users and community. So if you've ever used it and wanted to
+add or added an automation, why don't you create an issue or submit a PR, there may be many people
+out there share the same interest with you, your contribution is very likely to be highly
+appreciated! 💚
+
+See [Contributing][contributing-file].
 
 ## License
 
@@ -163,4 +170,4 @@ Copyright © 2020 - present, Phuc (Minh) Tran. All rights reserved.
 <!-- Links -->
 
 [license-file]: /LICENSE
-[author-website]: https://github.com/phuctm97
+[contributing-file]: /CONTRIBUTING.md
