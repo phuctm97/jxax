@@ -114,7 +114,7 @@ jobs:
 #### Run your workflow
 
 Simply run the `jxax` CLI with your configured workflow YAML file, either absolute or relative or
-home (`~`) paths are applicable.
+home (`~`) paths are applicable:
 
 ```bash
 $ jxax your-workflow.yml
