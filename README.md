@@ -133,7 +133,7 @@ Currently, JXAX supports:
 - `sysprefs.configureSpotlight`: configure _System Preferences/Spotlight_.
 
 - `desktops.changePicture`: change desktop picture, either picture names in
-  _Apple Desktop Pictures_ or absolute or relative paths are all applicable.
+  _Apple Desktop Pictures_ or absolute paths or relative paths are applicable.
 
 - `sysprefs.configureScreenSaver`: change screen saver, configure screen saver options. Screen
   savers have to be added before being able to be configured.
@@ -146,8 +146,7 @@ a PR!
 
 JXAX is designed to be extended by its users and community. So if you've ever used it and wanted to
 add or added an automation, why don't you create an issue or submit a PR, there may be many people
-out there share the same interest with you, your contribution is very likely to be highly
-appreciated! 💚
+out there share interests with you, your contribution is very likely to be highly appreciated! 💚
 
 See [Contributing][contributing-file].
 
