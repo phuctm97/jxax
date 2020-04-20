@@ -25,12 +25,11 @@
 
 ## Installation
 
-The easiest way to use JXAX is to install it into your `PATH`. Running the following command
+The easiest way to use JXAX is to install it into your `PATH` using our `install.sh`. Running the following command
 downloads the `jxax` CLI and extract it into your `usr/local/bin`:
 
 ```bash
-$ curl -L https://github.com/deskp/jxax/releases/download/v1.0.0-rc.1/jxax-1.0.0-rc.1.tar.gz \
-    | sudo tar xvz - -C /usr/local/bin
+$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/deskp/jxax/master/scripts/install.sh)"
 ```
 
 ## Usage
