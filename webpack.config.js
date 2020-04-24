@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
-const extractAlias = require('./scripts/extract-webpack-alias-from-jsconfig');
+const getAlias = require('./scripts/get-webpack-alias-from-jsconfig');
 
 function isDev(env) {
   return env && env.dev;
@@ -13,7 +13,7 @@ module.exports = (env) => ({
     filename: 'jxax.js',
   },
   resolve: {
-    alias: extractAlias(path.resolve(__dirname, 'jsconfig.json')),
+    alias: getAlias(path.resolve(__dirname, 'jsconfig.json')),
   },
   module: {
     rules: [
