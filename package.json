@@ -12,7 +12,8 @@
     "build": "yarn build:prod",
     "build:prod": "webpack",
     "build:dev": "webpack --env.dev",
-    "lint": "eslint --ext .js . && prettier --check ."
+    "lint": "eslint --ext .js . && prettier --check .",
+    "release": "semantic-release"
   },
   "dependencies": {
     "ansi-escape-sequences": "^5.1.2",

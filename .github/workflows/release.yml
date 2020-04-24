@@ -2,8 +2,8 @@ name: Release
 
 on:
   push:
-    tags:
-      - v1.*
+    branches:
+      - master
 
 jobs:
   build-release:
@@ -31,27 +31,9 @@ jobs:
         run: |
           mv dist/jxax.js dist/jxax
           chmod +x dist/jxax
-      - id: get-tag
-        name: Get Git tag
-        run: |
-          echo "::set-output name=tag::${GITHUB_REF/refs\/tags\//}"
-          echo "::set-output name=version::${GITHUB_REF/refs\/tags\/v/}"
       - name: Create tar
-        run: tar -cvf dist/jxax-${{ steps.get-tag.outputs.version }}.tar.gz --owner 0 --group 0 -C dist/ jxax
-      - id: create-release
-        name: Create Github Release
-        uses: actions/create-release@v1
+        run: tar -cvf dist/jxax.tar.gz --owner 0 --group 0 -C dist/ jxax
+      - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.get-tag.outputs.tag }}
-          release_name: ${{ steps.get-tag.outputs.tag }}
-      - name: Upload release asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: dist/jxax-${{ steps.get-tag.outputs.version }}.tar.gz
-          asset_name: jxax-${{ steps.get-tag.outputs.version }}.tar.gz
-          asset_content_type: application/gzip
+          GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
+        run: yarn release
