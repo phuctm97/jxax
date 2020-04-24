@@ -1,0 +1,25 @@
+{
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/changelog",
+    [
+      "@semantic-release/git",
+      {
+        "assets": ["package.json", "yarn.lock", "CHANGELOG.md"]
+      }
+    ],
+    [
+      "@sematic-release/github",
+      {
+        "assets": [
+          {
+            "path": "dist/jxax.tar.gz",
+            "name": "jxax-${nextRelease.version}.tar.gz",
+            "label": "jxax CLI v${nextRelease.version}"
+          }
+        ]
+      }
+    ]
+  ]
+}
