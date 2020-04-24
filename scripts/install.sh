@@ -1,6 +1,6 @@
 #!/bin/bash
 
-JXAX_VERSION='1.0.0-rc.1'
+JXAX_VERSION='1.0.0'
 INSTALLATION_DIR='/usr/local/bin'
 
 # Make sure $INSTALLATION_DIR exists.
