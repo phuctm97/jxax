@@ -35,5 +35,5 @@ jobs:
         run: tar -cvf dist/jxax.tar.gz --owner 0 --group 0 -C dist/ jxax
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: yarn release
