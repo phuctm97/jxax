@@ -46,7 +46,6 @@ jobs:
         with:
           tag_name: ${{ steps.get-tag.outputs.tag }}
           release_name: ${{ steps.get-tag.outputs.tag }}
-          prerelease: true
       - name: Upload release asset
         uses: actions/upload-release-asset@v1
         env:
