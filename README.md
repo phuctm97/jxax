@@ -10,9 +10,9 @@
   JavaScript for Automation (JXA) Extensions Kit & CLI automate macOS setup, configuring preferences,
   personalization, etc.
   <br/><br/>
-  <img src='https://badgen.net/github/checks/deskp/jxax?label=build' alt='build'/>
-  <img src='https://badgen.net/github/release/deskp/jxax/stable?label=version' alt='version'/>
-  <img src='https://badgen.net/github/license/deskp/jxax' alt='license'/>
+  <img src='https://img.shields.io/github/workflow/status/deskp/jxax/CI' alt='build'/>
+  <img src='https://img.shields.io/github/v/release/deskp/jxax?label=latest%20release' alt='latest release'/>
+  <img src='https://img.shields.io/github/license/deskp/jxax' alt='license'/>
   <img src='https://badgen.net/badge/code%20style/airbnb/ff5a5f?icon=airbnb' alt='code-style-airbnb'/>
   <img src='https://badgen.net/badge/code%20style/prettier/ff69b4?icon=https%3A%2F%2Fico.now.sh%2Fprettier%2Ffff' alt='code-style-prettier'/>
 </p>
