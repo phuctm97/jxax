@@ -1,4 +1,18 @@
 jobs:
+  - uses: sysprefs.configureDock
+    args:
+      size: 0.25
+      magnification: false
+      magnificationSize: 0
+      location: left
+      minimizeEffect: genie
+      preferTabsWhenOpeningDocuments: inFullScreenOnly
+      doubleClickTitleBar: zoom
+      minimizeToAppIcon: false
+      animate: true
+      autohide: true
+      showOpenIndicators: true
+      showRecentApps: false
   - uses: desktops.changePicture
     args:
       picture: Catalina Rock
