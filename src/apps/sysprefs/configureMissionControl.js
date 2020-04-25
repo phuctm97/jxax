@@ -66,6 +66,9 @@ function run(argss, opts = {}) {
   });
 }
 
+/**
+ * Configure System Preferences/Mission Control command.
+ */
 const configureMissionControl = {
   description: 'Configure System Preferences/Mission Control',
   run,

@@ -37,6 +37,22 @@ jobs:
       missionControlKeyShortcut: "[control][up]"
       appWindowsKeyShortcut: "[control][down]"
       showDesktopKeyShortcut: F11
+  - uses: sysprefs.configureSpotlight
+    args:
+      searchResults:
+        - Applications
+        - System Preferences
+        - Calculator
+        - Conversion
+        - Definition
+        - Contacts
+        - Movies
+        - Music
+        - PDF Documents
+        - Presentations
+        - Spreadsheets
+        - Spotlight Suggestions
+      allowSpotlightInLookup: true
   - uses: desktops.changePicture
     args:
       picture: Catalina Rock
