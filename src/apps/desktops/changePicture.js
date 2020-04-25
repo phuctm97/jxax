@@ -1,37 +1,8 @@
-import { validate } from '@utils';
 import { retry } from '@core/app';
 import sysEvents from '@core/sysEvents';
 import { pathTo, Folders, getRealPath } from '@core/files';
 
-/**
- * @typedef {object} ChangeDesktopPictureArgs Change desktop picture arguments.
- *
- * @property {string} picture Path to the new picture.
- */
-
-// Change desktop arguments contraints.
-const constraints = {
-  picture: {
-    presence: { allowEmpty: false },
-    type: 'string',
-  },
-};
-
-/**
- * Validate change desktop picture arguments.
- *
- * @param {ChangeDesktopPictureArgs} args The arguments.
- */
-export function validateChangePicture(args) {
-  return validate(args, constraints);
-}
-
-/**
- * Change desktop picture.
- *
- * @param {ChangeDesktopPictureArgs} args The arguments
- */
-export function changePicture(args) {
+function run(args) {
   const { picture } = args;
 
   retry(() => {
@@ -52,3 +23,20 @@ export function changePicture(args) {
     sysEvents.currentDesktop.picture = pictureAbsPath;
   });
 }
+
+/**
+ * Change Desktop picture command.
+ */
+const changePicture = {
+  description: 'Change current Desktop picture',
+  run,
+  args: {
+    picture: {
+      presence: { allowEmpty: false },
+      type: 'string',
+      description: 'Path to the new Desktop picture, e.g. ~/Pictures/Wallpaper.jpg, ./images/wallpaper.png, Catalina Rock (default to Apple Desktop pictures)',
+    },
+  },
+};
+
+export default changePicture;

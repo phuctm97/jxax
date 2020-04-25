@@ -7,6 +7,7 @@
 import {
   isArray, isEmpty, isNil, has, every,
 } from 'lodash';
+import { validateCommandArgs } from '@core/workflow/command';
 import {
   emptyReporter, JobStatuses, ResultDetailTypes,
 } from '@core/workflow/reporter';
@@ -16,30 +17,10 @@ export * from '@core/workflow/reporter';
 export { default as createStepper } from '@core/workflow/stepper';
 
 /**
+ * @typedef {import('@core/workflow/command').Command} Command
  * @typedef {import('@core/workflow/reporter').Reporter} Reporter
  * @typedef {import('@core/workflow/reporter').Progress} Progress
  */
-
-/**
- * @typedef {object} Action
- *
- * `Action` is a usable command or function which can be used in combination with a set of
- * arguments to create `Job`(s).
- *
- * @property {(object) => any} validate The action's validation logic.
- * @property {(object, object) => any} run The action's execution logic.
- */
-
-/**
- * Create a usable `Action`.
- *
- * @param {(object) => any} validate The action's `validate` function.
- * @param {(object, object) => any} run The action's `run` function.
- * @returns {Action} The `Action`.
- */
-export function createAction(validate, run) {
-  return { validate, run };
-}
 
 /**
  * @typedef {object} Job
@@ -48,30 +29,30 @@ export function createAction(validate, run) {
  *
  * @property {string} name The job's name.
  * @property {() => any} validate The job's validation logic.
- * @property {(object) => any} run The job's execution logic.
+ * @property {(object) => any} run The job's automation logic.
  */
 
 /**
- * Create a `Job`.
+ * Create a `Job` from a `Command` and a set of arguments.
  *
  * @param {string} name The job's name.
- * @param {() => any} validate The job's `validate` function.
- * @param {(object) => any} run The job's `run` function.
- * @param {object} args The job's arguments.
+ * @param {Command} command The `Command` to use.
+ * @param {object} args The arguments.
  * @returns {Job} The `Job`.
  */
-export function createJob(name, validate, run, args) {
+export function createJob(name, command, args) {
   return {
     name,
-    validate: validate ? () => validate(args) : undefined,
-    run: (opts = {}) => run(args, opts),
+    validate: () => validateCommandArgs(command, args),
+    run: (opts = {}) => command.run(args, opts),
   };
 }
 
 /**
  * @typedef {object} JobConfig The `Job` configuration model.
  *
- * @property {string} uses The action to use for the job.
+ * @property {string} name The job's name.
+ * @property {string} uses The command to use for the job.
  * @property {object} args The job's arguments.
  */
 
@@ -84,7 +65,7 @@ export function createJob(name, validate, run, args) {
 /**
  * Load `Job`(s) for a `Workflow` based on its configuration object.
  *
- * @param {object} library The library of usable `Action`(s).
+ * @param {object} library A library of `Command`(s) to load from.
  * @param {WorkflowConfig} config The `Workflow` configuration object.
  * @returns {Job[]} The `Workflow`'s `Job`(s).
  */
@@ -92,13 +73,13 @@ export function loadJobs(library, config) {
   const jobs = [];
 
   config.jobs.forEach((jobConfig) => {
-    const { uses, args } = jobConfig;
+    const { name, uses, args } = jobConfig;
     if (!has(library, uses)) {
-      throw new Error(`unknown action '${uses}'`);
+      throw new Error(`unknown command '${uses}'`);
     }
 
-    const action = library[uses];
-    jobs.push(createJob(uses, action.validate, action.run, args ?? {}));
+    const command = library[uses];
+    jobs.push(createJob(name ?? uses, command, args));
   });
 
   return jobs;
