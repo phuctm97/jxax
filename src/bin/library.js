@@ -7,6 +7,7 @@ import * as sysprefs from '@apps/sysprefs';
 const library = {
   'desktops.changePicture': desktops.changePicture,
   'desktops.configureScreenSaver': desktops.configureScreenSaver,
+  'sysprefs.configureGeneral': sysprefs.configureGeneral,
   'sysprefs.configureDock': sysprefs.configureDock,
 };
 

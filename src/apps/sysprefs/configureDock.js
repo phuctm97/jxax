@@ -35,7 +35,7 @@ const tabsWhenOpeningDocumentsPreferencesMap = {
   [TabsWhenOpeningDocumentsPreferences.MANUALLY]: 'Manually',
 };
 
-function run(settings, opts = {}) {
+function run(args, opts = {}) {
   const {
     size,
     magnification,
@@ -49,7 +49,7 @@ function run(settings, opts = {}) {
     autohide,
     showOpenIndicators,
     showRecentApps,
-  } = settings;
+  } = args;
 
   return runInSysPrefs('Dock', ({ window }) => {
     const stepper = createStepper(opts);

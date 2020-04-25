@@ -54,7 +54,7 @@ jobs:
       autoHideMenuBar: false
       showScrollBars: auto
       clickScrollBar: jumpToNextPage
-      defaultWebBrowser: Safari
+      defaultWebBrowser: Google Chrome.app
       askWhenClosingDocuments: true
       closeWindowsWhenQuittingApp: true
       recentItems: 0

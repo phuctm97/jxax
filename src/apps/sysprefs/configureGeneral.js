@@ -1,15 +1,56 @@
-import { isUndefined, capitalize } from 'lodash';
+import { isObject, isUndefined, capitalize } from 'lodash';
+import { join } from '@utils';
 import { createStepper } from '@core/workflow';
 import sysEvents from '@core/sysEvents';
 import {
   selectCheckbox, selectPopUpButton, selectRadio, selectToggle,
 } from '@core/uiAutomation';
 import runInSysPrefs from '@apps/sysprefs/app';
-import {
-  Appearances, AccentColors, ClickScrollBarActions, ShowScrollBarsTriggers,
-} from '@apps/sysprefs/general/options';
 
-export * from '@apps/sysprefs/general/options';
+const Appearances = {
+  LIGHT: 'light',
+  DARK: 'dark',
+  AUTO: 'auto',
+};
+
+const AccentColors = {
+  BLUE: 'blue',
+  PURPLE: 'purple',
+  PINK: 'pink',
+  RED: 'red',
+  ORANGE: 'orange',
+  YELLOW: 'yellow',
+  GREEN: 'green',
+  GRAPHITE: 'graphite',
+};
+
+const HighlightColors = {
+  BLUE: 'blue',
+  PURPLE: 'purple',
+  PINK: 'pink',
+  RED: 'red',
+  ORANGE: 'orange',
+  YELLOW: 'yellow',
+  GREEN: 'green',
+  GRAPHITE: 'graphite',
+};
+
+const SidebarIconSizes = {
+  SMALL: 'small',
+  MEDIUM: 'medium',
+  LARGE: 'large',
+};
+
+const ShowScrollBarsTriggers = {
+  AUTO: 'auto',
+  WHEN_SCROLLING: 'whenScrolling',
+  ALWAYS: 'always',
+};
+
+const ClickScrollBarActions = {
+  JUMP_TO_NEXT_PAGE: 'jumpToNextPage',
+  JUMP_TO_SPOT_CLICKED: 'jumpToSpotClicked',
+};
 
 // Map appearances from input values to query values.
 const appearancesMap = {
@@ -43,17 +84,7 @@ const clickScrollBarActionsMap = {
   [ClickScrollBarActions.JUMP_TO_NEXT_PAGE]: 'jump to next page',
 };
 
-/**
- * @typedef {import('./options').SysPrefsGeneralSettings} SysPrefsGeneralSettings
- */
-
-/**
- * Configure _System Preferences/General_ settings.
- *
- * @param {SysPrefsGeneralSettings} settings The settings object.
- * @param {object} opts Options.
- */
-export function configureGeneral(settings, opts = {}) {
+function run(args, opts = {}) {
   const {
     appearance,
     accentColor,
@@ -68,7 +99,7 @@ export function configureGeneral(settings, opts = {}) {
     recentItems,
     allowHandoff,
     useFontSmoothing,
-  } = settings;
+  } = args;
 
   return runInSysPrefs('General', ({ window }) => {
     const stepper = createStepper(opts);
@@ -133,3 +164,74 @@ export function configureGeneral(settings, opts = {}) {
     return stepper.run();
   });
 }
+
+function inclusion(vals) {
+  return {
+    within: isObject(vals) ? Object.values(vals) : vals,
+    message: `is invalid, must be within [${join(vals)}]`,
+  };
+}
+
+/**
+ * Configure System Preferences/General command.
+ */
+const configureGeneral = {
+  description: 'Configure System Preferences/General',
+  run,
+  args: {
+    appearance: {
+      inclusion: inclusion(Appearances),
+      description: 'Appearance',
+    },
+    accentColor: {
+      inclusion: inclusion(AccentColors),
+      description: 'Accent color',
+    },
+    highlightColor: {
+      inclusion: inclusion(HighlightColors),
+      description: 'Highlight color',
+    },
+    sidebarIconSize: {
+      inclusion: inclusion(SidebarIconSizes),
+      description: 'Sidebar icon size',
+    },
+    autoHideMenuBar: {
+      type: 'boolean',
+      description: 'Automatically hide and show menu bar',
+    },
+    showScrollBars: {
+      inclusion: inclusion(ShowScrollBarsTriggers),
+      description: 'Show scroll bars trigger',
+    },
+    clickScrollBar: {
+      inclusion: inclusion(ClickScrollBarActions),
+      description: 'Click scroll bar to',
+    },
+    defaultWebBrowser: {
+      type: 'string',
+      description: 'Default web browser',
+    },
+    askWhenClosingDocuments: {
+      type: 'boolean',
+      description: 'Ask to keep changes when closing documents',
+    },
+    closeWindowsWhenQuittingApp: {
+      type: 'boolean',
+      description: 'Close windows when quitting an app',
+    },
+    recentItems: {
+      inclusion: inclusion([0, 5, 10, 15, 20, 30, 50]),
+      description: 'Number of items to show in Recent items',
+    },
+    allowHandoff: {
+      type: 'boolean',
+      description: 'Allow Handoff between this Mac and your iCloud devices',
+    },
+    useFontSmoothing: {
+      type: 'boolean',
+      description: 'Use font smoothing when available',
+    },
+  },
+};
+
+export default configureGeneral;

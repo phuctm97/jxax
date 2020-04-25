@@ -1,4 +1,19 @@
 jobs:
+  - uses: sysprefs.configureGeneral
+    args:
+      appearance: dark
+      accentColor: blue
+      highlightColor: blue
+      sidebarIconSize: small
+      autoHideMenuBar: false
+      showScrollBars: auto
+      clickScrollBar: jumpToNextPage
+      defaultWebBrowser: Google Chrome.app
+      askWhenClosingDocuments: true
+      closeWindowsWhenQuittingApp: true
+      recentItems: 0
+      allowHandoff: true
+      useFontSmoothing: true
   - uses: sysprefs.configureDock
     args:
       size: 0.25
