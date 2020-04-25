@@ -111,3 +111,20 @@ retry.defaultOpts = {
   maxAttempts: 3,
   delayInterval: 0.5,
 };
+
+// Import 'Foundation' in advance for `print` to access 'Foundation' APIs.
+ObjC.import('Foundation');
+
+/**
+ * Print to standard output.
+ *
+ * @param  {...any} args Arguments.
+ */
+export function print(...args) {
+  args.forEach((a) => {
+    $.NSFileHandle.fileHandleWithStandardOutput.writeData(
+      $.NSString.alloc.initWithString(`${String(a)}\n`)
+        .dataUsingEncoding($.NSNEXTSTEPStringEncoding),
+    );
+  });
+}
