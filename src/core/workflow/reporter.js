@@ -13,6 +13,18 @@
  */
 
 /**
+ * @typedef {object} Progress The `Workflow`'s `Job`(s)' progress reporter.
+ *
+ * `Progress` is designed to be used within `Workflow`'s `Job`(s). A `Job` uses a `Progress` to
+ * report its progress, the `Progress` renders the `Job`'s progress. Usually, a `Progress` is
+ * created internally by a `Workflow` using its `Reporter` and used by the `Workflow`'s `Job`(s).
+ * `Progress` is unlikely to be used externally.
+ *
+ * @property {string} description The progress's description, `write only`, set to update the
+ * progress's latest information.
+ */
+
+/**
   * Job statuses.
   *
   * @enum {string}

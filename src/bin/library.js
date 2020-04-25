@@ -1,29 +1,11 @@
-import { createAction } from '@core/workflow';
-import * as sysprefs from '@apps/sysprefs';
 import * as desktops from '@apps/desktops';
 
 /**
- * The library of usable `Action`(s).
+ * The `jxax` CLI's library of `Command`(s).
  */
 const library = {
-  'sysprefs.configureGeneral': createAction(
-    sysprefs.validateConfigureGeneral, sysprefs.configureGeneral,
-  ),
-  'sysprefs.configureDock': createAction(
-    sysprefs.validateConfigureDock, sysprefs.configureDock,
-  ),
-  'sysprefs.configureMissionControl': createAction(
-    sysprefs.validateConfigureMissionControl, sysprefs.configureMissionControl,
-  ),
-  'sysprefs.configureSpotlight': createAction(
-    sysprefs.validateConfigureSplotlight, sysprefs.configureSpotlight,
-  ),
-  'desktops.changePicture': createAction(
-    desktops.validateChangePicture, desktops.changePicture,
-  ),
-  'desktops.configureScreenSaver': createAction(
-    desktops.validateConfigureScreenSaver, desktops.configureScreenSaver,
-  ),
+  'desktops.changePicture': desktops.changePicture,
+  'desktops.configureScreenSaver': desktops.configureScreenSaver,
 };
 
 export default library;

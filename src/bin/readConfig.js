@@ -36,7 +36,7 @@ function validateConfig(obj) {
   // Track all errors.
   const errors = [];
 
-  if (!has(obj, 'jobs')) { // Check for key 'jobs' availabilty.
+  if (!has(obj, 'jobs')) { // Check for key 'jobs' availability.
     errors.push('missing key \'jobs\'');
   } else {
     // Validate 'jobs'.
@@ -53,7 +53,8 @@ function validateConfig(obj) {
           return;
         }
 
-        const { uses, args } = job;
+        const { name, uses, args } = job;
+        if (!isNil(name) && !isString(name)) errors.push(`'${jobExpr}.name' must be a string`);
         if (!has(job, 'uses')) errors.push(`missing key '${jobExpr}.uses'`);
         else if (!isString(uses) || isEmpty(uses)) errors.push(`'${jobExpr}.uses' must be a non-empty string`);
         if (!isNil(args) && !isObject(args)) errors.push(`'${jobExpr}.args' must be a mapping`);
@@ -101,7 +102,7 @@ export default function readConfig(path) {
   // Validate parsed configuration object.
   const errors = validateConfig(config);
   if (!isEmpty(errors)) {
-    throw new Error(`configuration is invalid: ${errors.join(', ')}`);
+    throw new Error(`invalid configuration: ${errors.join(', ')}`);
   }
 
   return config;
