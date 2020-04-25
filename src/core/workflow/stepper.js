@@ -2,23 +2,15 @@ import { isFunction } from 'lodash';
 import { retry } from '@core/app';
 
 /**
- * @typedef {object} Progress The `Workflow`'s `Job`(s)' progress reporter.
- *
- * `Progress` is designed to be used within `Workflow`'s `Job`(s). A `Job` uses a `Progress` to
- * report its progress, the `Progress` renders the `Job`'s progress. Usually, a `Progress` is
- * created internally by a `Workflow` using its `Reporter` and used by the `Workflow`'s `Job`(s).
- * `Progress` is unlikely to be used externally.
- *
- * @property {string} description The progress's description, `write only`, set to update the
- * progress's latest information.
+ * @typedef {import('@core/workflow/reporter').Progress} Progress
  */
 
 /**
  * @typedef {object} Stepper
  *
- * `Stepper` is a helper API to run a `Job`' tasks as steps in combination with reporting the
- * `Job`'s progress and result. Using `Stepper` is a convenient and easy way to integrate `Job`(s)
- * with `Workflow` APIs.
+ * `Stepper` is a helper API to run a `Job`' tasks as steps and progressively report the `Job`'s
+ * progress and result. Using `Stepper` in `Command#run` is a convenient and easy way to
+ * fully-integrate `Command`(s) with `Workflow` and `Job`(s).
  *
  * @property {(name: string, condition: any, fn: () => void) => void} addStep Add a step to the
  * stepper.
