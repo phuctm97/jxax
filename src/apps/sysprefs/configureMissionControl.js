@@ -3,12 +3,6 @@ import { createStepper } from '@core/workflow';
 import { selectCheckbox, selectPopUpButton } from '@core/uiAutomation';
 import runInSysPrefs from '@apps/sysprefs/app';
 
-export { default as validateConfigureMissionControl } from '@apps/sysprefs/missionControl/options';
-
-/**
- * @typedef {import('./options').SysPrefsMissionControlSettings} SysPrefsMissionControlSettings
- */
-
 // Helper function converts input keyboard shortcut to keyboard shortcut symbols.
 function parseKeyShortcut(s) {
   return s
@@ -20,17 +14,16 @@ function parseKeyShortcut(s) {
     .replace('[command]', '⌘');
 }
 
-/**
- * Configure _System Preferences/Mission Control_ settings.
- *
- * @param {SysPrefsMissionControlSettings} settings The settings object.
- * @param {object} opts Options.
- */
-export function configureMissionControl(settings, opts = {}) {
+function run(argss, opts = {}) {
   const {
-    autoRearrangeSpaces, switchSpaceWhenSwithToApp, groupWindowsByApp, displaysHaveSeparateSpaces,
-    missionControlKeyShortcut, appWindowsKeyShortcut, showDesktopKeyShortcut,
-  } = settings;
+    autoRearrangeSpaces,
+    switchSpaceWhenSwithToApp,
+    groupWindowsByApp,
+    displaysHaveSeparateSpaces,
+    missionControlKeyShortcut,
+    appWindowsKeyShortcut,
+    showDesktopKeyShortcut,
+  } = argss;
 
   return runInSysPrefs('Mission\nControl', ({ window }) => {
     const stepper = createStepper(opts);
@@ -72,3 +65,40 @@ export function configureMissionControl(settings, opts = {}) {
     return stepper.run();
   });
 }
+
+const configureMissionControl = {
+  description: 'Configure System Preferences/Mission Control',
+  run,
+  args: {
+    autoRearrangeSpaces: {
+      type: 'boolean',
+      description: 'Automatically rearrange Spaces based on mist recent use',
+    },
+    switchSpaceWhenSwithToApp: {
+      type: 'boolean',
+      description: 'When switching to an application, switch to Space with open windows for the application',
+    },
+    groupWindowsByApp: {
+      type: 'boolean',
+      description: 'Group windows by application',
+    },
+    displaysHaveSeparateSpaces: {
+      type: 'boolean',
+      description: 'Displays have separate Spaces',
+    },
+    missionControlKeyShortcut: {
+      type: 'string',
+      description: 'Mission Control keyboard shortcut',
+    },
+    appWindowsKeyShortcut: {
+      type: 'string',
+      description: 'Application Windows keyboard shortcut',
+    },
+    showDesktopKeyShortcut: {
+      type: 'string',
+      description: 'Show Desktop keyboarb shortcut',
+    },
+  },
+};
+
+export default configureMissionControl;

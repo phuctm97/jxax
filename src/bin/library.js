@@ -9,6 +9,7 @@ const library = {
   'desktops.configureScreenSaver': desktops.configureScreenSaver,
   'sysprefs.configureGeneral': sysprefs.configureGeneral,
   'sysprefs.configureDock': sysprefs.configureDock,
+  'sysprefs.configureMissionControl': sysprefs.configureMissionControl,
 };
 
 export default library;
