@@ -110,6 +110,9 @@ jobs:
       showClock: true
 ```
 
+A workflow has `jobs`, each job `uses` a command with a set of `args` to construct an automation.
+Check out [Features] to see full list of supported commands.
+
 #### Run your workflow
 
 Simply run the `jxax` CLI with your configured workflow YAML file, either absolute or relative or
@@ -121,21 +124,18 @@ $ jxax your-workflow.yml
 
 ## Features
 
-Currently, JXAX supports:
+Currently, JXAX supports following commands:
 
-- `sysprefs.configureGeneral`: configure _System Preferences/General_.
+| Command                            | Description                                  |
+| ---------------------------------- | -------------------------------------------- |
+| `desktops.changePicture`           | Change current Desktop picture               |
+| `desktops.configureScreenSaver`    | Configure screen saver preferences           |
+| `sysprefs.configureGeneral`        | Configure System Preferences/General         |
+| `sysprefs.configureDock`           | Configure System Preferences/Dock            |
+| `sysprefs.configureMissionControl` | Configure System Preferences/Mission Control |
+| `sysprefs.configureSpotlight`      | Configure System Preferences/Spotlight       |
 
-- `sysprefs.configureDock`: configure _System Preferences/Dock_.
-
-- `sysprefs.configureMissionControl`: configure _System Preferences/Mission Control_.
-
-- `sysprefs.configureSpotlight`: configure _System Preferences/Spotlight_.
-
-- `desktops.changePicture`: change desktop picture, either picture names in
-  _Apple Desktop Pictures_ or absolute paths or relative paths are applicable.
-
-- `sysprefs.configureScreenSaver`: change screen saver, configure screen saver options. Screen
-  savers have to be added before being able to be configured.
+See [Commands][commands-file] for the commands' details (arguments and types).
 
 😬We're adding more features constantly. However, the features to be added are dependent on our
 maintainers' interests. If you'd love to add a feature, feel free to create an issue and submit
@@ -167,5 +167,7 @@ Copyright © 2020 - present, Phuc (Minh) Tran. All rights reserved.
 
 <!-- Links -->
 
+[features]: #features
+[commands-file]: /docs/COMMANDS.md
 [license-file]: /LICENSE
 [contributing-file]: /CONTRIBUTING.md

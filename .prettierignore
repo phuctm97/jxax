@@ -10,6 +10,9 @@ LICENSE
 package-lock.json
 yarn.lock
 
+## Auto-generated documents.
+docs/COMMANDS.md
+
 ### .gitignore.
 
 ## macOS template.
