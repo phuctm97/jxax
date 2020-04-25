@@ -1,21 +1,12 @@
-import { isUndefined, isNil } from 'lodash';
+import {
+  isUndefined, isNil, isArray, isString, every,
+} from 'lodash';
+import { addCustomTypeValidation } from '@utils';
 import { createStepper } from '@core/workflow';
 import { selectTab, selectCheckbox } from '@core/uiAutomation';
 import runInSysPrefs from '@apps/sysprefs/app';
 
-export { default as validateConfigureSplotlight } from '@apps/sysprefs/spotlight/options';
-
-/**
- * @typedef {import('./options').SysPrefsSpotlightSettings} SysPrefsSpotlightSettings
- */
-
-/**
- * Configure _System Preferences/Spotlight_ settings.
- *
- * @param {SysPrefsSpotlightSettings} settings The settings object.
- * @param {object} opts Options.
- */
-export function configureSpotlight(settings, opts = {}) {
+function run(settings, opts = {}) {
   const { searchResults, allowSpotlightInLookup } = settings;
 
   return runInSysPrefs('Spotlight', ({ window }) => {
@@ -51,3 +42,26 @@ export function configureSpotlight(settings, opts = {}) {
     return stepper.run();
   });
 }
+
+addCustomTypeValidation('arrayOfString', 'must be an array of string',
+  (values) => isArray(values) && every(values, isString));
+
+/**
+ * Configure System Preferences/Spotlight command.
+ */
+const configureSpotlight = {
+  description: 'Configure System Preferences/Spotlight',
+  run,
+  args: {
+    searchResults: {
+      type: 'arrayOfString',
+      description: 'The array of categories to be shown in Spotlight\'s search results',
+    },
+    allowSpotlightInLookup: {
+      type: 'boolean',
+      description: 'Allow Spotlight Suggestions in Look up',
+    },
+  },
+};
+
+export default configureSpotlight;
