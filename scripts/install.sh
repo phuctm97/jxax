@@ -9,7 +9,7 @@ get_latest_release() {
 }
 
 # Options.
-JXAX_VERSION="$(get_latest_release deskp/jxax)"
+JXAX_VERSION="${$(get_latest_release deskp/jxax)/v/}"
 CLI_DIR="/usr/local/bin"
 SCRIPTING_LIBRARIES_DIR="$HOME/Library/Script Libraries"
 
