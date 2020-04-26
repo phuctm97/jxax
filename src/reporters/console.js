@@ -123,10 +123,11 @@ function getConsoleColumns() {
  *
  * @param {object} opts Options.
  * @param {boolean} opts.color Report in colorful or plain text format?
+ * @param {boolean} opts.simple Report in simple format (only report errors)?
  * @returns {Reporter} The `Reporter`.
  */
 export default function createConsoleReporter(opts = {}) {
-  const { color } = { ...createConsoleReporter.defaultOpts, ...opts };
+  const { color, simple } = { ...createConsoleReporter.defaultOpts, ...opts };
   let cols = 80; // Default console columns.
 
   // The reporter's variables.
@@ -179,6 +180,7 @@ export default function createConsoleReporter(opts = {}) {
         let finishChar;
         let msgF;
         if (succeeded) {
+          if (simple) return undefined; // Don't print succeeded steps when in simple mode.
           finishChar = format(
             FINISH_CHARS[JobStatuses.SUCCEEDED],
             FINISH_FORMATS[JobStatuses.SUCCEEDED],
@@ -288,4 +290,5 @@ export default function createConsoleReporter(opts = {}) {
  */
 createConsoleReporter.defaultOpts = {
   color: true,
+  simple: false,
 };
