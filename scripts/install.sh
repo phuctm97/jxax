@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 # Get latest release from GitHub.
 # See: https://gist.github.com/lukechilds/a83e1d7127b78fef38c2914c4ececc3c.
