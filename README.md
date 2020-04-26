@@ -29,7 +29,7 @@ The easiest way to use JXAX is to install it into your `PATH` using our `install
 downloads the `jxax` CLI and extract it into your `usr/local/bin`:
 
 ```bash
-$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/deskp/jxax/master/scripts/install.sh)"
+$ /bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/deskp/jxax/master/scripts/install.sh)"
 ```
 
 ## Usage
