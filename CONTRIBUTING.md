@@ -14,6 +14,8 @@ file issues on GitHub, to help people asking for help, to help triage, reproduce
 people have filed, to add to our documentation, or to help out in any other way. All types of
 contributions are encouraged and valued. 💪🏻
 
+Adding an automation to JXAX is easy! See [quick instruction to add a command](#add-a-command).
+
 ## Create an issue
 
 Every contributions should start with an issue, creating an issue to:
@@ -78,11 +80,13 @@ We recommend using [VSCode] (or Visual Studio Code) for development. We've alrea
 
 ## Project structure
 
+- **\***`src/apps/`: JXAX applications/commands, you're most-likely interested in this and only
+  this directory as it's where to add an automation. Go there and see a command, they're very
+  straightforward, you'll probably be able to write a command right after.
+
 - `src/bin/`: CLI implementation.
 
 - `src/core/`: core modules exporting common classes and functions for working with JXA.
-
-- `src/apps/`: applications/plugins implementation, provides actions for usage in workflows.
 
 - `src/reporters/`: presentation implementation displaying workflows, jobs progress and results.
 
@@ -97,6 +101,61 @@ We recommend using [VSCode] (or Visual Studio Code) for development. We've alrea
 - `.github/`: Github workflows and configuration.
 
 - `scripts/`: chore & build scripts.
+
+## Add a command
+
+Commands are extensible automation units in JXAX, each command plays a distinct automation. Apps
+are groups of commands, located in `src/apps` directory.
+
+Go to `src/apps` and create a directory for your app or select an existing one (e.g. `finder`).
+
+Create a JS source file to write your command, e.g. `eject.js` for ejecting a disk or USB.
+
+Write the command function:
+
+```js
+import { access } from "@core/app";
+
+function run(args) {
+  const { name } = args;
+  const finder = access("Finder");
+  finder.eject(finder.disks.byName(name));
+}
+```
+
+Export the command along with its arguments schema and description.
+
+```js
+export default {
+  description: "Eject a disk or USB",
+  run,
+  args: {
+    name: {
+      type: "string",
+      description: "Name of the disk or USB to be ejected",
+    },
+  },
+};
+```
+
+The command's `args` and `description` are required to auto-generate validation and documentation.
+
+Add your command to JXAX library in `src/bin/library.js`.
+
+```js
+// Other imports.
+// ...
+import finderEject from "apps/finder/eject";
+
+const library = {
+  // Other commands.
+  // ....
+  "finder.eject": finderEject,
+};
+```
+
+Done 🎊! You've just finished creating a PR, it can now be used in a workflow YAML or in OSA scripts
+through `Library('JXAX')`. [Submit a PR](#submit-a-pull-request) now!
 
 ## Credits
 
