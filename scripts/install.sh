@@ -10,17 +10,23 @@ get_latest_release() {
 
 # Options.
 JXAX_VERSION="$(get_latest_release deskp/jxax)"
-INSTALLATION_DIR="/usr/local/bin"
+CLI_DIR="/usr/local/bin"
+SCRIPTING_LIBRARIES_DIR="$HOME/Library/Script Libraries"
 
-# Make sure $INSTALLATION_DIR exists.
-sudo mkdir -p $INSTALLATION_DIR
+# Make sure $CLI_DIR and $SCRIPTING_LIBRARIES_DIR exists.
+sudo mkdir -p "$CLI_DIR"
+mkdir -p "$SCRIPTING_LIBRARIES_DIR"
 
-# Download jxax CLI archive and extract to $INSTALLATION_DIR.
+# Download jxax CLI and JXAX scripting library archives and extract to $CLI_DIR
+# and $SCRIPTING_LIBRARIES_DIR respectively.
 CWD="$(pwd)"
 cd "$(mktemp -d)" || exit 1
-curl -o jxax.tar.gz -L \
-  https://github.com/deskp/jxax/releases/download/v$JXAX_VERSION/jxax-$JXAX_VERSION.tar.gz
-sudo tar -xzf jxax.tar.gz -C $INSTALLATION_DIR
+curl -o jxax-cli.tar.gz -L \
+  "https://github.com/deskp/jxax/releases/download/v$JXAX_VERSION/jxax-cli-$JXAX_VERSION.tar.gz"
+sudo tar -xzf jxax-cli.tar.gz -C "$CLI_DIR"
+curl -o JXAX-scpt.tar.gz -L \
+  "https://github.com/deskp/jxax/releases/download/v$JXAX_VERSION/JXAX.scpt-$JXAX_VERSION.tar.gz"
+tar -xzf JXAX-scpt.tar.gz -C "$SCRIPTING_LIBRARIES_DIR"
 
 # Cleanup.
 TMP=$(pwd)

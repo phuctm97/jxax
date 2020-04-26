@@ -7,9 +7,14 @@
       {
         "assets": [
           {
-            "path": "dist/jxax.tar.gz",
-            "name": "jxax-${nextRelease.version}.tar.gz",
+            "path": "dist/jxax-cli.tar.gz",
+            "name": "jxax-cli-${nextRelease.version}.tar.gz",
             "label": "jxax CLI v${nextRelease.version}"
+          },
+          {
+            "path": "dist/JXAX.scpt.tar.gz",
+            "name": "JXAX.scpt-${nextRelease.version}.tar.gz",
+            "label": "JXAX.scpt v${nextRelease.version}"
           }
         ]
       }
