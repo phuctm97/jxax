@@ -7,6 +7,7 @@ on:
 
 jobs:
   lint-bundle:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     name: lint + bundle
     runs-on: ubuntu-latest
     env:
@@ -43,6 +44,7 @@ jobs:
           name: jxax.js-0.git${{ github.sha }}
           path: dist/jxax.js
   build-scripting-library:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     needs: lint-bundle
     runs-on: macos-latest
     steps:
