@@ -3,6 +3,7 @@
  */
 
 import main from '@bin/main';
+import runCommand from '@bin/runCommand';
 
 /**
  * System exit codes.
@@ -37,3 +38,19 @@ scpt.run = (args) => {
     $.exit(ExitCodes.FAILURE);
   }
 };
+
+/**
+ * The JXAX scripting library's `runCommand` handler.
+ *
+ * @description
+ * This fucntion is exported as `runCommand` handler in `JXAX` scripting library which is
+ * accessible to all OSA scripting components via `Library` function or equivalences.
+ *
+ * @example
+ * const jxax = Library('JXAX');
+ * jxax.runCommand('desktops.changePicture', {picture: 'Catalina Rock'});
+ *
+ * @param {string} uses The command to use.
+ * @param {object} args The arguments to supply to the `Command`.
+ */
+scpt.runCommand = runCommand;

@@ -1,4 +1,6 @@
-import { omit } from 'lodash';
+import {
+  isNil, isEmpty, isArray, every, omit, has,
+} from 'lodash';
 import { validate } from '@utils';
 
 /**
@@ -29,7 +31,34 @@ export function validateCommandArgs(command, args) {
 
 /**
  * Run a `Command`.
+ *
+ * @param {Command} command The command.
+ * @param {object} args The arguments.
  */
-export function runCommand() {
-  throw new Error('Not implemented');
+export function runCommand(command, args) {
+  // Run validation.
+  const errors = validateCommandArgs(command, args);
+  if (!isNil(errors)) { // Validation failed.
+    const errorMsgs = [];
+    Object.entries(errors).forEach(([arg, errs]) => {
+      errorMsgs.push(...errs.map((err) => `${arg} ${err}`));
+    });
+
+    throw new Error(errorMsgs.join(', '));
+  }
+
+  // Run command.
+  const results = command.run(args);
+
+  // Parse resutls.
+  if (isArray(results) && !isEmpty(results)
+      && every(results, (detail) => has(detail, 'step') && has(detail, 'succeeded'))) {
+    // Parse result details and get error messages (if any).
+    const errorMsgs = results.filter((detail) => !detail.succeeded)
+      .map((detail) => `${detail.step} ${detail.error}`);
+
+    if (!isEmpty(errorMsgs)) { // Error occurred.
+      throw new Error(errorMsgs.join(', '));
+    }
+  }
 }

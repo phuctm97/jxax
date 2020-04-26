@@ -26,7 +26,9 @@ module.exports = (env) => ({
       banner: [
         'const scpt=this;',
         'this.run=function(args){};',
+        'this.runCommand=function(command, args){};',
         'function run(args){return this.run(args);}',
+        'function runCommand(command, args){return this.runCommand(command, args);}',
       ].join(''),
       raw: true,
     }),

@@ -51,7 +51,7 @@ function shortFormat(commands) {
 }
 
 /**
- * List all available `Command`(s).
+ * List all JXAX `Command`(s).
  *
  * @param {string} format Output format (`short`/`long`).
  */
