@@ -25,8 +25,9 @@
 
 ## Installation
 
-The easiest way to use JXAX is to install it into your `PATH` using our `install.sh`. Running the following command
-downloads the `jxax` CLI and extract it into your `usr/local/bin`:
+The easiest way to use JXAX is to install it using our `install.sh`. Running the following command
+downloads the `jxax` CLI and `JXAX` scripting library into your `usr/local/bin` and
+`~/Library/Script Libraries` respectively:
 
 ```bash
 $ /bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/deskp/jxax/master/scripts/install.sh)"
@@ -34,8 +35,10 @@ $ /bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/deskp/jxax/master/
 
 ## Usage
 
-JXAX allows you to write, store and run your workflows as YAML files, enables
-writing workflows once and running them many times at many places, which automation is all about.
+### Option 1: Configure in YAML and run with `jxax` CLI
+
+`jxax` CLI allows you to write, store and run your workflows as YAML files, enables writing
+workflows once and running them many times at many places, which automation is all about.
 
 > JXAX's workflows are relatively similar to but simpler than CI/CD workflows.
 
@@ -118,8 +121,26 @@ Check out [Features] to see full list of supported commands.
 Simply run the `jxax` CLI with your configured workflow YAML file, either absolute or relative or
 home (`~`) paths are applicable:
 
-```bash
+```
 $ jxax your-workflow.yml
+```
+
+### Option 2: Use `JXAX` scripting library in your own script
+
+Installing JXAX using `install.sh` also installs `JXAX.scpt` scripting library, which enables easy
+integration your existing applications or scripts:
+
+```js
+// Use in JXA script then run with Script Editor.app or Automator.app or osascript.
+var jxax = Library("JXAX");
+jxax.runCommand("desktops.changePicture", { picture: "Catalina Rock" });
+```
+
+```bash
+# Run inline command in shell script.
+osascript -l JavaScript -e '''
+Library("JXAX").runCommand("desktops.changePicture", {picture: "Catalina Rock"});
+'''
 ```
 
 ## Features
@@ -139,13 +160,14 @@ See [Commands][commands-file] for the commands' details (arguments and types).
 
 😬We're adding more features constantly. However, the features to be added are dependent on our
 maintainers' interests. If you'd love to add a feature, feel free to create an issue and submit
-a PR!
+a PR! Check out [Contributing][contributing-file] to see how to.
 
 ## Contributing
 
-JXAX is designed to be extended by its users and community. So if you've ever used it and wanted to
-add or added an automation, why don't you create an issue or submit a PR, there may be many people
-out there share interests with you, your contribution is very likely to be highly appreciated! 💚
+JXAX is designed to be extended by its users and community. Adding an automation to JXAX is easy.
+So if you've ever used it and wanted to add or added an automation, why don't you create an issue
+or submit a PR, there may be many people out there share interests with you, your contribution is
+very likely to be highly appreciated! 💚
 
 See [Contributing][contributing-file].
 
