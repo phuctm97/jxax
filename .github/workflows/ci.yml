@@ -1,11 +1,14 @@
 name: CI
 
-on: push
+on:
+  push:
+    branches:
+      - "*"
 
 jobs:
-  lint-build:
-    name: lint,build
-    runs-on: ubuntu-18.04
+  lint-bundle:
+    name: lint + bundle
+    runs-on: ubuntu-latest
     env:
       node-version: 12.x
     steps:
@@ -15,10 +18,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ env.node-version }}
-      - id: find-yarn-cache-dir
+      - if: github.ref != 'refs/heads/master'
+        id: find-yarn-cache-dir
         name: Find Yarn cache directory
         run: echo "::set-output name=path::$(yarn cache dir)"
-      - name: Cache Node.js modules
+      - if: github.ref != 'refs/heads/master'
+        name: Cache Node.js modules
         uses: actions/cache@v1
         with:
           path: ${{ steps.find-yarn-cache-dir.outputs.path }}
@@ -30,10 +35,65 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Lint
         run: yarn lint
-      - name: Build
+      - name: Bundle
         run: yarn build
-      - name: Upload distribution bundle
+      - name: Upload JS bundle
         uses: actions/upload-artifact@v1
         with:
-          name: jxax-0.git${{ github.sha }}
+          name: jxax.js-0.git${{ github.sha }}
           path: dist/jxax.js
+  build-scripting-library:
+    needs: lint-bundle
+    runs-on: macos-latest
+    steps:
+      - name: Download JS bundle
+        uses: actions/download-artifact@v1
+        with:
+          name: jxax.js-0.git${{ github.sha }}
+          path: .
+      - name: Build scripting library
+        run: osacompile -l JavaScript -o JXAX.scpt jxax.js
+      - name: Upload scripting library
+        uses: actions/upload-artifact@v1
+        with:
+          name: JXAX.scpt-0.git${{ github.sha }}
+          path: JXAX.scpt
+  release:
+    if: github.ref == 'refs/heads/master'
+    needs: [lint-bundle, build-scripting-library]
+    runs-on: ubuntu-latest
+    env:
+      node-version: 12.x
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node.js ${{ env.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.node-version }}
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build
+        run: yarn build
+      - name: Download JS bundle
+        uses: actions/download-artifact@v1
+        with:
+          name: jxax.js-0.git${{ github.sha }}
+          path: dist
+      - name: Create executable CLI
+        run: |
+          mv dist/jxax.js dist/jxax
+          chmod +x dist/jxax
+      - name: Create CLI tar
+        run: tar -cvf dist/jxax-cli.tar.gz --owner 0 --group 0 -C dist/ jxax
+      - name: Download scripting library
+        uses: actions/download-artifact@v1
+        with:
+          name: JXAX.scpt-0.git${{ github.sha }}
+          path: dist
+      - name: Create scripting library tar
+        run: tar -cvf dist/JXAX.scpt.tar.gz --owner 0 --group 0 -C dist/ JXAX.scpt
+      - name: Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: yarn release
