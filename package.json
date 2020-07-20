@@ -19,7 +19,7 @@
     "ansi-escape-sequences": "^5.1.2",
     "getopts": "^2.2.5",
     "js-yaml": "^3.13.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "markdown-table": "^2.0.0",
     "validate.js": "^0.13.1"
   },
